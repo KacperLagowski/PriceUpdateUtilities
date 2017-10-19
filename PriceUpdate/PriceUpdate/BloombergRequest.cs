@@ -52,8 +52,9 @@ namespace Bloomberglp.Blpapi.Examples
 		public ArrayList  bloombergInstruments;
 		public ArrayList  bloombergDataFields;
 
-		public BloombergRequest(ArrayList instruments, ArrayList dataFields)
+		public BloombergRequest(List<BBInstrument> instruments, ArrayList dataFields)
 		{
+
 			d_host = "localhost";
 			d_port = 8194;
             bloombergInstruments = instruments;
