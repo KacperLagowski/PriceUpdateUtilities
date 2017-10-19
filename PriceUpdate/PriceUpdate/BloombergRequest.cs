@@ -50,16 +50,17 @@ namespace Bloomberglp.Blpapi.Examples
 		private string     d_host;
 		private int        d_port;
 		public ArrayList  bloombergInstruments;
-		public ArrayList  bloombergDataFields;
+		private ArrayList  bloombergDataFields;
 
-		public BloombergRequest(List<BBInstrument> instruments, ArrayList dataFields)
+		public BloombergRequest(List<BBInstrument> instruments)
 		{
-
 			d_host = "localhost";
 			d_port = 8194;
-            bloombergInstruments = instruments;
-            bloombergDataFields = dataFields;
-            Request(args);
+            foreach(BBInstrument _i in instruments)
+            {
+                bloombergInstruments.Add(_i.Ticker);
+            }
+            Request();
 		}
 
 		public void Request()

@@ -97,13 +97,13 @@ namespace RefDataExample
         public decimal Coupon { get; set; }
         public DateTime Redemption_Date { get; set; }
         public decimal Accrued_Interest { get; set; }
-#endregion
+        #endregion
 
         public BBInstrument(List<Element> BloombergInstruments)
         {
-            foreach(Element e in BloombergInstruments)
-            switch(e.Name.ToString())
-            {
+            foreach (Element e in BloombergInstruments)
+                switch (e.Name.ToString())
+                {
                     case "ID_BB_Unique":
                         BloombergID = e.GetValueAsString();
                         break;
@@ -196,67 +196,67 @@ namespace RefDataExample
                         break;
                     default:
                         break;
-            }
+                }
         }
 
         public BBInstrument(DataRow row)
         {
-                this.ID = Convert.ToInt32(row["ID"]);
-                this.ID_MPM = Convert.ToInt32(row["ID_MPM"]);
-                this.ID_DataFeed = row["ID_DataFeed"].ToString();
-                this.ID_Date = Convert.ToDateTime(row["ID_Date"]);
-                this.Sys_DataFeed_Type = Convert.ToInt32(row["Sys_DataFeed_Type"]);
-                this.Sys_Note_User = row["Sys_Note_System"].ToString();
-                this.Sys_Note_System = row["Sys_Note_System"].ToString();
-                this.Sys_End = Convert.ToInt32(row["Sys_End"]);
-                this.BloombergID = row["Data_BloombergID"].ToString();
-                this.ISIN = row["Data_ISIN"].ToString();
-                this.Ticker = row["Data_Ticker"].ToString();
-                this.Sedol1 = row["Data_Sedol1"].ToString();
-                this.Common = row["Data_Common"].ToString();
-                this.Other = row["Data_Other"].ToString();
-                this.Type = row["Data_Type"].ToString();
-                this.AssetType = Convert.ToInt32(row["Data_AssetType"]);
-                this.Exchange = row["Data_Exchange"].ToString();
-                this.MIC = row["Data_MIC"].ToString();
-                this.Name = row["Data_Name"].ToString();
-                this.Name_Midas_Short = row["Data_Name_Midas_Short"].ToString();
-                this.Name_Midas_Long = row["Data_Name_Midas_Long"].ToString();
-                this.Price = Convert.ToDecimal(row["Data_Price"]);
-                this.Price_Mid = Convert.ToDecimal(row["Data_Price_Mid"]);
-                this.Price_Bid = Convert.ToDecimal(row["Data_Price_Bid"]);
-                this.Price_Ask = Convert.ToDecimal(row["Data_Price_Ask"]);
-                this.Price_Last = Convert.ToDecimal(row["Data_Price_Last"]);
-                this.Price_Net_Asset_Value = Convert.ToDecimal(row["Data_Price_Net_Asset_Value"]);
-                this.Price_Default = row["Data_Price_Default"].ToString();
-                this.Price_Currency_ID = row["Data_Price_Currency_ID"].ToString();
-                this.Price_Factor = Convert.ToDecimal(row["Data_Price_Factor"]);
-                this.Div_Gross = Convert.ToDecimal(row["Data_Div_Gross"]);
-                this.Div_Currency_ID = Convert.ToDecimal(row["Data_Div_Currency_ID"]);
-                this.Div_Factor = Convert.ToDecimal(row["Data_Div_Factor"]);
-                this.Div_Ex_Date = Convert.ToDateTime(row["Data_Div_Ex_Date"]);
-                this.Rel_Perf_1M = Convert.ToDecimal(row["Data_Rel_Perf_1M"]);
-                this.Rel_Perf_3M = Convert.ToDecimal(row["Data_Rel_Perf_3M"]);
-                this.Rel_Perf_6M = Convert.ToDecimal(row["Data_Rel_Perf_6M"]);
-                this.Rel_Perf_12M = Convert.ToDecimal(row["Data_Rel_Perf_12M"]);
-                this.Rel_Perf_MTD = Convert.ToDecimal(row["Data_Rel_Perf_MTD"]);
-                this.Rel_Perf_QTD = Convert.ToDecimal(row["Data_Rel_Perf_QTD"]);
-                this.Rel_Perf_YTD = Convert.ToDecimal(row["Data_Rel_Perf_YTD"]);
-                this.Earnings_Per_Share = Convert.ToDecimal(row["Data_Earnings_Per_Share"]);
-                this.Price_To_Book = Convert.ToDecimal(row["Data_Price_To_Book"]);
-                this.Tier_1_Ratio = Convert.ToDecimal(row["Data_Tier_1_Ratio"]);
-                this.Free_Cash_Flow = Convert.ToDecimal(row["Data_Free_Cash_Flow"]);
-                this.EBITDA = Convert.ToDecimal(row["Data_EBITDA"]);
-                this.EBIT = Convert.ToDecimal(row["Data_EBIT"]);
-                this.Enterprise_Value = Convert.ToDecimal(row["Data_Enterprise_Value"]);
-                this.Par_Amount = Convert.ToDecimal(row["Data_Par_Amount"]);
-                this.Par_Value = Convert.ToDecimal(row["Data_Par_Value"]);
-                this.Coupon = Convert.ToDecimal(row["Data_Coupon"]);
-                this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
-                this.Accrued_Interest = Convert.ToDecimal(row["Data_Accured_Intrest"]);
-            }
+            this.ID = Convert.ToInt32(row["ID"]);
+            this.ID_MPM = Convert.ToInt32(row["ID_MPM"]);
+            this.ID_DataFeed = row["ID_DataFeed"].ToString();
+            this.ID_Date = Convert.ToDateTime(row["ID_Date"]);
+            this.Sys_DataFeed_Type = Convert.ToInt32(row["Sys_DataFeed_Type"]);
+            this.Sys_Note_User = row["Sys_Note_System"].ToString();
+            this.Sys_Note_System = row["Sys_Note_System"].ToString();
+            this.Sys_End = Convert.ToInt32(row["Sys_End"]);
+            this.BloombergID = row["Data_BloombergID"].ToString();
+            this.ISIN = row["Data_ISIN"].ToString();
+            this.Ticker = row["Data_Ticker"].ToString();
+            this.Sedol1 = row["Data_Sedol1"].ToString();
+            this.Common = row["Data_Common"].ToString();
+            this.Other = row["Data_Other"].ToString();
+            this.Type = row["Data_Type"].ToString();
+            this.AssetType = Convert.ToInt32(row["Data_AssetType"]);
+            this.Exchange = row["Data_Exchange"].ToString();
+            this.MIC = row["Data_MIC"].ToString();
+            this.Name = row["Data_Name"].ToString();
+            this.Name_Midas_Short = row["Data_Name_Midas_Short"].ToString();
+            this.Name_Midas_Long = row["Data_Name_Midas_Long"].ToString();
+            this.Price = Convert.ToDecimal(row["Data_Price"]);
+            this.Price_Mid = Convert.ToDecimal(row["Data_Price_Mid"]);
+            this.Price_Bid = Convert.ToDecimal(row["Data_Price_Bid"]);
+            this.Price_Ask = Convert.ToDecimal(row["Data_Price_Ask"]);
+            this.Price_Last = Convert.ToDecimal(row["Data_Price_Last"]);
+            this.Price_Net_Asset_Value = Convert.ToDecimal(row["Data_Price_Net_Asset_Value"]);
+            this.Price_Default = row["Data_Price_Default"].ToString();
+            this.Price_Currency_ID = row["Data_Price_Currency_ID"].ToString();
+            this.Price_Factor = Convert.ToDecimal(row["Data_Price_Factor"]);
+            this.Div_Gross = Convert.ToDecimal(row["Data_Div_Gross"]);
+            this.Div_Currency_ID = Convert.ToDecimal(row["Data_Div_Currency_ID"]);
+            this.Div_Factor = Convert.ToDecimal(row["Data_Div_Factor"]);
+            this.Div_Ex_Date = Convert.ToDateTime(row["Data_Div_Ex_Date"]);
+            this.Rel_Perf_1M = Convert.ToDecimal(row["Data_Rel_Perf_1M"]);
+            this.Rel_Perf_3M = Convert.ToDecimal(row["Data_Rel_Perf_3M"]);
+            this.Rel_Perf_6M = Convert.ToDecimal(row["Data_Rel_Perf_6M"]);
+            this.Rel_Perf_12M = Convert.ToDecimal(row["Data_Rel_Perf_12M"]);
+            this.Rel_Perf_MTD = Convert.ToDecimal(row["Data_Rel_Perf_MTD"]);
+            this.Rel_Perf_QTD = Convert.ToDecimal(row["Data_Rel_Perf_QTD"]);
+            this.Rel_Perf_YTD = Convert.ToDecimal(row["Data_Rel_Perf_YTD"]);
+            this.Earnings_Per_Share = Convert.ToDecimal(row["Data_Earnings_Per_Share"]);
+            this.Price_To_Book = Convert.ToDecimal(row["Data_Price_To_Book"]);
+            this.Tier_1_Ratio = Convert.ToDecimal(row["Data_Tier_1_Ratio"]);
+            this.Free_Cash_Flow = Convert.ToDecimal(row["Data_Free_Cash_Flow"]);
+            this.EBITDA = Convert.ToDecimal(row["Data_EBITDA"]);
+            this.EBIT = Convert.ToDecimal(row["Data_EBIT"]);
+            this.Enterprise_Value = Convert.ToDecimal(row["Data_Enterprise_Value"]);
+            this.Par_Amount = Convert.ToDecimal(row["Data_Par_Amount"]);
+            this.Par_Value = Convert.ToDecimal(row["Data_Par_Value"]);
+            this.Coupon = Convert.ToDecimal(row["Data_Coupon"]);
+            this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
+            this.Accrued_Interest = Convert.ToDecimal(row["Data_Accured_Intrest"]);
         }
-
     }
+
 }
+
 
