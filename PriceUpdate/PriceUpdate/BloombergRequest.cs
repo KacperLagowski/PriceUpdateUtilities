@@ -46,13 +46,13 @@ namespace Bloomberglp.Blpapi.Examples
 		private static readonly Name ERROR_INFO = new Name("errorInfo");
 		private static readonly Name CATEGORY = new Name("category");
 		private static readonly Name MESSAGE = new Name("message");
-
-		private string     d_host;
+        private string     d_host;
 		private int        d_port;
 		public ArrayList  bloombergInstruments;
 		private ArrayList  bloombergDataFields;
+        public List<BBInstrument> Results { get; set; }
 
-		public BloombergRequest(List<BBInstrument> instruments)
+        public BloombergRequest(List<BBInstrument> instruments)
 		{
 			d_host = "localhost";
 			d_port = 8194;
@@ -141,7 +141,7 @@ namespace Bloomberglp.Blpapi.Examples
 				}
 
 				Element securities = msg.GetElement(SECURITY_DATA);
-                List<BBInstrument> _instrumentList = new List<BBInstrument>();
+                List<Element> _partialResults = new List<Element>();
 				int numSecurities = securities.NumValues;
 				System.Console.WriteLine("Processing " + numSecurities + " securities:");
 				for (int i = 0; i < numSecurities; ++i)
@@ -157,7 +157,6 @@ namespace Bloomberglp.Blpapi.Examples
 					}
 
 					Element fields = security.GetElement(FIELD_DATA);
-                    List<Element> elements = new List<Element>();
 					if (fields.NumElements > 0)
 					{
 						System.Console.WriteLine("FIELD\t\tVALUE");
@@ -168,10 +167,9 @@ namespace Bloomberglp.Blpapi.Examples
 							Element field = fields.GetElement(j);
 							System.Console.WriteLine(field.Name + "\t\t" +
 								field.GetValueAsString());
-                            elements.Add(field);
+                            _partialResults.Add(field);
 						}
-                        BBInstrument _instrument = new BBInstrument(elements);
-                        _instrumentList.Add(_instrument);
+                        Results.Add(new BBInstrument(_partialResults));
                     }
 					System.Console.WriteLine("");
 					Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
@@ -293,11 +291,6 @@ namespace Bloomberglp.Blpapi.Examples
 				registerCallback(verbosityCount);
 			}
 			// handle default arguments
-			if (bloombergInstruments.Count == 0)
-			{
-				bloombergInstruments.Add("IBM US Equity");
-                bloombergInstruments.Add("GBPEUR CURNCY");
-            }
 			return true;
 		}
 

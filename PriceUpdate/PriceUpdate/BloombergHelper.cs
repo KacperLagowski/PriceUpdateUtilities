@@ -1,4 +1,5 @@
-﻿using RefDataExample;
+﻿using Bloomberglp.Blpapi.Examples;
+using RefDataExample;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,25 +13,7 @@ namespace PriceUpdateProgram
     public static class BloombergHelper
     {
         private static SqlConnection connection;
-        public static void SaveUpdatedInstruments(List<BBInstrument> instruments)
-        {
-            string _storedProcedure = "";
-            foreach (BBInstrument _i in instruments)
-            {
-                try
-                {
-                    connection.Open();
-                    SqlCommand _cmd = new SqlCommand(_storedProcedure, connection);
-                    _cmd.Parameters.Add()
-                    _cmd.ExecuteNonQuery();
-                    connection.Close();
-                }
-                catch (Exception e)
-                {
-                    System.Windows.Forms.MessageBox.Show(e.Message);
-                }
-            }
-        }
+        private static List<BBInstrument> _requested = new List<BBInstrument>();
         private static void createConnection()
         {
             string _connStr = "";
@@ -41,7 +24,7 @@ namespace PriceUpdateProgram
         {
             List<BBInstrument> _list = new List<BBInstrument>();
             createConnection();
-            string _storedProcedure = "sp_sysObjInstrument";
+            string _storedProcedure = "sp_PMInstrument_CreateDate";
             SqlDataAdapter _sda = new SqlDataAdapter(_storedProcedure, connection);
             DataTable _dt = new DataTable();
             try
@@ -67,8 +50,21 @@ namespace PriceUpdateProgram
 
         public static void Run()
         {
-            List<BBInstrument> _notUpdatedInstruments = RequestOutdatedInstrumentList();
-
+            try
+            {
+                List<BBInstrument> _completed = new List<BBInstrument>();
+                _requested = RequestOutdatedInstrumentList();
+                BloombergRequest _bloombergData = new BloombergRequest(_requested);
+                foreach(BBInstrument i in _bloombergData.Results)
+                {
+                    
+                }
+                SaveUpdatedInstruments(_completed);
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.Message);
+            }
         }
     }
 }
