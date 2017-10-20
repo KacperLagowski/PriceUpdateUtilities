@@ -56,6 +56,7 @@ namespace Bloomberglp.Blpapi.Examples
 		{
 			d_host = "localhost";
 			d_port = 8194;
+            Results = instruments;
             foreach(BBInstrument _i in instruments)
             {
                 bloombergInstruments.Add(_i.Ticker);
@@ -169,7 +170,7 @@ namespace Bloomberglp.Blpapi.Examples
 								field.GetValueAsString());
                             _partialResults.Add(field);
 						}
-                        Results.Add(new BBInstrument(_partialResults));
+                        
                     }
 					System.Console.WriteLine("");
 					Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
@@ -185,8 +186,9 @@ namespace Bloomberglp.Blpapi.Examples
 								"\t\t", fieldException.GetElement(ERROR_INFO));
 						}
 					}
-				}
-			}
+                        Results[i].OverrideValues(_partialResults);
+                }
+            }
 		}
 
 		private void sendRefDataRequest(Session session)

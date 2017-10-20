@@ -200,54 +200,7 @@ namespace RefDataExample
                 }
         }
 
-        public static void SaveUpdatedInstruments(List<BBInstrument> instruments)
-        {
-            string _storedProcedure = "";
-            foreach (BBInstrument _i in instruments)
-            {
-                try
-                {
-                    string _connStr = "";
-                    SqlConnection connection = new SqlConnection(_connStr);
-                    connection.Open();
-                    SqlCommand _cmd = new SqlCommand(_storedProcedure, connection);
-                    _cmd.Parameters.Add("@ID_MPM", SqlDbType.Int).Value = _i.ID_MPM;
-                    _cmd.Parameters.Add("@ID_DataFeed", SqlDbType.NVarChar, 50). Value = _i.ID_DataFeed;
-                    _cmd.Parameters.Add("@Sys_Note_System", SqlDbType.NVarChar, 255).Value = _i.Sys_Note_System;
-                    _cmd.Parameters.Add("@Sys_Note_User", SqlDbType.NVarChar, 255).Value = _i.Sys_Note_User;
-                    _cmd.Parameters.Add("@User_ID", SqlDbType.NVarChar, 50).Value = _i.UserID;
-                    _cmd.Parameters.Add("@Sys_DataFeed_Type", SqlDbType.Int).Value = _i.Sys_DataFeed_Type;
-                    _cmd.Parameters.Add("@Sys_End", SqlDbType.Bit).Value = _i.Sys_End;
-                    _cmd.Parameters.Add("@Data_BloombergID", SqlDbType.NVarChar, 50).Value = _i.BloombergID;
-                    _cmd.Parameters.Add("@Data_ISIN", SqlDbType.NVarChar, 50).Value = _i.ISIN;
-                    _cmd.Parameters.Add("@Data_Ticker", SqlDbType.NVarChar, 50).Value = _i.Ticker;
-                    _cmd.Parameters.Add("@Data_Sedol1", SqlDbType.NVarChar, 50).Value = _i.Sedol1;
-                    _cmd.Parameters.Add("@Data_Common", SqlDbType.NVarChar, 50).Value = _i.Common;
-                    _cmd.Parameters.Add("@Data_Other", SqlDbType.NVarChar, 50).Value = _i.Other;
-                    _cmd.Parameters.Add("@Data_Type", SqlDbType.NVarChar, 50).Value = _i.Type;
-                    _cmd.Parameters.Add("@Data_Exchange", SqlDbType.NVarChar, 50).Value = _i.Exchange;
-                    _cmd.Parameters.Add("@Data_Name", SqlDbType.NVarChar, 255).Value = _i.Name;
-                    _cmd.Parameters.Add("@Data_Name_Midas_Short", SqlDbType.NVarChar, 40).Value = _i.Name_Midas_Short;
-                    _cmd.Parameters.Add("@Data_Name_Midas_Long", SqlDbType.NVarChar, 80).Value = _i.Name_Midas_Long;
-                    _cmd.Parameters.Add("@Data_Price", SqlDbType.Decimal).Value = _i.Price;
-                    _cmd.Parameters.Add("@Data_Price_Mid", SqlDbType.Decimal).Value = _i.Price_Mid;
-                    _cmd.Parameters.Add("@Data_Price_Bid", SqlDbType.Decimal).Value = _i.Price_Bid;
-                    _cmd.Parameters.Add("@Data_Price_Ask", SqlDbType.Decimal).Value = _i.Price_Ask;
-                    _cmd.Parameters.Add("@Data_Price_Last", SqlDbType.Decimal).Value = _i.Price_Last;
-                    _cmd.Parameters.Add("@Data_Price_Net_Asset_Value", SqlDbType.Decimal).Value = _i.Price_Net_Asset_Value;
-                    _cmd.Parameters.Add("@Data_Name", SqlDbType.NVarChar, 255).Value = _i.Name;
-                    _cmd.Parameters.Add("@Data_Name", SqlDbType.NVarChar, 255).Value = _i.Name;
-                    _cmd.Parameters.Add("@Data_Name", SqlDbType.NVarChar, 255).Value = _i.Name;
-                    _cmd.Parameters.Add("@Data_Name", SqlDbType.NVarChar, 255).Value = _i.Name;
-                    _cmd.ExecuteNonQuery();
-                    connection.Close();
-                }
-                catch (Exception e)
-                {
-                    System.Windows.Forms.MessageBox.Show(e.Message);
-                }
-            }
-        }
+        
 
         public BBInstrument(DataRow row)
         {
