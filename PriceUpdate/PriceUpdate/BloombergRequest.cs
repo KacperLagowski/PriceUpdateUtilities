@@ -166,8 +166,8 @@ namespace Bloomberglp.Blpapi.Examples
 						for (int j = 0; j < numElements; ++j)
 						{
 							Element field = fields.GetElement(j);
-							System.Console.WriteLine(field.Name + "\t\t" +
-								field.GetValueAsString());
+							//System.Console.WriteLine(field.Name + "\t\t" +
+							//	field.GetValueAsString());
                             _partialResults.Add(field);
 						}
                         

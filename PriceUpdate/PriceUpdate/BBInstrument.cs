@@ -1,4 +1,5 @@
 ﻿using Bloomberglp.Blpapi;
+using PriceUpdateProgram;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,7 +15,7 @@ namespace RefDataExample
         public int ID_MPM { get; set; }
         public string ID_DataFeed { get; set; }
         public DateTime ID_Date { get; set; }
-        public string  UserID { get { return System.Security.Principal.WindowsIdentity.GetCurrent().Name; } }
+        public string UserID { get { return System.Security.Principal.WindowsIdentity.GetCurrent().Name; } }
         public string Sys_Note_System { get; set; }
         public string Sys_Note_User { get; set; }
         public int Sys_DataFeed_Type { get; set; }
@@ -200,8 +201,6 @@ namespace RefDataExample
                 }
         }
 
-        
-
         public BBInstrument(DataRow row)
         {
             this.ID = Convert.ToInt32(row["ID"]);
@@ -259,6 +258,76 @@ namespace RefDataExample
             this.Accrued_Interest = Convert.ToDecimal(row["Data_Accured_Intrest"]);
         }
 
+        public void Update(SqlConnection conn)
+        {
+            conn.Open();
+            string _storedProcedure = "sp_PMInstrumentUpdate";
+                try
+                {
+                    SqlCommand _cmd = new SqlCommand(_storedProcedure, conn);
+                    #region DB Parameters
+                    _cmd.Parameters.Add("@ID_MPM", SqlDbType.Int).Value = ID_MPM;
+                    _cmd.Parameters.Add("@ID_DataFeed", SqlDbType.NVarChar, 50).Value = ID_DataFeed;
+                    _cmd.Parameters.Add("@Sys_Note_System", SqlDbType.NVarChar, 255).Value = Sys_Note_System;
+                    _cmd.Parameters.Add("@Sys_Note_User", SqlDbType.NVarChar, 255).Value = Sys_Note_User;
+                    _cmd.Parameters.Add("@User_ID", SqlDbType.NVarChar, 50).Value = UserID;
+                    _cmd.Parameters.Add("@Sys_DataFeed_Type", SqlDbType.Int).Value = Sys_DataFeed_Type;
+                    _cmd.Parameters.Add("@Sys_End", SqlDbType.Bit).Value = Sys_End;
+                    _cmd.Parameters.Add("@Data_BloombergID", SqlDbType.NVarChar, 50).Value = BloombergID;
+                    _cmd.Parameters.Add("@Data_ISIN", SqlDbType.NVarChar, 50).Value = ISIN;
+                    _cmd.Parameters.Add("@Data_Ticker", SqlDbType.NVarChar, 50).Value = Ticker;
+                    _cmd.Parameters.Add("@Data_Sedol1", SqlDbType.NVarChar, 50).Value = Sedol1;
+                    _cmd.Parameters.Add("@Data_Common", SqlDbType.NVarChar, 50).Value = Common;
+                    _cmd.Parameters.Add("@Data_Other", SqlDbType.NVarChar, 50).Value = Other;
+                    _cmd.Parameters.Add("@Data_Type", SqlDbType.NVarChar, 50).Value = Type;
+                    _cmd.Parameters.Add("@Data_Exchange", SqlDbType.NVarChar, 50).Value = Exchange;
+                    _cmd.Parameters.Add("@Data_Name", SqlDbType.NVarChar, 255).Value = Name;
+                    _cmd.Parameters.Add("@Data_Name_Midas_Short", SqlDbType.NVarChar, 40).Value = Name_Midas_Short;
+                    _cmd.Parameters.Add("@Data_Name_Midas_Long", SqlDbType.NVarChar, 80).Value = Name_Midas_Long;
+                    _cmd.Parameters.Add("@Data_Price", SqlDbType.Decimal).Value = Price;
+                    _cmd.Parameters.Add("@Data_Price_Mid", SqlDbType.Decimal).Value = Price_Mid;
+                    _cmd.Parameters.Add("@Data_Price_Bid", SqlDbType.Decimal).Value = Price_Bid;
+                    _cmd.Parameters.Add("@Data_Price_Ask", SqlDbType.Decimal).Value = Price_Ask;
+                    _cmd.Parameters.Add("@Data_Price_Last", SqlDbType.Decimal).Value = Price_Last;
+                    _cmd.Parameters.Add("@Data_Price_Net_Asset_Value", SqlDbType.Decimal).Value = Price_Net_Asset_Value;
+                    _cmd.Parameters.Add("@Data_Price_Default", SqlDbType.Decimal).Value = Price_Default;
+                    _cmd.Parameters.Add("@Data_Price_Currency_ID", SqlDbType.NVarChar, 50).Value = Price_Currency_ID;
+                    _cmd.Parameters.Add("@Data_Price_Factor", SqlDbType.Decimal).Value = Price_Factor;
+                    _cmd.Parameters.Add("@Data_Div_Gross", SqlDbType.Decimal).Value = Div_Gross;
+                    _cmd.Parameters.Add("@Data_Div_Factor", SqlDbType.Decimal).Value = Div_Factor;
+                    _cmd.Parameters.Add("@Data_Price_Ex_Date", SqlDbType.DateTime).Value = Div_Ex_Date;
+                    _cmd.Parameters.Add("@Data_Rel_Perf_1M", SqlDbType.Decimal).Value = Rel_Perf_1M;
+                    _cmd.Parameters.Add("@Data_Rel_Perf_3M", SqlDbType.Decimal).Value = Rel_Perf_3M;
+                    _cmd.Parameters.Add("@Data_Rel_Perf_6M", SqlDbType.Decimal).Value = Rel_Perf_6M;
+                    _cmd.Parameters.Add("@Data_Rel_Perf_12M", SqlDbType.Decimal).Value = Rel_Perf_12M;
+                    _cmd.Parameters.Add("@Data_Rel_Perf_MTD", SqlDbType.Decimal).Value = Rel_Perf_MTD;
+                    _cmd.Parameters.Add("@Data_Rel_Perf_QTD", SqlDbType.Decimal).Value = Rel_Perf_QTD;
+                    _cmd.Parameters.Add("@Data_Rel_Perf_YTD", SqlDbType.Decimal).Value = Rel_Perf_QTD;
+                    _cmd.Parameters.Add("@Data_Earnings_Per_Share", SqlDbType.Decimal).Value = Earnings_Per_Share;
+                    _cmd.Parameters.Add("@Data_Price_To_Book", SqlDbType.Decimal).Value = Price_To_Book;
+                    _cmd.Parameters.Add("@Data_Tier_1_Ratio", SqlDbType.Decimal).Value = Tier_1_Ratio;
+                    _cmd.Parameters.Add("@Data_Free_Cash_Flow", SqlDbType.Decimal).Value = Free_Cash_Flow;
+                    _cmd.Parameters.Add("@Data_EBITDA", SqlDbType.Decimal).Value = EBITDA;
+                    _cmd.Parameters.Add("@Data_EBIT", SqlDbType.Decimal).Value = EBIT;
+                    _cmd.Parameters.Add("@Data_Enterprise_Value", SqlDbType.Decimal).Value = Enterprise_Value;
+                    _cmd.Parameters.Add("@Data_Par_Amount", SqlDbType.Decimal).Value = Par_Amount;
+                    _cmd.Parameters.Add("@Data_Par_Value", SqlDbType.Decimal).Value = Par_Value;
+                    _cmd.Parameters.Add("@Data_Coupon", SqlDbType.Decimal).Value = Coupon;
+                    _cmd.Parameters.Add("@Data_Redemption_Date", SqlDbType.DateTime).Value = Redemption_Date;
+                    _cmd.Parameters.Add("@Data_Accrued_Interest", SqlDbType.Decimal).Value = Accrued_Interest;
+                    #endregion
+                    _cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            
+        }
     }
 
 }
