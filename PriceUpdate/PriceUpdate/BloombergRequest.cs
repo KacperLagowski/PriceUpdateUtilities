@@ -87,8 +87,8 @@ namespace Bloomberglp.Blpapi.Examples
 			}
 			catch (InvalidRequestException e)
 			{
-				System.Console.WriteLine(e.ToString());
-			}
+                System.Windows.Forms.MessageBox.Show(e.Message);
+            }
 
 			// wait for events from session.
 			eventLoop(session);
@@ -104,12 +104,10 @@ namespace Bloomberglp.Blpapi.Examples
 				Event eventObj = session.NextEvent();
 				if (eventObj.Type == Event.EventType.PARTIAL_RESPONSE)
 				{
-					System.Console.WriteLine("Processing Partial Response");
 					processResponseEvent(eventObj);
 				}
 				else if (eventObj.Type == Event.EventType.RESPONSE)
 				{
-					System.Console.WriteLine("Processing Response");
 					processResponseEvent(eventObj);
 					done = true;
 				}
@@ -117,7 +115,6 @@ namespace Bloomberglp.Blpapi.Examples
 				{
 					foreach (Message msg in eventObj)
 					{
-						System.Console.WriteLine(msg.AsElement);
 						if (eventObj.Type == Event.EventType.SESSION_STATUS)
 						{
 							if (msg.MessageType.Equals("SessionTerminated"))
@@ -137,53 +134,42 @@ namespace Bloomberglp.Blpapi.Examples
 			{
 				if (msg.HasElement(RESPONSE_ERROR))
 				{
-					printErrorInfo("REQUEST FAILED: ", msg.GetElement(RESPONSE_ERROR));
+                    System.Windows.Forms.MessageBox.Show($"REQUEST FAILED: {msg.GetElement(RESPONSE_ERROR)}");
 					continue;
 				}
 
 				Element securities = msg.GetElement(SECURITY_DATA);
                 List<Element> _partialResults = new List<Element>();
 				int numSecurities = securities.NumValues;
-				System.Console.WriteLine("Processing " + numSecurities + " securities:");
 				for (int i = 0; i < numSecurities; ++i)
 				{
 					Element security = securities.GetValueAsElement(i);
 					string ticker = security.GetElementAsString(SECURITY);
-					System.Console.WriteLine("\nTicker: " + ticker);
 					if (security.HasElement("securityError"))
 					{
-						printErrorInfo("\tSECURITY FAILED: ",
-							security.GetElement(SECURITY_ERROR));
+                        System.Windows.Forms.MessageBox.Show($"SECURITY FAILED: {security.GetElement(SECURITY_ERROR)}");
 						continue;
 					}
 
 					Element fields = security.GetElement(FIELD_DATA);
 					if (fields.NumElements > 0)
 					{
-						System.Console.WriteLine("FIELD\t\tVALUE");
-						System.Console.WriteLine("-----\t\t-----");
 						int numElements = fields.NumElements;
 						for (int j = 0; j < numElements; ++j)
 						{
 							Element field = fields.GetElement(j);
-							//System.Console.WriteLine(field.Name + "\t\t" +
-							//	field.GetValueAsString());
                             _partialResults.Add(field);
 						}
                         
                     }
-					System.Console.WriteLine("");
 					Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
 					if (fieldExceptions.NumValues > 0)
 					{
-						System.Console.WriteLine("FIELD\t\tEXCEPTION");
-						System.Console.WriteLine("-----\t\t---------");
-						for (int k = 0; k < fieldExceptions.NumValues; ++k)
-						{
-							Element fieldException =
-								fieldExceptions.GetValueAsElement(k);
-							printErrorInfo(fieldException.GetElementAsString(FIELD_ID) +
-								"\t\t", fieldException.GetElement(ERROR_INFO));
+                        for (int k = 0; k < fieldExceptions.NumValues; ++k)
+                        {
+                            Element fieldException =
+                                fieldExceptions.GetValueAsElement(k);
+                            System.Windows.Forms.MessageBox.Show($"{fieldException.GetElementAsString(FIELD_ID)} {fieldException.GetElement(ERROR_INFO)}");
 						}
 					}
                         Results[i].OverrideValues(_partialResults);
@@ -210,8 +196,6 @@ namespace Bloomberglp.Blpapi.Examples
 			{
 				fields.AppendValue((string)bloombergDataFields[i]);
 			}
-
-			System.Console.WriteLine("Sending Request: " + request);
 			session.SendRequest(request, null);
 		}
 
@@ -224,7 +208,7 @@ namespace Bloomberglp.Blpapi.Examples
 				loggerName,
 				String message)
 			{
-				System.Console.WriteLine(dateTime + "  " + loggerName
+                System.Windows.Forms.MessageBox.Show(dateTime + "  " + loggerName
 					+ " [" + level.ToString() + "] Thread ID = "
 					+ threadId + " " + message);
 			}
@@ -283,7 +267,6 @@ namespace Bloomberglp.Blpapi.Examples
 				}
 				else if (string.Compare(args[i], "-h", true) == 0)
 				{
-					printUsage();
 					return false;
 				}
 			}
@@ -294,22 +277,6 @@ namespace Bloomberglp.Blpapi.Examples
 			}
 			// handle default arguments
 			return true;
-		}
-
-		private void printErrorInfo(string leadingStr, Element errorInfo)
-		{
-			System.Console.WriteLine(leadingStr + errorInfo.GetElementAsString(CATEGORY) +
-				" (" + errorInfo.GetElementAsString(MESSAGE) + ")");
-		}
-
-		private void printUsage()
-		{
-			System.Console.WriteLine("Usage:");
-			System.Console.WriteLine("	Retrieve reference data ");
-			System.Console.WriteLine("		[-s			<security	= IBM US Equity>");
-			System.Console.WriteLine("		[-f			<field		= PX_LAST>");
-			System.Console.WriteLine("		[-ip 		<ipAddress	= localhost>");
-			System.Console.WriteLine("		[-p 		<tcpPort	= 8194>");
 		}
 	}
 }

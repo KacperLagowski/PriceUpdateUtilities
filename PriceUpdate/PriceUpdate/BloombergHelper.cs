@@ -26,7 +26,7 @@ namespace PriceUpdateProgram
         public static List<BBInstrument> RequestOutdatedInstrumentList()
         {
             List<BBInstrument> _list = new List<BBInstrument>();
-            createConnection("");
+            createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
             string _storedProcedure = "sp_PMInstrument_CreateDate";
             SqlDataAdapter _sda = new SqlDataAdapter(_storedProcedure, connection);
             DataTable _dt = new DataTable();
@@ -56,19 +56,23 @@ namespace PriceUpdateProgram
         {
             try
             {
-                createConnection("");
+                createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
                 List<BBInstrument> _completed = new List<BBInstrument>();
                 _requested = RequestOutdatedInstrumentList();
-                BloombergRequest _bloombergData = new BloombergRequest(_requested);
-                _completed = _bloombergData.Results;
-                foreach (BBInstrument i in _completed)
-                {
-                    i.Update(connection);
-                }
+                //BloombergRequest _bloombergData = new BloombergRequest(_requested);
+                //_completed = _bloombergData.Results;
+                //foreach (BBInstrument i in _completed)
+                //{
+                //    i.Update(connection);
+                //}
             }
             catch (Exception e)
             {
                 System.Windows.Forms.MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                connection.Close();
             }
         }
     }

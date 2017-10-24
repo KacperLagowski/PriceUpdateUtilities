@@ -60,7 +60,7 @@ namespace RefDataExample
         public decimal Price_Factor { get; set; }
         public decimal Div_Gross { get; set; }
         //DVD_CRNCY
-        public decimal Div_Currency_ID { get; set; }
+        public string Div_Currency_ID { get; set; }
         public decimal Div_Factor { get; set; }
         public DateTime Div_Ex_Date { get; set; }
         //REL_1M
@@ -143,7 +143,7 @@ namespace RefDataExample
                         Price_Last = Convert.ToDecimal(e.GetValue());
                         break;
                     case "DVD_CRNCY":
-                        Div_Currency_ID = Convert.ToDecimal(e.GetValue());
+                        Div_Currency_ID = e.GetValueAsString();
                         break;
                     case "REL_1M":
                         Rel_Perf_1M = Convert.ToDecimal(e.GetValue());
@@ -234,7 +234,7 @@ namespace RefDataExample
             this.Price_Currency_ID = row["Data_Price_Currency_ID"].ToString();
             this.Price_Factor = Convert.ToDecimal(row["Data_Price_Factor"]);
             this.Div_Gross = Convert.ToDecimal(row["Data_Div_Gross"]);
-            this.Div_Currency_ID = Convert.ToDecimal(row["Data_Div_Currency_ID"]);
+            this.Div_Currency_ID = row["Data_Div_Currency_ID"].ToString();
             this.Div_Factor = Convert.ToDecimal(row["Data_Div_Factor"]);
             this.Div_Ex_Date = Convert.ToDateTime(row["Data_Div_Ex_Date"]);
             this.Rel_Perf_1M = Convert.ToDecimal(row["Data_Rel_Perf_1M"]);
@@ -255,7 +255,7 @@ namespace RefDataExample
             this.Par_Value = Convert.ToDecimal(row["Data_Par_Value"]);
             this.Coupon = Convert.ToDecimal(row["Data_Coupon"]);
             this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
-            this.Accrued_Interest = Convert.ToDecimal(row["Data_Accured_Intrest"]);
+            this.Accrued_Interest = Convert.ToDecimal(row["Data_Accrued_Interest"]);
         }
 
         public void Update(SqlConnection conn)
