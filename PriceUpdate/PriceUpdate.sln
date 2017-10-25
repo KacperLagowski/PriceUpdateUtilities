@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceUpdate", "PriceUpdate\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{150913A6-59EA-409F-93D6-6C3E312C3628}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircleProgressBarCs", "\\nero.systems\nero\users\kacper.lagowski\Downloads\CircleProgressBarDemo\CircleProgressBarCs\CircleProgressBarCs.csproj", "{A629E6CC-0BD5-4C81-AD29-7E7C8764C795}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{8A1AC10B-5C03-4C29-9ECC-23F441F7D2BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A1AC10B-5C03-4C29-9ECC-23F441F7D2BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A1AC10B-5C03-4C29-9ECC-23F441F7D2BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A629E6CC-0BD5-4C81-AD29-7E7C8764C795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A629E6CC-0BD5-4C81-AD29-7E7C8764C795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A629E6CC-0BD5-4C81-AD29-7E7C8764C795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A629E6CC-0BD5-4C81-AD29-7E7C8764C795}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
