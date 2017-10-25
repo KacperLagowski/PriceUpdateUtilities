@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PriceUpdateProgram;
 
 namespace PriceUpdate
 {
@@ -15,8 +16,16 @@ namespace PriceUpdate
         public BloombergUpdateControl()
         {
             InitializeComponent();
-            CircleProgressBarCs.CircleProgressBar progressBar = new CircleProgressBarCs.CircleProgressBar();
-            progressBar.Location = new Point(500, 500);
+            circleProgressBar.Num.Font = new Font("Arial", 60, FontStyle.Bold, GraphicsUnit.Pixel);
+            circleProgressBar.Unit.Font = new Font("Arial", 30, FontStyle.Bold, GraphicsUnit.Pixel);
+            circleProgressBar.Value = 1;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            BloombergHelper bh = new BloombergHelper();
+            bh.Run();
+            circleProgressBar.Value = bh.Percentage;
         }
     }
 }

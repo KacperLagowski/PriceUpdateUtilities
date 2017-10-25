@@ -50,17 +50,21 @@ namespace Bloomberglp.Blpapi.Examples
 		private int        d_port;
         public ArrayList bloombergInstruments = new ArrayList();
 		private ArrayList  bloombergDataFields;
-        public List<BBInstrument> Results { get; set; }
+        //public List<BBInstrument> Results { get; set; }
+        public BBInstrument Result { get; set; }
 
-        public BloombergRequest(List<BBInstrument> instruments)
+        public static int  NumberOfSecurities { get; set; }
+
+        public BloombergRequest(BBInstrument instrument)
 		{
 			d_host = "localhost";
 			d_port = 8194;
-            Results = instruments;
-            foreach(BBInstrument _i in instruments)
-            {
-                bloombergInstruments.Add(_i.ID_DataFeed);
-            }
+            Result = instrument;
+            //foreach(BBInstrument _i in instrument)
+            //{
+            //    bloombergInstruments.Add(_i.ID_DataFeed);
+            //}
+            bloombergInstruments.Add(instrument.ID_DataFeed);
             Request();
 		}
 
@@ -138,6 +142,7 @@ namespace Bloomberglp.Blpapi.Examples
 				}
 
 				Element securities = msg.GetElement(SECURITY_DATA);
+                NumberOfSecurities = securities.NumValues;
                 List<Element> _partialResults = new List<Element>();
 				int numSecurities = securities.NumValues;
 				for (int i = 0; i < numSecurities; ++i)
@@ -160,7 +165,8 @@ namespace Bloomberglp.Blpapi.Examples
 						}
                         
                     }
-                    Results[i].OverrideValues(_partialResults);
+                    //changed here
+                    Result.OverrideValues(_partialResults);
                     Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
 					if (fieldExceptions.NumValues > 0)
 					{

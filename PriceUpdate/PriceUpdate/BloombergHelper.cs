@@ -1,4 +1,5 @@
 ﻿using Bloomberglp.Blpapi.Examples;
+using PriceUpdate;
 using RefDataExample;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PriceUpdateProgram
@@ -13,7 +15,7 @@ namespace PriceUpdateProgram
     public class BloombergHelper
     {
         public static SqlConnection connection;
-        private static List<BBInstrument> _requested = new List<BBInstrument>();
+        public int Percentage { get; set; }
         public BloombergHelper()
         {
 
@@ -54,17 +56,27 @@ namespace PriceUpdateProgram
        
         public void Run()
         {
+            Percentage = 0;
+            List<BBInstrument> _requested = new List<BBInstrument>();
+            List<BBInstrument> _inProgress = new List<BBInstrument>();
+            List<BBInstrument> _completed = new List<BBInstrument>();
             try
             {
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
-                List<BBInstrument> _completed = new List<BBInstrument>();
                 _requested = RequestOutdatedInstrumentList();
-                //BloombergRequest _bloombergData = new BloombergRequest(_requested);
-                //_completed = _bloombergData.Results;
-                //foreach (BBInstrument i in _completed)
-                //{
-                //    i.Update(connection);
-                //}
+                
+                for (int i = 0; i < _requested.Count; i++)
+                {
+                    _inProgress.Add(_requested[i]);
+                    //BloombergRequest _bloombergData = new BloombergRequest(_inProgress[0]);
+                    //_completed.Add(_bloombergData.Result);
+                    //Percentage = (int)((double)(100 * _inProgress.Count) / _requested.Count);
+                   // _inProgress.RemoveAt(0);
+                }
+                for (int i = 0; i < int.MaxValue; i++)
+                {
+                    Percentage = (int)((double)(100 * i) / int.MaxValue);
+                }
             }
             catch (Exception e)
             {

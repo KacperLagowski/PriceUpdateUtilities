@@ -265,8 +265,8 @@ namespace RefDataExample
             this.Coupon = Convert.ToDecimal(row["Data_Coupon"]);
             this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
             this.Accrued_Interest = Convert.ToDecimal(row["Data_Accrued_Interest"]);
-            this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
-            this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Share_Out"]);
+            //this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
+            //this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Share_Out"]);
         }
 
         public void Update(SqlConnection conn)

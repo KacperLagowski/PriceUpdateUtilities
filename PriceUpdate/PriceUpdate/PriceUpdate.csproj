@@ -54,6 +54,9 @@
     <Compile Include="BBInstrument.cs" />
     <Compile Include="BloombergHelper.cs" />
     <Compile Include="BloombergRequest.cs" />
+    <Compile Include="CircleProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +71,9 @@
     <Compile Include="BloombergUpdateControl.Designer.cs">
       <DependentUpon>BloombergUpdateControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CircleProgressBar.resx">
+      <DependentUpon>CircleProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

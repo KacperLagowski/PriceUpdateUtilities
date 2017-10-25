@@ -20,8 +20,8 @@ namespace PriceUpdate
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            BloombergHelper bh = new BloombergHelper();
-            bh.Run();
+            //BloombergHelper bh = new BloombergHelper();
+            //bh.Run();
             
         }
     }
