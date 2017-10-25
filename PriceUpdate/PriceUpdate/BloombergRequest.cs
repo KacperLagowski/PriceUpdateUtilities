@@ -48,7 +48,7 @@ namespace Bloomberglp.Blpapi.Examples
 		private static readonly Name MESSAGE = new Name("message");
         private string     d_host;
 		private int        d_port;
-		public ArrayList  bloombergInstruments;
+        public ArrayList bloombergInstruments = new ArrayList();
 		private ArrayList  bloombergDataFields;
         public List<BBInstrument> Results { get; set; }
 
@@ -59,7 +59,7 @@ namespace Bloomberglp.Blpapi.Examples
             Results = instruments;
             foreach(BBInstrument _i in instruments)
             {
-                bloombergInstruments.Add(_i.Ticker);
+                bloombergInstruments.Add(_i.ID_DataFeed);
             }
             Request();
 		}
@@ -134,7 +134,6 @@ namespace Bloomberglp.Blpapi.Examples
 			{
 				if (msg.HasElement(RESPONSE_ERROR))
 				{
-                    System.Windows.Forms.MessageBox.Show($"REQUEST FAILED: {msg.GetElement(RESPONSE_ERROR)}");
 					continue;
 				}
 
@@ -147,7 +146,6 @@ namespace Bloomberglp.Blpapi.Examples
 					string ticker = security.GetElementAsString(SECURITY);
 					if (security.HasElement("securityError"))
 					{
-                        System.Windows.Forms.MessageBox.Show($"SECURITY FAILED: {security.GetElement(SECURITY_ERROR)}");
 						continue;
 					}
 
@@ -162,17 +160,16 @@ namespace Bloomberglp.Blpapi.Examples
 						}
                         
                     }
-					Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
+                    Results[i].OverrideValues(_partialResults);
+                    Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
 					if (fieldExceptions.NumValues > 0)
 					{
                         for (int k = 0; k < fieldExceptions.NumValues; ++k)
                         {
                             Element fieldException =
                                 fieldExceptions.GetValueAsElement(k);
-                            System.Windows.Forms.MessageBox.Show($"{fieldException.GetElementAsString(FIELD_ID)} {fieldException.GetElement(ERROR_INFO)}");
 						}
 					}
-                        Results[i].OverrideValues(_partialResults);
                 }
             }
 		}
@@ -240,7 +237,7 @@ namespace Bloomberglp.Blpapi.Examples
             bloombergDataFields = new ArrayList(new string[]{"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
                 "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
                 "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
-                "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT"});
+                "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"});
 
             int verbosityCount = 0;
 			for (int i = 0; i < args.Length; ++i)

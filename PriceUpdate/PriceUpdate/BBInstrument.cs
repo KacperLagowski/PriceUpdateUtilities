@@ -8,6 +8,10 @@ using System.Text;
 
 namespace RefDataExample
 {
+    public enum RestrictionFlagEnum
+    {
+        Prohibited = 1, Aggregated = 2, TakeoverPanel = 4
+    }
     public class BBInstrument
     {
         #region props
@@ -99,6 +103,8 @@ namespace RefDataExample
         public decimal Coupon { get; set; }
         public DateTime Redemption_Date { get; set; }
         public decimal Accrued_Interest { get; set; }
+        public RestrictionFlagEnum Data_Restriction_Flag { get; set; }
+        public decimal Data_Equity_Share_out { get; set; }
         #endregion
 
         public void OverrideValues(List<Element> BloombergInstruments)
@@ -196,6 +202,9 @@ namespace RefDataExample
                     case "CPN":
                         Coupon = Convert.ToDecimal(e.GetValue());
                         break;
+                    case "EQY_SH_OUT":
+                        Data_Equity_Share_out = Convert.ToDecimal(e.GetValue());
+                        break;
                     default:
                         break;
                 }
@@ -256,6 +265,8 @@ namespace RefDataExample
             this.Coupon = Convert.ToDecimal(row["Data_Coupon"]);
             this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
             this.Accrued_Interest = Convert.ToDecimal(row["Data_Accrued_Interest"]);
+            this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
+            this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Share_Out"]);
         }
 
         public void Update(SqlConnection conn)
@@ -315,8 +326,10 @@ namespace RefDataExample
                     _cmd.Parameters.Add("@Data_Coupon", SqlDbType.Decimal).Value = Coupon;
                     _cmd.Parameters.Add("@Data_Redemption_Date", SqlDbType.DateTime).Value = Redemption_Date;
                     _cmd.Parameters.Add("@Data_Accrued_Interest", SqlDbType.Decimal).Value = Accrued_Interest;
-                    #endregion
-                    _cmd.ExecuteNonQuery();
+                    _cmd.Parameters.Add("@Data_Restriction_Flag", SqlDbType.Int).Value = Data_Restriction_Flag;
+                    _cmd.Parameters.Add("@Data_Equity_Share_Out", SqlDbType.Decimal).Value = Data_Equity_Share_out;
+                #endregion
+                _cmd.ExecuteNonQuery();
                 }
                 catch (Exception e)
                 {
