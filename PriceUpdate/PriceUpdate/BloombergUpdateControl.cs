@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PriceUpdateProgram;
 using System.Timers;
+using tmr = System.Timers;
 
 namespace PriceUpdate
 {
     public partial class BloombergUpdateControl : UserControl
     {
         delegate void SetRandomCallback(string text);
+        tmr.Timer aTimer = new tmr.Timer();
         List<string> messages = new List<string>
         #region Messages
         { "Reticulating Splines","Gathering Goblins","Lifting Weights","Pushing Pixels","Formulating Plan","Taking Break",
@@ -49,19 +51,17 @@ namespace PriceUpdate
             circleProgressBar.Num.Font = new Font("Arial", 20, FontStyle.Bold, GraphicsUnit.Pixel);
             circleProgressBar.Unit.Font = new Font("Arial", 10, FontStyle.Bold, GraphicsUnit.Pixel);
             circleProgressBar.Value = 0;
-            var aTimer = new System.Timers.Timer(1000);
             aTimer.Elapsed += OnTimedEvent;
             aTimer.Interval = 3000;
-            aTimer.Enabled = true;
         }
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            if (circleProgressBar.Value != 100)
             SetRandomText(getRandomText());
         }
         private void SetRandomText(string text)
         {
+            
             if (this.randomLabel.InvokeRequired)
             {
                 SetRandomCallback d = new SetRandomCallback(SetRandomText);
@@ -81,16 +81,21 @@ namespace PriceUpdate
 
         private void button1_Click(object sender, EventArgs e)
         {
+            aTimer.Enabled = true;
+            this.updateButton.Enabled = false;
             BloombergHelper bh = new BloombergHelper();
+            bh.ProgressUpdated += Bh_ProgressUpdated;
             bh.Run();
-            //circleProgressBar.Value = bh.Percentage;
-            if(circleProgressBar.Value < 90)
-            circleProgressBar.Value = circleProgressBar.Value + 10;
-            else
-            {
-                circleProgressBar.Value = 100;
-                circleProgressBar.ForeColor = Color.Green;
-            }
+            this.updateButton.Enabled = true;
+            aTimer.Enabled = false;
+            randomLabel.Text = string.Empty;
+        }
+
+        private void Bh_ProgressUpdated(object sender, EventArgs e)
+        {
+            this.circleProgressBar.Value = (int)sender;
+            if (this.circleProgressBar.Value == 100)
+                this.circleProgressBar.ForeColor = Color.Green;
         }
     }
 }

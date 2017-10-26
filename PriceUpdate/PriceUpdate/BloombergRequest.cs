@@ -49,18 +49,25 @@ namespace Bloomberglp.Blpapi.Examples
         private string     d_host;
 		private int        d_port;
         public ArrayList bloombergInstruments = new ArrayList();
-		private ArrayList  bloombergDataFields;
+        private ArrayList bloombergDataFields = new ArrayList() {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
+                "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
+                "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
+                "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"};
+    
         //public List<BBInstrument> Results { get; set; }
-        public BBInstrument Result { get; set; }
+        public List<BBInstrument> Results { get; set; }
 
         public static int  NumberOfSecurities { get; set; }
 
-        public BloombergRequest(BBInstrument instrument)
+        public BloombergRequest(List<BBInstrument> instruments)
 		{
 			d_host = "localhost";
 			d_port = 8194;
-            Result = instrument;
-            bloombergInstruments.Add(instrument.ID_DataFeed);
+            Results = instruments;
+            foreach (BBInstrument i in Results)
+            {
+                bloombergInstruments.Add(i.ID_DataFeed);
+            }
             Request();
 		}
 
@@ -70,7 +77,12 @@ namespace Bloomberglp.Blpapi.Examples
 			sessionOptions.ServerHost = d_host;
 			sessionOptions.ServerPort = d_port;
 
+            
+
 			Session session = new Session(sessionOptions);
+            
+            
+
 			bool sessionStarted = session.Start();
 			if (!sessionStarted)
 			{
@@ -93,7 +105,7 @@ namespace Bloomberglp.Blpapi.Examples
 			// wait for events from session.
 			eventLoop(session);
 
-			session.Stop();
+            session.Stop();
 		}
 
 		private void eventLoop(Session session)
@@ -162,7 +174,7 @@ namespace Bloomberglp.Blpapi.Examples
                         
                     }
                     //changed here
-                    Result.OverrideValues(_partialResults);
+                    Results[i].OverrideValues(_partialResults);
                     Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
 					if (fieldExceptions.NumValues > 0)
 					{
@@ -172,6 +184,7 @@ namespace Bloomberglp.Blpapi.Examples
                                 fieldExceptions.GetValueAsElement(k);
 						}
 					}
+
                 }
             }
 		}
@@ -179,7 +192,7 @@ namespace Bloomberglp.Blpapi.Examples
 		private void sendRefDataRequest(Session session)
 		{
 			Service refDataService = session.GetService("//blp/refdata");
-			Request request = refDataService.CreateRequest("ReferenceDataRequest");
+            Request request = refDataService.CreateRequest("ReferenceDataRequest");
 
 			// Add securities to request
 			Element securities = request.GetElement("securities");
@@ -196,7 +209,9 @@ namespace Bloomberglp.Blpapi.Examples
 				fields.AppendValue((string)bloombergDataFields[i]);
 			}
 			session.SendRequest(request, null);
-		}
+            
+
+        }
 
 		internal class LoggingCallback : Logging.Callback
 		{
@@ -236,11 +251,6 @@ namespace Bloomberglp.Blpapi.Examples
 
 		private bool parseCommandLine(string[] args)
 		{
-            bloombergDataFields = new ArrayList(new string[]{"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
-                "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
-                "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
-                "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"});
-
             int verbosityCount = 0;
 			for (int i = 0; i < args.Length; ++i)
 			{
