@@ -70,11 +70,11 @@
             // randomLabel
             // 
             this.randomLabel.AutoSize = true;
-            this.randomLabel.Location = new System.Drawing.Point(201, 174);
+            this.randomLabel.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.randomLabel.Location = new System.Drawing.Point(6, 176);
             this.randomLabel.Name = "randomLabel";
-            this.randomLabel.Size = new System.Drawing.Size(35, 13);
+            this.randomLabel.Size = new System.Drawing.Size(0, 21);
             this.randomLabel.TabIndex = 7;
-            this.randomLabel.Text = "label1";
             // 
             // BloombergUpdateControl
             // 

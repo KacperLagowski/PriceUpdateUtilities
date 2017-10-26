@@ -60,10 +60,6 @@ namespace Bloomberglp.Blpapi.Examples
 			d_host = "localhost";
 			d_port = 8194;
             Result = instrument;
-            //foreach(BBInstrument _i in instrument)
-            //{
-            //    bloombergInstruments.Add(_i.ID_DataFeed);
-            //}
             bloombergInstruments.Add(instrument.ID_DataFeed);
             Request();
 		}

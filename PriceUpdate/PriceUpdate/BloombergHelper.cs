@@ -70,7 +70,7 @@ namespace PriceUpdateProgram
                     _inProgress.Add(_requested[i]);
                     //BloombergRequest _bloombergData = new BloombergRequest(_inProgress[0]);
                     //_completed.Add(_bloombergData.Result);
-                    //Percentage = (int)((double)(100 * _inProgress.Count) / _requested.Count);
+                    //Percentage = (int)((double)(100 * _completed.Count) / _requested.Count);
                     // _inProgress.RemoveAt(0);
                 }
             }
