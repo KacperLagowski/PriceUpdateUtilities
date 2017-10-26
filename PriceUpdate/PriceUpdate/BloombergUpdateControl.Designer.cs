@@ -32,13 +32,14 @@
             this.titleLabel = new System.Windows.Forms.Label();
             this.circleProgressBar = new CircleProgressBarCs.CircleProgressBar();
             this.updateButton = new System.Windows.Forms.Button();
+            this.randomLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // titleLabel
             // 
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.titleLabel.Location = new System.Drawing.Point(3, 12);
+            this.titleLabel.Location = new System.Drawing.Point(3, 0);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(343, 32);
             this.titleLabel.TabIndex = 4;
@@ -46,29 +47,40 @@
             // 
             // circleProgressBar
             // 
-            this.circleProgressBar.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.circleProgressBar.ForeColor = System.Drawing.Color.SlateGray;
-            this.circleProgressBar.Location = new System.Drawing.Point(137, 47);
+            this.circleProgressBar.BackColor = System.Drawing.Color.DarkGray;
+            this.circleProgressBar.ForeColor = System.Drawing.Color.Red;
+            this.circleProgressBar.Location = new System.Drawing.Point(9, 37);
             this.circleProgressBar.Name = "circleProgressBar";
-            this.circleProgressBar.Size = new System.Drawing.Size(216, 211);
+            this.circleProgressBar.Size = new System.Drawing.Size(176, 136);
             this.circleProgressBar.TabIndex = 5;
             this.circleProgressBar.Thickness = 50;
             this.circleProgressBar.Value = 42;
             // 
             // updateButton
             // 
-            this.updateButton.Image = ((System.Drawing.Image)(resources.GetObject("updateButton.Image")));
-            this.updateButton.Location = new System.Drawing.Point(3, 87);
+            this.updateButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("updateButton.BackgroundImage")));
+            this.updateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.updateButton.Location = new System.Drawing.Point(204, 67);
             this.updateButton.Name = "updateButton";
-            this.updateButton.Size = new System.Drawing.Size(128, 128);
+            this.updateButton.Size = new System.Drawing.Size(93, 85);
             this.updateButton.TabIndex = 6;
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // randomLabel
+            // 
+            this.randomLabel.AutoSize = true;
+            this.randomLabel.Location = new System.Drawing.Point(201, 174);
+            this.randomLabel.Name = "randomLabel";
+            this.randomLabel.Size = new System.Drawing.Size(35, 13);
+            this.randomLabel.TabIndex = 7;
+            this.randomLabel.Text = "label1";
             // 
             // BloombergUpdateControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.randomLabel);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.circleProgressBar);
             this.Controls.Add(this.titleLabel);
@@ -83,5 +95,6 @@
         private System.Windows.Forms.Label titleLabel;
         private CircleProgressBarCs.CircleProgressBar circleProgressBar;
         private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.Label randomLabel;
     }
 }

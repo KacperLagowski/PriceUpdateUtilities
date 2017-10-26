@@ -71,11 +71,7 @@ namespace PriceUpdateProgram
                     //BloombergRequest _bloombergData = new BloombergRequest(_inProgress[0]);
                     //_completed.Add(_bloombergData.Result);
                     //Percentage = (int)((double)(100 * _inProgress.Count) / _requested.Count);
-                   // _inProgress.RemoveAt(0);
-                }
-                for (int i = 0; i < int.MaxValue; i++)
-                {
-                    Percentage = (int)((double)(100 * i) / int.MaxValue);
+                    // _inProgress.RemoveAt(0);
                 }
             }
             catch (Exception e)
