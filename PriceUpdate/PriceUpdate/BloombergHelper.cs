@@ -65,10 +65,19 @@ namespace PriceUpdateProgram
             {
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
                 _requested = RequestOutdatedInstrumentList();
-                
-                BloombergRequest _bloombergData = new BloombergRequest(_requested);
+                if (_requested.Count > 200)
+                {
+                    List<BBInstrument> _temp = _requested.Take(200).ToList();
+                    _inProgress.AddRange(_temp);
+                    //_requested.RemoveRange(_temp);
+                    //var temporary = _requested.Where(item => _requested. > 10).ToList();
+                    //selected.ForEach(item => items.Remove(item));
+                    //otherList.AddRange(selected);
+
+                }
+                //BloombergRequest _bloombergData = new BloombergRequest(_requested);
                    
-                _completed = _bloombergData.Results;
+                //_completed = _bloombergData.Results;
                 Percentage = (int)((double)(100 * _completed.Count) / _requested.Count);
                 ProgressUpdated(Percentage, new EventArgs());
             }
