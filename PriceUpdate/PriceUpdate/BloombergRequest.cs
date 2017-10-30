@@ -151,9 +151,8 @@ namespace Bloomberglp.Blpapi.Examples
 
 				Element securities = msg.GetElement(SECURITY_DATA);
                 NumberOfSecurities = securities.NumValues;
-                List<Element> _partialResults = new List<Element>();
 				int numSecurities = securities.NumValues;
-				for (int i = 0; i < numSecurities; ++i)
+                for (int i = 0; i < NumberOfSecurities; ++i)
 				{
 					Element security = securities.GetValueAsElement(i);
 					string ticker = security.GetElementAsString(SECURITY);
@@ -163,18 +162,18 @@ namespace Bloomberglp.Blpapi.Examples
 					}
 
 					Element fields = security.GetElement(FIELD_DATA);
-					if (fields.NumElements > 0)
+                    List<Element> _partial = new List<Element>();
+                    if (fields.NumElements > 0)
 					{
 						int numElements = fields.NumElements;
 						for (int j = 0; j < numElements; ++j)
 						{
 							Element field = fields.GetElement(j);
-                            _partialResults.Add(field);
+                            _partial.Add(field);
 						}
-                        
+
                     }
                     //changed here
-                    Results[i].OverrideValues(_partialResults);
                     Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
 					if (fieldExceptions.NumValues > 0)
 					{

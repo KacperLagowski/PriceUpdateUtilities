@@ -109,101 +109,132 @@ namespace RefDataExample
 
         public void OverrideValues(List<Element> BloombergInstruments)
         {
-            foreach (Element e in BloombergInstruments)
+                foreach(Element e in BloombergInstruments)
                 switch (e.Name.ToString())
                 {
                     case "ID_BB_Unique":
                         BloombergID = e.GetValueAsString();
+                        
                         break;
                     case "ID_ISIN":
                         ISIN = e.GetValueAsString();
+                        
                         break;
                     case "TICKER":
                         Ticker = e.GetValueAsString();
+                        
                         break;
                     case "ID_SEDOL1":
                         Sedol1 = e.GetValueAsString();
+                        
                         break;
                     case "ID_COMMON":
                         Common = e.GetValueAsString();
+                        
                         break;
                     case "EXCH_CODE":
                         Exchange = e.GetValueAsString();
+                        
                         break;
                     case "MIC":
                         MIC = e.GetValueAsString();
+                        
                         break;
                     case "Name":
                         Name = e.GetValueAsString();
+                        
                         break;
                     case "PX_MID":
                         Price_Mid = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "PX_BID":
                         Price_Bid = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "PX_ASK":
                         Price_Ask = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "PX_LAST":
                         Price_Last = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "DVD_CRNCY":
                         Div_Currency_ID = e.GetValueAsString();
+                        
                         break;
                     case "REL_1M":
                         Rel_Perf_1M = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "REL_3M":
                         Rel_Perf_3M = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "REL_6M":
                         Rel_Perf_6M = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "REL_1YR":
                         Rel_Perf_12M = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "REL_MTD":
                         Rel_Perf_MTD = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "REL_QTD":
                         Rel_Perf_QTD = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "REL_YTD":
                         Rel_Perf_YTD = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "IS_IPS":
                         Earnings_Per_Share = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "PX_TO_BOOK_RATIO":
                         Price_To_Book = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "BS_CORE_CAP_RATIO":
                         Tier_1_Ratio = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "CF_FREE_CASH_FLOW":
                         Free_Cash_Flow = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "EBITDA":
                         EBITDA = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "EBIT":
                         EBIT = e.GetValueAsInt32();
+                        
                         break;
                     case "ENTERPRISE_VALUE":
                         Enterprise_Value = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "PAR_AMT":
                         Par_Amount = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "BS_PAR_VAL":
                         Par_Value = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "CPN":
                         Coupon = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     case "EQY_SH_OUT":
                         Data_Equity_Share_out = Convert.ToDecimal(e.GetValue());
+                        
                         break;
                     default:
                         break;
