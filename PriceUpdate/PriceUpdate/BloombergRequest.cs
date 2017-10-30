@@ -155,6 +155,10 @@ namespace Bloomberglp.Blpapi.Examples
                 for (int i = 0; i < NumberOfSecurities; ++i)
 				{
 					Element security = securities.GetValueAsElement(i);
+                    if(Results.Contains(security.GetValueAsString("ID_ISIN")))
+                    {
+
+                    }
 					string ticker = security.GetElementAsString(SECURITY);
 					if (security.HasElement("securityError"))
 					{
