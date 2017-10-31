@@ -241,6 +241,17 @@ namespace RefDataExample
                 }
         }
 
+        public DataRow ToDataRow()
+        {
+            DataTable dt = new DataTable();
+            DataRow _dr = dt.NewRow();
+            _dr["ID"] = this.ID;
+            _dr["ID_MPM"] = this.ID_MPM;
+            _dr["ID_DataFeed"] = this.ID_DataFeed;
+
+            return null;
+        }
+
         public BBInstrument(DataRow row)
         {
             this.ID = Convert.ToInt32(row["ID"]);
@@ -369,11 +380,9 @@ namespace RefDataExample
                 finally
                 {
                     conn.Close();
-                }
-            
+                }       
         }
     }
-
 }
 
 
