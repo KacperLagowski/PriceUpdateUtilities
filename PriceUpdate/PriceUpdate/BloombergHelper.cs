@@ -75,13 +75,13 @@ namespace PriceUpdateProgram
                         _requested.RemoveAll(item => _inProgress.Contains(item));
                         //do work with _inProgress
                         BloombergRequest _bloombergData = new BloombergRequest(_inProgress);
-                        _completed.AddRange(_bloombergData.Results);
+                        _completed.AddRange(_bloombergData.BloombergInstruments);
                         _inProgress.Clear();
                     }
                     else
                     {
                         BloombergRequest _bloombergData = new BloombergRequest(_requested);
-                        _completed.AddRange(_bloombergData.Results);
+                        _completed.AddRange(_bloombergData.BloombergInstruments);
                         _requested.Clear();
                     }
                 }

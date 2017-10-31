@@ -48,25 +48,23 @@ namespace Bloomberglp.Blpapi.Examples
 		private static readonly Name MESSAGE = new Name("message");
         private string     d_host;
 		private int        d_port;
-        public ArrayList bloombergInstruments = new ArrayList();
+        public List<BBInstrument> BloombergInstruments { get; set; }
         private ArrayList bloombergDataFields = new ArrayList() {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
                 "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
                 "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
                 "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"};
     
         //public List<BBInstrument> Results { get; set; }
-        public List<BBInstrument> Results { get; set; }
-
         public static int  NumberOfSecurities { get; set; }
 
         public BloombergRequest(List<BBInstrument> instruments)
 		{
+            BloombergInstruments = new List<BBInstrument>();
 			d_host = "localhost";
 			d_port = 8194;
-            Results = instruments;
-            foreach (BBInstrument i in Results)
+            foreach (BBInstrument i in instruments)
             {
-                bloombergInstruments.Add(i.ID_DataFeed);
+                BloombergInstruments.Add(i);
             }
             Request();
 		}
@@ -155,10 +153,6 @@ namespace Bloomberglp.Blpapi.Examples
                 for (int i = 0; i < NumberOfSecurities; ++i)
 				{
 					Element security = securities.GetValueAsElement(i);
-                    if(Results.Contains(security.GetValueAsString("ID_ISIN")))
-                    {
-
-                    }
 					string ticker = security.GetElementAsString(SECURITY);
 					if (security.HasElement("securityError"))
 					{
@@ -196,13 +190,14 @@ namespace Bloomberglp.Blpapi.Examples
 		{
 			Service refDataService = session.GetService("//blp/refdata");
             Request request = refDataService.CreateRequest("ReferenceDataRequest");
+            
 
 			// Add securities to request
 			Element securities = request.GetElement("securities");
 
-			for (int i = 0; i < bloombergInstruments.Count; ++i)
+			for (int i = 0; i < BloombergInstruments.Count; ++i)
 			{
-				securities.AppendValue((string)bloombergInstruments[i]);
+                securities.AppendValue(BloombergInstruments[i].ID_DataFeed);
 			}
 
 			// Add fields to request
@@ -212,8 +207,6 @@ namespace Bloomberglp.Blpapi.Examples
 				fields.AppendValue((string)bloombergDataFields[i]);
 			}
 			session.SendRequest(request, null);
-            
-
         }
 
 		internal class LoggingCallback : Logging.Callback
@@ -252,43 +245,43 @@ namespace Bloomberglp.Blpapi.Examples
 			Logging.RegisterCallback(new LoggingCallback(), level);
 		}
 
-		private bool parseCommandLine(string[] args)
-		{
-            int verbosityCount = 0;
-			for (int i = 0; i < args.Length; ++i)
-			{
-				if (string.Compare(args[i], "-s", true) == 0)
-				{
-					bloombergInstruments.Add(args[i+1]);
-				}
-				else if (string.Compare(args[i], "-f", true) == 0)
-				{
-					bloombergDataFields.Add(args[i+1]);
-				}
-				else if (string.Compare(args[i], "-ip", true) == 0)
-				{
-					d_host = args[i+1];
-				}
-				else if (string.Compare(args[i], "-p", true) == 0)
-				{
-					d_port = int.Parse(args[i+1]);
-				}
-				else if (string.Compare(args[i], "-v", true) == 0)
-				{
-					++verbosityCount;
-				}
-				else if (string.Compare(args[i], "-h", true) == 0)
-				{
-					return false;
-				}
-			}
+		//private bool parseCommandLine(string[] args)
+		//{
+  //          int verbosityCount = 0;
+		//	for (int i = 0; i < args.Length; ++i)
+		//	{
+		//		if (string.Compare(args[i], "-s", true) == 0)
+		//		{
+		//			bloombergInstruments.Add(args[i+1]);
+		//		}
+		//		else if (string.Compare(args[i], "-f", true) == 0)
+		//		{
+		//			bloombergDataFields.Add(args[i+1]);
+		//		}
+		//		else if (string.Compare(args[i], "-ip", true) == 0)
+		//		{
+		//			d_host = args[i+1];
+		//		}
+		//		else if (string.Compare(args[i], "-p", true) == 0)
+		//		{
+		//			d_port = int.Parse(args[i+1]);
+		//		}
+		//		else if (string.Compare(args[i], "-v", true) == 0)
+		//		{
+		//			++verbosityCount;
+		//		}
+		//		else if (string.Compare(args[i], "-h", true) == 0)
+		//		{
+		//			return false;
+		//		}
+		//	}
 
-			if (verbosityCount > 0)
-			{
-				registerCallback(verbosityCount);
-			}
-			// handle default arguments
-			return true;
-		}
+		//	if (verbosityCount > 0)
+		//	{
+		//		registerCallback(verbosityCount);
+		//	}
+		//	// handle default arguments
+		//	return true;
+		//}
 	}
 }
