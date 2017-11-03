@@ -30,37 +30,26 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BloombergUpdateControl));
             this.titleLabel = new System.Windows.Forms.Label();
-            this.circleProgressBar = new CircleProgressBarCs.CircleProgressBar();
             this.updateButton = new System.Windows.Forms.Button();
             this.randomLabel = new System.Windows.Forms.Label();
+            this.progressLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // titleLabel
             // 
             this.titleLabel.AutoSize = true;
-            this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.titleLabel.Location = new System.Drawing.Point(3, 0);
+            this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.titleLabel.Location = new System.Drawing.Point(102, 8);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(343, 32);
+            this.titleLabel.Size = new System.Drawing.Size(271, 25);
             this.titleLabel.TabIndex = 4;
             this.titleLabel.Text = "Update Prices from Bloomberg";
-            // 
-            // circleProgressBar
-            // 
-            this.circleProgressBar.BackColor = System.Drawing.Color.DarkGray;
-            this.circleProgressBar.ForeColor = System.Drawing.Color.Red;
-            this.circleProgressBar.Location = new System.Drawing.Point(9, 37);
-            this.circleProgressBar.Name = "circleProgressBar";
-            this.circleProgressBar.Size = new System.Drawing.Size(176, 136);
-            this.circleProgressBar.TabIndex = 5;
-            this.circleProgressBar.Thickness = 50;
-            this.circleProgressBar.Value = 42;
             // 
             // updateButton
             // 
             this.updateButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("updateButton.BackgroundImage")));
             this.updateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.updateButton.Location = new System.Drawing.Point(204, 67);
+            this.updateButton.Location = new System.Drawing.Point(3, 3);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(93, 85);
             this.updateButton.TabIndex = 6;
@@ -76,16 +65,26 @@
             this.randomLabel.Size = new System.Drawing.Size(0, 21);
             this.randomLabel.TabIndex = 7;
             // 
+            // progressLabel
+            // 
+            this.progressLabel.AutoSize = true;
+            this.progressLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.progressLabel.Location = new System.Drawing.Point(102, 56);
+            this.progressLabel.Name = "progressLabel";
+            this.progressLabel.Size = new System.Drawing.Size(52, 15);
+            this.progressLabel.TabIndex = 8;
+            this.progressLabel.Text = "Progress";
+            // 
             // BloombergUpdateControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.progressLabel);
             this.Controls.Add(this.randomLabel);
             this.Controls.Add(this.updateButton);
-            this.Controls.Add(this.circleProgressBar);
             this.Controls.Add(this.titleLabel);
             this.Name = "BloombergUpdateControl";
-            this.Size = new System.Drawing.Size(386, 286);
+            this.Size = new System.Drawing.Size(373, 91);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,8 +92,8 @@
 
         #endregion
         private System.Windows.Forms.Label titleLabel;
-        private CircleProgressBarCs.CircleProgressBar circleProgressBar;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Label randomLabel;
+        private System.Windows.Forms.Label progressLabel;
     }
 }

@@ -30,12 +30,15 @@ using String = System.String;
 using ArrayList = System.Collections.ArrayList;
 using RefDataExample;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Bloomberglp.Blpapi.Examples
 {
 
 	public class BloombergRequest
 	{
+        public event System.EventHandler Update;
+
 		private static readonly Name SECURITY_DATA = new Name("securityData");
 		private static readonly Name SECURITY = new Name("security");
 		private static readonly Name FIELD_DATA = new Name("fieldData");
@@ -49,15 +52,13 @@ namespace Bloomberglp.Blpapi.Examples
         private string     d_host;
 		private int        d_port;
         public List<BBInstrument> BloombergInstruments { get; set; }
-        private List<string> bloombergDataFields = new List<String> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
-                "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
-                "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
-                "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"};
+        private List<string> bloombergDataFields { get; set; }
     
         //public List<BBInstrument> Results { get; set; }
-        public BloombergRequest(List<BBInstrument> instruments)
+        public BloombergRequest(List<BBInstrument> instruments, List<string> dataFields)
 		{
             BloombergInstruments = new List<BBInstrument>();
+            bloombergDataFields = dataFields;
 			d_host = "localhost";
 			d_port = 8194;
             foreach (BBInstrument i in instruments)
@@ -151,7 +152,16 @@ namespace Bloomberglp.Blpapi.Examples
                         continue;
                     }
 
-                    requestFieldElements(security);
+                    List<Element>  _res = requestFieldElements(security);
+
+                    Element _id = _res.Single(p => p.Name.ToString() == "ID_BB_Unique");
+                    BBInstrument _i = BloombergInstruments.Single(p => p.BloombergID == _id.GetValueAsString());
+                    _i.OverrideValues(_res);
+
+
+                    string message = $"{BloombergInstruments.Count(p=>p.BloombergUpdate == true)} of {BloombergInstruments.Count} complete";
+                    Update(message, new System.EventArgs());
+
                     //changed here
                     Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
                     if (fieldExceptions.NumValues > 0)
@@ -167,7 +177,7 @@ namespace Bloomberglp.Blpapi.Examples
             }
 		}
 
-        private static void requestFieldElements(Element security)
+        private List<Element> requestFieldElements(Element security)
         {
             Element fields = security.GetElement(FIELD_DATA);
             List<Element> _partial = new List<Element>();
@@ -179,6 +189,8 @@ namespace Bloomberglp.Blpapi.Examples
                     _partial.Add(field);
                 }
             }
+            
+            return _partial;
         }
 
         private void sendRefDataRequest(Session session)

@@ -105,6 +105,7 @@ namespace RefDataExample
         public decimal Accrued_Interest { get; set; }
         public RestrictionFlagEnum Data_Restriction_Flag { get; set; }
         public decimal Data_Equity_Share_out { get; set; }
+        public bool BloombergUpdate { get; private set; }
         #endregion
 
         public void OverrideValues(List<Element> BloombergInstruments)
@@ -239,6 +240,7 @@ namespace RefDataExample
                     default:
                         break;
                 }
+            BloombergUpdate = true;
         }
 
         public DataTable ToDataRow(List<BBInstrument> list)
@@ -340,6 +342,8 @@ namespace RefDataExample
 
         public BBInstrument(DataRow row)
         {
+            this.BloombergUpdate = false;
+
             this.ID = Convert.ToInt32(row["ID"]);
             this.ID_MPM = Convert.ToInt32(row["ID_MPM"]);
             this.ID_DataFeed = row["ID_DataFeed"].ToString();

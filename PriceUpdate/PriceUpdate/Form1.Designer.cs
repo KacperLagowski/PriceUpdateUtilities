@@ -35,7 +35,7 @@
             // 
             this.bloombergUpdateControl1.Location = new System.Drawing.Point(12, 12);
             this.bloombergUpdateControl1.Name = "bloombergUpdateControl1";
-            this.bloombergUpdateControl1.Size = new System.Drawing.Size(396, 298);
+            this.bloombergUpdateControl1.Size = new System.Drawing.Size(386, 286);
             this.bloombergUpdateControl1.TabIndex = 0;
             // 
             // Form1

@@ -54,41 +54,20 @@ namespace PriceUpdateProgram
             return _list;
         }
 
-       
-        public void Run()
+
+        public void RunFullPriceUpdate()
         {
-            Percentage = 0;
-            List<BBInstrument> _requested = new List<BBInstrument>();
-            List<BBInstrument> _inProgress = new List<BBInstrument>();
-            List<BBInstrument> _completed = new List<BBInstrument>();
+            List<string> Fields = new List<string> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
+                "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
+                "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
+                "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"};
+
+            List<BBInstrument> _instruments = new List<BBInstrument>();
             try
             {
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
-                _requested = RequestOutdatedInstrumentList();
-                while (_requested.Count > 0)
-                {
-                    if (_requested.Count > 20)
-                    {
-                        var temporary = _requested.Take(20).ToList();
-                        _inProgress.AddRange(temporary);
-                        temporary.Clear();
-                        _requested.RemoveAll(item => _inProgress.Contains(item));
-                        //do work with _inProgress
-                        BloombergRequest _bloombergData = new BloombergRequest(_inProgress);
-                        _completed.AddRange(_bloombergData.BloombergInstruments);
-                        _inProgress.Clear();
-                    }
-                    else
-                    {
-                        BloombergRequest _bloombergData = new BloombergRequest(_requested);
-                        _completed.AddRange(_bloombergData.BloombergInstruments);
-                        _requested.Clear();
-                    }
-                }
-
-                //_completed = _bloombergData.Results;
-                Percentage = (int)((double)(100 * _completed.Count) / _requested.Count);
-                ProgressUpdated(Percentage, new EventArgs());
+                _instruments = RequestOutdatedInstrumentList();
+                BloombergRequest _bloombergData = new BloombergRequest(_instruments, Fields);
             }
             catch (Exception e)
             {
@@ -99,5 +78,7 @@ namespace PriceUpdateProgram
                 connection.Close();
             }
         }
+
+
     }
 }
