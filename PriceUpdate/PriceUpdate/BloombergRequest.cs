@@ -37,7 +37,7 @@ namespace Bloomberglp.Blpapi.Examples
 
 	public class BloombergRequest
 	{
-        public event System.EventHandler Update;
+        public event System.EventHandler InstrumentUpdated;
 
 		private static readonly Name SECURITY_DATA = new Name("securityData");
 		private static readonly Name SECURITY = new Name("security");
@@ -55,7 +55,7 @@ namespace Bloomberglp.Blpapi.Examples
         private List<string> bloombergDataFields { get; set; }
     
         //public List<BBInstrument> Results { get; set; }
-        public BloombergRequest(List<BBInstrument> instruments, List<string> dataFields)
+        public void Fill(List<BBInstrument> instruments, List<string> dataFields)
 		{
             BloombergInstruments = new List<BBInstrument>();
             bloombergDataFields = dataFields;
@@ -153,14 +153,14 @@ namespace Bloomberglp.Blpapi.Examples
                     }
 
                     List<Element>  _res = requestFieldElements(security);
-
+                    //if(_res.Single(p => p.GetValueAsString("MARKET_SECTOR_DES") == "Index"))
                     Element _id = _res.Single(p => p.Name.ToString() == "ID_BB_Unique");
                     BBInstrument _i = BloombergInstruments.Single(p => p.BloombergID == _id.GetValueAsString());
                     _i.OverrideValues(_res);
 
 
                     string message = $"{BloombergInstruments.Count(p=>p.BloombergUpdate == true)} of {BloombergInstruments.Count} complete";
-                    Update(message, new System.EventArgs());
+                    InstrumentUpdated(message, new System.EventArgs());
 
                     //changed here
                     Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
@@ -201,7 +201,7 @@ namespace Bloomberglp.Blpapi.Examples
 			// Add securities to request
 			Element securities = request.GetElement("securities");
 
-            BloombergInstruments.ForEach(p => { securities.AppendValue(p.ID_DataFeed); });
+            BloombergInstruments.ForEach(p => { securities.AppendValue(p.ID_DataFeed.ToUpper()); });
 
 			// Add fields to request
 			Element fields = request.GetElement("fields");

@@ -31,7 +31,7 @@ namespace PriceUpdate
 
         private void Bh_ProgressUpdated(object sender, EventArgs e)
         {
-            progressLabel.Text =sender.ToString();
+            progressLabel.Text = sender.ToString();
         }
     }
 }

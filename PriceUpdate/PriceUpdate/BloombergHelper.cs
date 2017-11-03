@@ -16,7 +16,6 @@ namespace PriceUpdateProgram
     {
         public static SqlConnection connection;
         public event EventHandler ProgressUpdated;
-        public int Percentage { get; set; }
         public BloombergHelper()
         {
 
@@ -67,18 +66,26 @@ namespace PriceUpdateProgram
             {
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
                 _instruments = RequestOutdatedInstrumentList();
-                BloombergRequest _bloombergData = new BloombergRequest(_instruments, Fields);
+                BloombergRequest _bloombergData = new BloombergRequest();
+                _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
+
+                _bloombergData.Fill(_instruments, Fields);
+
+                List<BBInstrument> _notDone = _bloombergData.BloombergInstruments.Where(p => p.BloombergUpdate == false).ToList();
             }
-            catch (Exception e)
-            {
-                System.Windows.Forms.MessageBox.Show(e.Message);
-            }
+            //catch (Exception e)
+            //{
+            //    System.Windows.Forms.MessageBox.Show(e.Message);
+            //}
             finally
             {
                 connection.Close();
             }
         }
 
-
+        private void _bloombergData_InstrumentUpdated(object sender, EventArgs e)
+        {
+            ProgressUpdated(sender, e);
+        }
     }
 }
