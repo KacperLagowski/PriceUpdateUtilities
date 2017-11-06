@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PriceUpdateProgram;
+using System;
 
 namespace Bloomberglp.Blpapi.Examples
 {
@@ -51,34 +52,32 @@ namespace Bloomberglp.Blpapi.Examples
 		private static readonly Name ERROR_INFO = new Name("errorInfo");
 		private static readonly Name CATEGORY = new Name("category");
 		private static readonly Name MESSAGE = new Name("message");
-        private string     d_host;
-		private int        d_port;
+        private string     d_host = "localhost";
+        private int d_port = 8194;
         public List<BBInstrument> BloombergInstruments { get; set; }
         private List<string> bloombergDataFields { get; set; }
+        public BloombergRequestTypeEnum RequestType { get; set; }
 
-    
-        //public List<BBInstrument> Results { get; set; }
-        public void Fill(List<BBInstrument> instruments, List<string> dataFields, BloombergRequestTypeEnum requestType)
+        public void RunFullPriceUpdate(List<BBInstrument> instruments, List<string> dataFields)
 		{
             BloombergInstruments = new List<BBInstrument>();
             bloombergDataFields = dataFields;
-            d_host = "localhost";
-            d_port = 8194;
+            RequestType = BloombergRequestTypeEnum.Full;
             foreach (BBInstrument i in instruments)
             {
                 BloombergInstruments.Add(i);
             }
-            if (requestType == BloombergRequestTypeEnum.Full)
-            {
-                C();
-            }
-            else if (requestType == BloombergRequestTypeEnum.Intraday)
-            {
-
-            }
+            CreateSession();
 		}
 
-		public void CreateFullSession()
+        public void RunIntradayPriceUpdate(BBInstrument instrument, DateTime time)
+        {
+            BloombergInstruments = new List<BBInstrument>();
+            RequestType = BloombergRequestTypeEnum.Intraday;
+            CreateSession();
+        }
+
+        public void CreateSession()
 		{
 			SessionOptions sessionOptions = new SessionOptions();
 			sessionOptions.ServerHost = d_host;
@@ -145,47 +144,54 @@ namespace Bloomberglp.Blpapi.Examples
 		// return true if processing is completed, false otherwise
 		private void processResponseEvent(Event eventObj)
 		{
-			foreach (Message msg in eventObj)
-			{
-				if (msg.HasElement(RESPONSE_ERROR))
-				{
-					continue;
-				}
-
-				Element securities = msg.GetElement(SECURITY_DATA);
-                for (int i = 0; i < securities.NumValues; ++i)
+            if (RequestType == BloombergRequestTypeEnum.Full)
+            {
+                foreach (Message msg in eventObj)
                 {
-                    Element security = securities.GetValueAsElement(i);
-                    //string ticker = security.GetElementAsString(SECURITY);
-                    if (security.HasElement("securityError"))
+                    if (msg.HasElement(RESPONSE_ERROR))
                     {
                         continue;
                     }
 
-                    List<Element>  _res = requestFieldElements(security);
-                    //if(_res.Single(p => p.GetValueAsString("MARKET_SECTOR_DES") == "Index"))
-                    Element _id = _res.Single(p => p.Name.ToString() == "ID_BB_Unique");
-                    BBInstrument _i = BloombergInstruments.Single(p => p.BloombergID == _id.GetValueAsString());
-                    _i.OverrideValues(_res);
-
-
-                    string message = $"{BloombergInstruments.Count(p=>p.BloombergUpdate == true)} of {BloombergInstruments.Count} complete";
-                    InstrumentUpdated(message, new System.EventArgs());
-
-                    //changed here
-                    Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
-                    if (fieldExceptions.NumValues > 0)
+                    Element securities = msg.GetElement(SECURITY_DATA);
+                    for (int i = 0; i < securities.NumValues; ++i)
                     {
-                        for (int k = 0; k < fieldExceptions.NumValues; ++k)
+                        Element security = securities.GetValueAsElement(i);
+                        //string ticker = security.GetElementAsString(SECURITY);
+                        if (security.HasElement("securityError"))
                         {
-                            Element fieldException =
-                                fieldExceptions.GetValueAsElement(k);
+                            continue;
                         }
-                    }
 
+                        List<Element> _res = requestFieldElements(security);
+                        //if(_res.Single(p => p.GetValueAsString("MARKET_SECTOR_DES") == "Index"))
+                        Element _id = _res.Single(p => p.Name.ToString() == "ID_BB_Unique");
+                        BBInstrument _i = BloombergInstruments.Single(p => p.BloombergID == _id.GetValueAsString());
+                        _i.OverrideValues(_res);
+
+
+                        string message = $"{BloombergInstruments.Count(p => p.BloombergUpdate == true)} of {BloombergInstruments.Count} complete";
+                        InstrumentUpdated(message, new System.EventArgs());
+
+                        //changed here
+                        Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
+                        if (fieldExceptions.NumValues > 0)
+                        {
+                            for (int k = 0; k < fieldExceptions.NumValues; ++k)
+                            {
+                                Element fieldException =
+                                    fieldExceptions.GetValueAsElement(k);
+                            }
+                        }
+
+                    }
                 }
             }
-		}
+            else if (RequestType == BloombergRequestTypeEnum.Intraday)
+            {
+
+            }
+            }
 
         private List<Element> requestFieldElements(Element security)
         {
@@ -234,5 +240,32 @@ namespace Bloomberglp.Blpapi.Examples
             
             session.SendRequest(request, null);
         }
-	}
+
+        private void sendIntradayTickRequest(Session session)
+        {
+            Service refDataService = session.GetService("//blp/refdata");
+            Request request = refDataService.CreateRequest("IntradayTickRequest");
+
+            request.Set("security", d_security);
+
+            // Add fields to request
+            Element eventTypes = request.GetElement("eventTypes");
+            for (int i = 0; i < d_events.Count; ++i)
+            {
+                eventTypes.AppendValue((string)d_events[i]);
+            }
+
+            // All times are in GMT
+            request.Set("startDateTime", d_startDateTime);
+            request.Set("endDateTime", d_endDateTime);
+
+            if (d_conditionCodes)
+            {
+                request.Set("includeConditionCodes", true);
+            }
+
+            System.Console.WriteLine("Sending Request: " + request);
+            session.SendRequest(request, null);
+        }
+    }
 }

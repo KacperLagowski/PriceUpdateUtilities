@@ -84,7 +84,7 @@
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.titleLabel);
             this.Name = "BloombergUpdateControl";
-            this.Size = new System.Drawing.Size(373, 91);
+            this.Size = new System.Drawing.Size(373, 205);
             this.ResumeLayout(false);
             this.PerformLayout();
 

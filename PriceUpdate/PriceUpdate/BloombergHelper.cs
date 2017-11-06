@@ -75,7 +75,7 @@ namespace PriceUpdateProgram
                 BloombergRequest _bloombergData = new BloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
 
-                _bloombergData.Fill(_instruments, Fields, BloombergRequestTypeEnum.Full);
+                _bloombergData.RunFullPriceUpdate(_instruments, Fields, BloombergRequestTypeEnum.Full);
 
                 List<BBInstrument> _notDone = _bloombergData.BloombergInstruments.Where(p => p.BloombergUpdate == false).ToList();
             }
