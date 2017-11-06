@@ -31,6 +31,7 @@ using ArrayList = System.Collections.ArrayList;
 using RefDataExample;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Bloomberglp.Blpapi.Examples
 {
@@ -197,10 +198,24 @@ namespace Bloomberglp.Blpapi.Examples
 		{
 			Service refDataService = session.GetService("//blp/refdata");
             Request request = refDataService.CreateRequest("ReferenceDataRequest");
-            
-			// Add securities to request
-			Element securities = request.GetElement("securities");
-
+            Regex regex = new Regex(@"\b[eqEQ]+\b");
+            List<BBInstrument> _sjnthsgh = new List<BBInstrument>();
+            // Add securities to request
+            Element securities = request.GetElement("securities");
+            foreach (BBInstrument i in BloombergInstruments)
+            {
+                Match match = regex.Match(i.ID_DataFeed);
+                if (match.Success)
+                {
+                    //string _new = i.ID_DataFeed.Replace(match.Value, "equity");
+                    //i.ID_DataFeed = _new;
+                    _sjnthsgh.Add(i);
+                }
+                else
+                {
+                    continue;
+                }
+            }
             BloombergInstruments.ForEach(p => { securities.AppendValue(p.ID_DataFeed.ToUpper()); });
 
 			// Add fields to request
