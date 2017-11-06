@@ -32,6 +32,7 @@ using RefDataExample;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PriceUpdateProgram;
 
 namespace Bloomberglp.Blpapi.Examples
 {
@@ -54,22 +55,30 @@ namespace Bloomberglp.Blpapi.Examples
 		private int        d_port;
         public List<BBInstrument> BloombergInstruments { get; set; }
         private List<string> bloombergDataFields { get; set; }
+
     
         //public List<BBInstrument> Results { get; set; }
-        public void Fill(List<BBInstrument> instruments, List<string> dataFields)
+        public void Fill(List<BBInstrument> instruments, List<string> dataFields, BloombergRequestTypeEnum requestType)
 		{
             BloombergInstruments = new List<BBInstrument>();
             bloombergDataFields = dataFields;
-			d_host = "localhost";
-			d_port = 8194;
+            d_host = "localhost";
+            d_port = 8194;
             foreach (BBInstrument i in instruments)
             {
                 BloombergInstruments.Add(i);
             }
-            CreateSession();
+            if (requestType == BloombergRequestTypeEnum.Full)
+            {
+                C();
+            }
+            else if (requestType == BloombergRequestTypeEnum.Intraday)
+            {
+
+            }
 		}
 
-		public void CreateSession()
+		public void CreateFullSession()
 		{
 			SessionOptions sessionOptions = new SessionOptions();
 			sessionOptions.ServerHost = d_host;

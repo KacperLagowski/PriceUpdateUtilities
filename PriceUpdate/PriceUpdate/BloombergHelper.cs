@@ -12,6 +12,12 @@ using System.Threading.Tasks;
 
 namespace PriceUpdateProgram
 {
+    [Flags]
+    public enum BloombergRequestTypeEnum
+    {
+        Full = 1, Intraday = 2
+    }
+
     public class BloombergHelper
     {
         public static SqlConnection connection;
@@ -69,7 +75,7 @@ namespace PriceUpdateProgram
                 BloombergRequest _bloombergData = new BloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
 
-                _bloombergData.Fill(_instruments, Fields);
+                _bloombergData.Fill(_instruments, Fields, BloombergRequestTypeEnum.Full);
 
                 List<BBInstrument> _notDone = _bloombergData.BloombergInstruments.Where(p => p.BloombergUpdate == false).ToList();
             }
