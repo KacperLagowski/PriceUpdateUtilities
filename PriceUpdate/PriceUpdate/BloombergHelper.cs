@@ -69,11 +69,26 @@ namespace PriceUpdateProgram
             try
             {
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
-                BloombergRequest _bloombergData = new BloombergRequest();
+                PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), Fields);
 
                 List<BBInstrument> _notDone = _bloombergData.BloombergInstruments.Where(p => p.BloombergUpdate == false).ToList();
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public void RunIntradayPriceUpdate()
+        {
+            try
+            {
+                createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
+                PriceUpdateBloombergRequest _bbData = new PriceUpdateBloombergRequest();
+                
+                BBInstrument temporaryI = _bbData.RunIntradayPriceUpdate(RequestOutdatedInstrumentList().First(), DateTime.Now);
             }
             finally
             {

@@ -25,7 +25,8 @@ namespace PriceUpdate
             this.updateButton.Enabled = false;
             BloombergHelper bh = new BloombergHelper();
             bh.ProgressUpdated += Bh_ProgressUpdated;
-            bh.RunFullPriceUpdate();
+            //bh.RunFullPriceUpdate();
+            bh.RunIntradayPriceUpdate();
             this.updateButton.Enabled = true;
         }
 

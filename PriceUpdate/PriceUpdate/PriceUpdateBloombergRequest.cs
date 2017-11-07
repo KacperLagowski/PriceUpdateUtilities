@@ -38,7 +38,7 @@ using System;
 namespace Bloomberglp.Blpapi.Examples
 {
 
-	public class BloombergRequest
+	public class PriceUpdateBloombergRequest
 	{
         #region Request Values
         public event System.EventHandler InstrumentUpdated;
@@ -52,31 +52,17 @@ namespace Bloomberglp.Blpapi.Examples
 		private static readonly Name ERROR_INFO = new Name("errorInfo");
 		private static readonly Name CATEGORY = new Name("category");
 		private static readonly Name MESSAGE = new Name("message");
-        private static readonly Name TICK_DATA = new Name("tickData");
-        private static readonly Name COND_CODE = new Name("conditionCodes");
-        private static readonly Name SIZE = new Name("size");
-        private static readonly Name TIME = new Name("time");
-        private static readonly Name TYPE = new Name("type");
-        private static readonly Name VALUE = new Name("value");
-        private static readonly Name OPEN = new Name("open");
         #endregion
 
         private string     d_host = "localhost";
         private int d_port = 8194;
-        private string d_security;
-        private ArrayList d_events;
-        private string d_startDateTime;
-        private string d_endDateTime;
         public List<BBInstrument> BloombergInstruments { get; set; }
         private List<string> bloombergDataFields { get; set; }
-        public BloombergRequestTypeEnum RequestType { get; set; }
-        public BBInstrument Instrument;
 
         public void RunFullPriceUpdate(List<BBInstrument> instruments, List<string> dataFields)
 		{
             BloombergInstruments = new List<BBInstrument>();
             bloombergDataFields = dataFields;
-            RequestType = BloombergRequestTypeEnum.Full;
             foreach (BBInstrument i in instruments)
             {
                 BloombergInstruments.Add(i);
@@ -84,81 +70,69 @@ namespace Bloomberglp.Blpapi.Examples
             CreateSession();
 		}
 
-        public BBInstrument RunIntradayPriceUpdate(BBInstrument instrument, DateTime time)
-        {
-            Instrument = instrument;
-            d_security = Instrument.ID_DataFeed;
-            d_events = new ArrayList();
-            d_startDateTime = time.ToString();
-            d_endDateTime
-            RequestType = BloombergRequestTypeEnum.Intraday;
-            CreateSession();
-            return Instrument;
-        }
-
         public void CreateSession()
-		{
-			SessionOptions sessionOptions = new SessionOptions();
-			sessionOptions.ServerHost = d_host;
-			sessionOptions.ServerPort = d_port;
+        {
+            SessionOptions sessionOptions = new SessionOptions();
+            sessionOptions.ServerHost = d_host;
+            sessionOptions.ServerPort = d_port;
 
-			Session session = new Session(sessionOptions);
-            
-			bool sessionStarted = session.Start();
-			if (!sessionStarted)
-			{
+            Session session = new Session(sessionOptions);
+
+            bool sessionStarted = session.Start();
+            if (!sessionStarted)
+            {
                 throw new InvalidRequestException("Could not start request");
-			}
-			if (!session.OpenService("//blp/refdata"))
-			{
+            }
+            if (!session.OpenService("//blp/refdata"))
+            {
                 throw new NotFoundException("Could not open the refdata service in Bloomberg");
-			}
-
-			try
-			{
-				sendRefDataRequest(session);
-			}
-			catch (InvalidRequestException e)
-			{
+            }
+            try
+            {
+                sendRefDataRequest(session);
+            }
+            catch (InvalidRequestException e)
+            {
                 System.Windows.Forms.MessageBox.Show(e.Message);
             }
 
-			// wait for events from session.
-			eventLoop(session);
+
+            // wait for events from session.
+            eventLoop(session);
 
             session.Stop();
-		}
+        }
 
-		private void eventLoop(Session session)
-		{
-			bool done = false;
-			while (!done)
-			{
-				Event eventObj = session.NextEvent();
-				if (eventObj.Type == Event.EventType.PARTIAL_RESPONSE)
-				{
-					processResponseEvent(eventObj);
-				}
-				else if (eventObj.Type == Event.EventType.RESPONSE)
-				{
-					processResponseEvent(eventObj);
-					done = true;
-				}
-				else
-				{
-					foreach (Message msg in eventObj)
-					{
-						if (eventObj.Type == Event.EventType.SESSION_STATUS)
-						{
-							if (msg.MessageType.Equals("SessionTerminated"))
-							{
-								done = true;
-							}
-						}
-					}
-				}
-			}
-		}
+        private void eventLoop(Session session)
+        {
+            bool done = false;
+            while (!done)
+            {
+                Event eventObj = session.NextEvent();
+                if (eventObj.Type == Event.EventType.PARTIAL_RESPONSE)
+                {
+                    processResponseEvent(eventObj);
+                }
+                else if (eventObj.Type == Event.EventType.RESPONSE)
+                {
+                    processResponseEvent(eventObj);
+                    done = true;
+                }
+                else
+                {
+                    foreach (Message msg in eventObj)
+                    {
+                        if (eventObj.Type == Event.EventType.SESSION_STATUS)
+                        {
+                            if (msg.MessageType.Equals("SessionTerminated"))
+                            {
+                                done = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         // return true if processing is completed, false otherwise
         private void processResponseEvent(Event eventObj)
@@ -236,51 +210,6 @@ namespace Bloomberglp.Blpapi.Examples
             bloombergDataFields.ForEach(p => { fields.AppendValue(p); });
             
             session.SendRequest(request, null);
-        }
-
-        private void sendIntradayTickRequest(Session session)
-        {
-            Service refDataService = session.GetService("//blp/refdata");
-            Request request = refDataService.CreateRequest("IntradayTickRequest");
-
-            request.Set("security", d_security);
-
-            // Add fields to request
-            Element eventTypes = request.GetElement("eventTypes");
-            for (int i = 0; i < d_events.Count; ++i)
-            {
-                eventTypes.AppendValue((string)d_events[i]);
-            }
-
-            // All times are in GMT
-            request.Set("startDateTime", d_startDateTime);
-            request.Set("endDateTime", d_endDateTime);
-
-            //if (d_conditionCodes)
-            //{
-            //    request.Set("includeConditionCodes", true);
-            //}
-            session.SendRequest(request, null);
-        }
-
-        private void processMessage(Message msg)
-        {
-            Element data = msg.GetElement(TICK_DATA).GetElement(TICK_DATA); ;
-            int numItems = data.NumValues;
-            for (int i = 0; i < numItems; ++i)
-            {
-                Element item = data.GetValueAsElement(i);
-                Datetime time = item.GetElementAsDate(TIME);
-                //string type = item.GetElementAsString(TYPE);
-                double _intradayPrice = item.GetElementAsFloat64(VALUE);
-                double _openingPrice = item.GetElementAsFloat64(OPEN);
-                //int size = item.GetElementAsInt32(SIZE);
-                //string cc = "";
-                //if (item.HasElement(COND_CODE))
-                //{
-                //    cc = item.GetElementAsString(COND_CODE);
-                //}
-            }
         }
     }
 }
