@@ -66,23 +66,15 @@ namespace PriceUpdateProgram
                 "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
                 "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
                 "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"};
-
-            List<BBInstrument> _instruments = new List<BBInstrument>();
             try
             {
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
-                _instruments = RequestOutdatedInstrumentList();
                 BloombergRequest _bloombergData = new BloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
-
-                _bloombergData.RunFullPriceUpdate(_instruments, Fields, BloombergRequestTypeEnum.Full);
+                _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), Fields);
 
                 List<BBInstrument> _notDone = _bloombergData.BloombergInstruments.Where(p => p.BloombergUpdate == false).ToList();
             }
-            //catch (Exception e)
-            //{
-            //    System.Windows.Forms.MessageBox.Show(e.Message);
-            //}
             finally
             {
                 connection.Close();
