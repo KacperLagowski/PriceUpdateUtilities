@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArrivalPrice.cs" />
     <Compile Include="BBInstrument.cs" />
     <Compile Include="BloombergHelper.cs" />
     <Compile Include="PriceUpdateBloombergRequest.cs" />

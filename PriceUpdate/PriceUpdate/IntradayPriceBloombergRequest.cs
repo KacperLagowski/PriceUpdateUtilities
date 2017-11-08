@@ -80,11 +80,11 @@ namespace Bloomberglp.Blpapi.Examples
             request.Set("startDateTime", new Datetime(tradedOn.Year,
                                                       tradedOn.Month,
                                                       tradedOn.Day,
-                                                      10, 30, 0, 0));
+                                                      9, 30, 0, 0));
             request.Set("endDateTime", new Datetime(tradedOn.Year,
                                                     tradedOn.Month,
                                                     tradedOn.Day,
-                                                    10, 35, 0, 0));
+                                                    17, 35, 0, 0));
             request.Set("includeConditionCodes", true);
 
             System.Console.WriteLine("Sending Request: " + request);

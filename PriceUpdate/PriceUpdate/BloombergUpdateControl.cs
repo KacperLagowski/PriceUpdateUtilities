@@ -34,5 +34,10 @@ namespace PriceUpdate
         {
             progressLabel.Text = sender.ToString();
         }
+
+        private void BloombergUpdateControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
