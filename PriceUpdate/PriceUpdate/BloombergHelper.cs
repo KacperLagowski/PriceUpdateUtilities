@@ -12,12 +12,6 @@ using System.Threading.Tasks;
 
 namespace PriceUpdateProgram
 {
-    [Flags]
-    public enum BloombergRequestTypeEnum
-    {
-        Full = 1, Intraday = 2
-    }
-
     public class BloombergHelper
     {
         public static SqlConnection connection;
@@ -62,7 +56,7 @@ namespace PriceUpdateProgram
 
         public void RunFullPriceUpdate()
         {
-            List<string> Fields = new List<string> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
+            List<string> _fullFields = new List<string> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
                 "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
                 "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
                 "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"};
@@ -71,9 +65,25 @@ namespace PriceUpdateProgram
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
-                _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), Fields);
+                _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), _fullFields);
 
                 //List<BBInstrument> _notDone = _bloombergData.BloombergInstruments.Where(p => p.BloombergUpdate == false).ToList();
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public void RunMiniPriceUpdate()
+        {
+            List<string> _miniFields = new List<string> { "PX_MID", "PX_BID", "PX_ASK", "PX_Last" };
+            try
+            {
+                createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
+                PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
+                _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
+                _bloombergData.RunMiniPriceUpdate(RequestOutdatedInstrumentList(), _miniFields);
             }
             finally
             {

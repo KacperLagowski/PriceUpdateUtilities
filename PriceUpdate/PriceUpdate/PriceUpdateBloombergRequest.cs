@@ -57,18 +57,33 @@ namespace Bloomberglp.Blpapi.Examples
         private string     d_host = "localhost";
         private int d_port = 8194;
         public List<BBInstrument> BloombergInstruments { get; set; }
-        private List<string> bloombergDataFields { get; set; }
+        private List<string> fullUpdateDataFields { get; set; }
+        private List<string> miniUpdateDataFields { get; set; }
+        public Boolean FullUpdate { get; set; }
 
         public void RunFullPriceUpdate(List<BBInstrument> instruments, List<string> dataFields)
 		{
+            FullUpdate = true;
             BloombergInstruments = new List<BBInstrument>();
-            bloombergDataFields = dataFields;
+            fullUpdateDataFields = dataFields;
             foreach (BBInstrument i in instruments)
             {
                 BloombergInstruments.Add(i);
             }
             CreateSession();
 		}
+
+        public void RunMiniPriceUpdate(List<BBInstrument> instruments, List<string> dataFields)
+        {
+            FullUpdate = false;
+            BloombergInstruments = new List<BBInstrument>();
+            miniUpdateDataFields = dataFields;
+            foreach (BBInstrument i in instruments)
+            {
+                BloombergInstruments.Add(i);
+            }
+            CreateSession();
+        }
 
         public void CreateSession()
         {
@@ -206,8 +221,10 @@ namespace Bloomberglp.Blpapi.Examples
 
 			// Add fields to request
 			Element fields = request.GetElement("fields");
-
-            bloombergDataFields.ForEach(p => { fields.AppendValue(p); });
+            if (FullUpdate == true)
+                fullUpdateDataFields.ForEach(p => { fields.AppendValue(p); });
+            else if(FullUpdate == false)
+                miniUpdateDataFields.ForEach(p => { fields.AppendValue(p); });
             
             session.SendRequest(request, null);
         }

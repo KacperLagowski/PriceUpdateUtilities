@@ -15,9 +15,9 @@ namespace PriceUpdate
     public class ArrivalPrice
     {
         public int ID { get; set; }
-        public int ID_MPM { get; set; }
+        public int DealID { get; set; }
+        public int InstrumentID { get; set; }
         public string ID_DataFeed { get; set; }
-        public string BloombergID { get; set; }
         public decimal Price { get; set; }
         public DateTime PriceDateTime { get; set; }
         public IntradayPrice IntradayFlag { get; set; }
@@ -26,11 +26,8 @@ namespace PriceUpdate
         public ArrivalPrice(DataRow dr)
         {
             this.ID = Convert.ToInt32(dr["ID"]);
-            this.ID_MPM = Convert.ToInt32(dr["ID_MPM"]);
-            this.ID_DataFeed = dr["ID_DataFeed"].ToString();
-            this.BloombergID = dr["Data_BloombergID"].ToString();
+            this.DealID = Convert.ToInt32(dr["DealID"]);
             this.PriceDateTime = Convert.ToDateTime(dr["PriceDateTime"]);
-            this.IntradayFlag = (IntradayPrice) Convert.ToInt32(dr["IntradayFlag"]);
         }
 
         public void CreatePrice()
