@@ -100,15 +100,25 @@ namespace PriceUpdateProgram
 
         public void RunIntradayPriceUpdate()
         {
-            try
+            DateTime _rangeFrom = new DateTime(2017, 11, 9, 09, 30, 0, 0);
+            DateTime _rangeTo = new DateTime(2017, 11, 9, 09, 35, 0, 0);
+
+            createConnection();
+            IntradayPriceBloombergRequest _bbData = new IntradayPriceBloombergRequest("clin ln equity", _rangeFrom, _rangeTo);
+            _bbData.RunIntradayPriceUpdate();
+            connection.Close();
+
+            while(Data.Price == 0)
             {
                 createConnection();
-                IntradayPriceBloombergRequest _bbData = new IntradayPriceBloombergRequest();
-                _bbData.RunIntradayUpdate("vod ln equity", new Datetime(2017, 11, 9, 9, 30, 0, 0));
-            }
-            finally
-            {
+                _rangeTo.AddMinutes(20);
+                IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest("clin ln equity", _rangeFrom, _rangeTo);
+                _retrieve.RunIntradayPriceUpdate();
                 connection.Close();
+            }
+            else
+            {
+
             }
         }
 

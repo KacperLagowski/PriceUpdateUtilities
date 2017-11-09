@@ -27,18 +27,43 @@ using Request = Bloomberglp.Blpapi.Request;
 using Service = Bloomberglp.Blpapi.Service;
 using Session = Bloomberglp.Blpapi.Session;
 using System.Windows.Forms;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections;
 
 namespace Bloomberglp.Blpapi.Examples
 {
 
     public class IntradayPriceBloombergRequest
     {
-        private DateTime getPreviousTradingDate()
+
+        #region fields
+        private static readonly Name TICK_DATA = new Name("tickData");
+        private static readonly Name COND_CODE = new Name("conditionCodes");
+        private static readonly Name SIZE = new Name("size");
+        private static readonly Name TIME = new Name("time");
+        private static readonly Name TYPE = new Name("type");
+        private static readonly Name VALUE = new Name("value");
+        private static readonly Name RESPONSE_ERROR = new Name("responseError");
+        private static readonly Name CATEGORY = new Name("category");
+        private static readonly Name MESSAGE = new Name("message");
+
+        private string d_host;
+        private int d_port;
+        private string d_security;
+        private ArrayList d_events;
+        private bool d_conditionCodes;
+        private string d_startDateTime;
+        private string d_endDateTime;
+        #endregion
+
+        public DateTime Time { get; set; }
+        public double Price { get; set; }
+
+        private string getPreviousTradingDate()
         {
-            DateTime tradedOn = DateTime.Now;
+            DateTime tradedOn = Time;
             tradedOn = tradedOn.AddDays(-1);
-            
             if (tradedOn.DayOfWeek == DayOfWeek.Sunday)
             {
                 tradedOn = tradedOn.AddDays(-2);
@@ -47,55 +72,194 @@ namespace Bloomberglp.Blpapi.Examples
             {
                 tradedOn = tradedOn.AddDays(-1);
             }
-            return tradedOn;
+            string prevDate = tradedOn.Year.ToString() + "-" +
+                              tradedOn.Month.ToString() + "-" +
+                              tradedOn.Day.ToString();
+            return prevDate;
         }
 
-        public void RunIntradayUpdate(string dataFeedID, Datetime requestDate)
+        public IntradayPriceBloombergRequest(string instrument, DateTime from, DateTime to)
         {
-            string serverHost = "localhost";
-            int serverPort = 8194;
+            d_host = "localhost";
+            d_port = 8194;
+            d_events = new ArrayList();
+            d_conditionCodes = false;
+            d_security = instrument;
+            Time = from;
+            string prevTradingDate = getPreviousTradingDate();
+            d_startDateTime = prevTradingDate + "T" + from.ToLongTimeString();
+            d_endDateTime = prevTradingDate + "T" + to.ToLongTimeString();
+        }
 
+        public void RunIntradayPriceUpdate()
+        {
+            d_events.Add("TRADE");
+            
             SessionOptions sessionOptions = new SessionOptions();
-            sessionOptions.ServerHost = serverHost;
-            sessionOptions.ServerPort = serverPort;
+            sessionOptions.ServerHost = d_host;
+            sessionOptions.ServerPort = d_port;
 
             Session session = new Session(sessionOptions);
             bool sessionStarted = session.Start();
             if (!sessionStarted)
             {
-                System.Windows.Forms.MessageBox.Show("Failed to start session.");
                 return;
             }
             if (!session.OpenService("//blp/refdata"))
             {
-                System.Windows.Forms.MessageBox.Show("Failed to open //blp/refdata");
                 return;
             }
 
-            Service refDataService = session.GetService("//blp/refdata");
-            Request request = refDataService.CreateRequest("IntradayTickRequest");
-            request.Set("security", dataFeedID);
-            request["eventTypes"].AppendValue("TRADE");
-            request["eventTypes"].AppendValue("AT_TRADE");
-            DateTime tradedOn = getPreviousTradingDate();
-            request.Set("startDateTime", requestDate);
-            request.Set("endDateTime", new Datetime(requestDate.ToSystemDateTime().AddMinutes(5)));
-            request.Set("includeConditionCodes", true);
+            sendIntradayTickRequest(session);
 
-            session.SendRequest(request, null);
+            // wait for events from session.
+            eventLoop(session);
 
-            while (true)
+            session.Stop();
+        }
+
+        private void eventLoop(Session session)
+        {
+            bool done = false;
+            while (!done)
             {
                 Event eventObj = session.NextEvent();
-                foreach (Message msg in eventObj)
+                if (eventObj.Type == Event.EventType.PARTIAL_RESPONSE)
                 {
-                    MessageBox.Show(msg.AsElement.ToString());
+                    processResponseEvent(eventObj);
                 }
-                if (eventObj.Type == Event.EventType.RESPONSE)
+                else if (eventObj.Type == Event.EventType.RESPONSE)
                 {
-                    break;
+                    processResponseEvent(eventObj);
+                    done = true;
+                }
+                else
+                {
+                    foreach (Message msg in eventObj)
+                    {
+                        if (eventObj.Type == Event.EventType.SESSION_STATUS)
+                        {
+                            if (msg.MessageType.Equals("SessionTerminated"))
+                            {
+                                done = true;
+                            }
+                        }
+                    }
                 }
             }
+        }
+
+        private void processMessage(Message msg)
+        {
+            List<double> _prices = new List<double>();
+            Element data = msg.GetElement(TICK_DATA).GetElement(TICK_DATA); ;
+            int numItems = data.NumValues;
+            for (int i = 0; i < numItems; ++i)
+            {
+                Element item = data.GetValueAsElement(i);
+                Datetime time = item.GetElementAsDate(TIME);
+                string type = item.GetElementAsString(TYPE);
+                double value = item.GetElementAsFloat64(VALUE);
+                _prices.Add(value);
+                int size = item.GetElementAsInt32(SIZE);
+                string cc = "";
+                if (item.HasElement(COND_CODE))
+                {
+                    cc = item.GetElementAsString(COND_CODE);
+                }
+            }
+            try
+            {
+                Price = _prices.First();
+            }
+            catch
+            {
+
+            }
+        }
+
+
+        private void processResponseEvent(Event eventObj)
+        {
+            foreach (Message msg in eventObj)
+            {
+                if (msg.HasElement(RESPONSE_ERROR))
+                {
+                    continue;
+                }
+                processMessage(msg);
+            }
+        }
+
+        private void sendIntradayTickRequest(Session session)
+        {
+            Service refDataService = session.GetService("//blp/refdata");
+            Request request = refDataService.CreateRequest("IntradayTickRequest");
+
+            request.Set("security", d_security);
+
+            // Add fields to request
+            Element eventTypes = request.GetElement("eventTypes");
+            for (int i = 0; i < d_events.Count; ++i)
+            {
+                eventTypes.AppendValue((string)d_events[i]);
+            }
+
+            // All times are in GMT
+            request.Set("startDateTime", d_startDateTime);
+            request.Set("endDateTime", d_endDateTime);
+
+            if (d_conditionCodes)
+            {
+                request.Set("includeConditionCodes", true);
+            }
+            session.SendRequest(request, null);
+        }
+
+        private bool processArgs(string[] args)
+        {
+            for (int i = 0; i < args.Length; ++i)
+            {
+                if (string.Compare(args[i], "-s", true) == 0)
+                {
+                    d_security = args[i + 1];
+                }
+                else if (string.Compare(args[i], "-e", true) == 0)
+                {
+                    d_events.Add(args[i + 1]);
+                }
+                else if (string.Compare(args[i], "-cc", true) == 0)
+                {
+                    d_conditionCodes = true;
+                }
+                else if (string.Compare(args[i], "-sd", true) == 0)
+                {
+                    d_startDateTime = args[i + 1];
+                }
+                else if (string.Compare(args[i], "-ed", true) == 0)
+                {
+                    d_endDateTime = args[i + 1];
+                }
+                else if (string.Compare(args[i], "-ip", true) == 0)
+                {
+                    d_host = args[i + 1];
+                }
+                else if (string.Compare(args[i], "-p", true) == 0)
+                {
+                    d_port = int.Parse(args[i + 1]);
+                }
+                else if (string.Compare(args[i], "-h", true) == 0)
+                {
+                    return false;
+                }
+            }
+
+            if (d_events.Count == 0)
+            {
+                d_events.Add("TRADE");
+            }
+
+            return true;
         }
     }
 }
