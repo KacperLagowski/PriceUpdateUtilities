@@ -25,8 +25,7 @@ namespace PriceUpdate
             this.updateButton.Enabled = false;
             BloombergHelper bh = new BloombergHelper();
             bh.ProgressUpdated += Bh_ProgressUpdated;
-            //bh.RunFullPriceUpdate();
-            bh.RunIntradayPriceUpdate();
+            bh.RunFullPriceUpdate();
             this.updateButton.Enabled = true;
         }
 
@@ -35,9 +34,23 @@ namespace PriceUpdate
             progressLabel.Text = sender.ToString();
         }
 
-        private void BloombergUpdateControl_Load(object sender, EventArgs e)
-        {
 
+        private void miniButton_Click(object sender, EventArgs e)
+        {
+            this.updateButton.Enabled = false;
+            BloombergHelper bh = new BloombergHelper();
+            bh.ProgressUpdated += Bh_ProgressUpdated;
+            bh.RunMiniPriceUpdate();
+            this.updateButton.Enabled = true;
+        }
+
+        private void intradayButton_Click(object sender, EventArgs e)
+        {
+            this.updateButton.Enabled = false;
+            BloombergHelper bh = new BloombergHelper();
+            bh.ProgressUpdated += Bh_ProgressUpdated;
+            bh.RunIntradayPriceUpdate();
+            this.updateButton.Enabled = true;
         }
     }
 }

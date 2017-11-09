@@ -6,16 +6,18 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Configuration;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Bloomberglp.Blpapi;
 
 namespace PriceUpdateProgram
 {
     public class BloombergHelper
     {
         public static SqlConnection connection;
-        public event EventHandler ProgressUpdated;
+        public event System.EventHandler ProgressUpdated;
         public BloombergHelper()
         {
 
@@ -77,13 +79,15 @@ namespace PriceUpdateProgram
 
         public void RunMiniPriceUpdate()
         {
-            List<string> _miniFields = new List<string> { "PX_MID", "PX_BID", "PX_ASK", "PX_Last" };
+            List<string> _miniFields = new List<string> { "ID_BB_Unique", "ID_ISIN", "TICKER", "PX_MID", "PX_BID", "PX_ASK", "PX_Last" };
             try
             {
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunMiniPriceUpdate(RequestOutdatedInstrumentList(), _miniFields);
+
+                List<BBInstrument> _test = _bloombergData.BloombergInstruments;
             }
             finally
             {
@@ -97,7 +101,7 @@ namespace PriceUpdateProgram
             {
                 createConnection("DATA SOURCE=vmSQL02;Initial Catalog=MidasPM_CCF;Integrated Security=SSPI;Connect Timeout=120;");
                 IntradayPriceBloombergRequest _bbData = new IntradayPriceBloombergRequest();
-                BBInstrument temporaryI = _bbData.RunIntradayPriceUpdate(RequestOutdatedInstrumentList().First(), DateTime.Now);
+                _bbData.RunIntradayUpdate("vod ln equity", new Datetime(2017, 11, 9, 9, 30, 0, 0));
             }
             finally
             {

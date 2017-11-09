@@ -56,6 +56,7 @@ namespace Bloomberglp.Blpapi.Examples
 
         private string     d_host = "localhost";
         private int d_port = 8194;
+        private string d_message;
         public List<BBInstrument> BloombergInstruments { get; set; }
         private List<string> fullUpdateDataFields { get; set; }
         private List<string> miniUpdateDataFields { get; set; }
@@ -170,14 +171,10 @@ namespace Bloomberglp.Blpapi.Examples
                     }
 
                     List<Element> _res = requestFieldElements(security);
-                    //if(_res.Single(p => p.GetValueAsString("MARKET_SECTOR_DES") == "Index"))
-                    Element _id = _res.Single(p => p.Name.ToString() == "ID_BB_Unique");
-                    BBInstrument _i = BloombergInstruments.Single(p => p.BloombergID == _id.GetValueAsString());
-                    _i.OverrideValues(_res);
+                    MatchOnElements(_res);
 
-
-                    string message = $"{BloombergInstruments.Count(p => p.BloombergUpdate == true)} of {BloombergInstruments.Count} complete";
-                    InstrumentUpdated(message, new System.EventArgs());
+                    d_message = $"{BloombergInstruments.Count(p => p.BloombergUpdate == true)} of {BloombergInstruments.Count} complete";
+                    InstrumentUpdated(d_message, new System.EventArgs());
 
                     //changed here
                     Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
@@ -192,7 +189,52 @@ namespace Bloomberglp.Blpapi.Examples
 
                 }
             }
+            if (FullUpdate == true)
+            {
+                d_message = $"All {BloombergInstruments.Count} instruments has been updated";
+                InstrumentUpdated(d_message, new System.EventArgs());
+            }
+            else if (FullUpdate == false)
+            {
+                d_message = $"All prices updated";
+                InstrumentUpdated(d_message, new System.EventArgs());
+            }
+            
+        }
 
+        private void MatchOnElements(List<Element> _res)
+        {
+            foreach (Element _e in _res)
+            {
+                bool _matched = false;
+                while (_matched != true)
+                {
+                    try
+                    {
+                        Element _id = _res.Single(p => p.Name.ToString() == "ID_BB_Unique");
+                        BBInstrument _i = BloombergInstruments.Single(p => p.BloombergID == _id.GetValueAsString());
+                        _i.OverrideValues(_res);
+                        _matched = true;
+                    }
+                    catch (InvalidOperationException ioe)
+                    {
+                        try
+                        {
+                            Element _id = _res.Single(p => p.Name.ToString() == "ID_ISIN");
+                            BBInstrument _i = BloombergInstruments.Single(p => p.ISIN == _id.GetValueAsString());
+                            _i.OverrideValues(_res);
+                            _matched = true;
+                        }
+                        catch
+                        {
+                            Element _newID = _res.Single(p => p.Name.ToString() == "TICKER");
+                            BBInstrument _i = BloombergInstruments.Single(p => p.Ticker == _newID.GetValueAsString());
+                            _i.OverrideValues(_res);
+                            _matched = true;
+                        }
+                    }
+                }
+            }
         }
 
         private List<Element> requestFieldElements(Element security)

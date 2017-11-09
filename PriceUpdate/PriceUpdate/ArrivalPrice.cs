@@ -36,7 +36,7 @@ namespace PriceUpdate
         private decimal createPrice()
         {
             this.PriceFlag = IntradayPrice.Opening;
-            
+            throw new NotImplementedException();
         }
         public void Update(SqlConnection conn)
         {

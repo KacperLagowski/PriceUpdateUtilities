@@ -75,10 +75,10 @@
             // progressLabel
             // 
             this.progressLabel.AutoSize = true;
-            this.progressLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.progressLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.progressLabel.Location = new System.Drawing.Point(203, 164);
             this.progressLabel.Name = "progressLabel";
-            this.progressLabel.Size = new System.Drawing.Size(61, 17);
+            this.progressLabel.Size = new System.Drawing.Size(52, 15);
             this.progressLabel.TabIndex = 8;
             this.progressLabel.Text = "Progress";
             // 
@@ -91,6 +91,7 @@
             this.intradayButton.Size = new System.Drawing.Size(67, 65);
             this.intradayButton.TabIndex = 9;
             this.intradayButton.UseVisualStyleBackColor = true;
+            this.intradayButton.Click += new System.EventHandler(this.intradayButton_Click);
             // 
             // miniButton
             // 
@@ -101,6 +102,7 @@
             this.miniButton.Size = new System.Drawing.Size(67, 65);
             this.miniButton.TabIndex = 10;
             this.miniButton.UseVisualStyleBackColor = true;
+            this.miniButton.Click += new System.EventHandler(this.miniButton_Click);
             // 
             // informLabel1
             // 
@@ -154,8 +156,7 @@
             this.Controls.Add(this.randomLabel);
             this.Controls.Add(this.titleLabel);
             this.Name = "BloombergUpdateControl";
-            this.Size = new System.Drawing.Size(471, 323);
-            this.Load += new System.EventHandler(this.BloombergUpdateControl_Load);
+            this.Size = new System.Drawing.Size(652, 323);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

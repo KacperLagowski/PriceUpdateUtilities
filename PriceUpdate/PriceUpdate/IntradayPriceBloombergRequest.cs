@@ -49,7 +49,7 @@ namespace Bloomberglp.Blpapi.Examples
             return tradedOn;
         }
 
-        public void run()
+        public void RunIntradayUpdate(string dataFeedID, Datetime requestDate)
         {
             string serverHost = "localhost";
             int serverPort = 8194;
@@ -73,21 +73,14 @@ namespace Bloomberglp.Blpapi.Examples
 
             Service refDataService = session.GetService("//blp/refdata");
             Request request = refDataService.CreateRequest("IntradayTickRequest");
-            request.Set("security", "VOD LN Equity");
+            request.Set("security", dataFeedID);
             request["eventTypes"].AppendValue("TRADE");
             request["eventTypes"].AppendValue("AT_TRADE");
             DateTime tradedOn = getPreviousTradingDate();
-            request.Set("startDateTime", new Datetime(tradedOn.Year,
-                                                      tradedOn.Month,
-                                                      tradedOn.Day,
-                                                      9, 30, 0, 0));
-            request.Set("endDateTime", new Datetime(tradedOn.Year,
-                                                    tradedOn.Month,
-                                                    tradedOn.Day,
-                                                    17, 35, 0, 0));
+            request.Set("startDateTime", requestDate);
+            request.Set("endDateTime", new Datetime(requestDate.ToSystemDateTime().AddMinutes(5)));
             request.Set("includeConditionCodes", true);
 
-            System.Console.WriteLine("Sending Request: " + request);
             session.SendRequest(request, null);
 
             while (true)

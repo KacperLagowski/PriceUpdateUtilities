@@ -35,14 +35,14 @@
             // 
             this.bloombergUpdateControl1.Location = new System.Drawing.Point(12, 12);
             this.bloombergUpdateControl1.Name = "bloombergUpdateControl1";
-            this.bloombergUpdateControl1.Size = new System.Drawing.Size(386, 286);
+            this.bloombergUpdateControl1.Size = new System.Drawing.Size(545, 330);
             this.bloombergUpdateControl1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(469, 374);
+            this.ClientSize = new System.Drawing.Size(569, 433);
             this.Controls.Add(this.bloombergUpdateControl1);
             this.Name = "Form1";
             this.Text = "Form1";
