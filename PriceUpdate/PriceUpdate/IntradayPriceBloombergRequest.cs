@@ -26,6 +26,7 @@ using Name = Bloomberglp.Blpapi.Name;
 using Request = Bloomberglp.Blpapi.Request;
 using Service = Bloomberglp.Blpapi.Service;
 using Session = Bloomberglp.Blpapi.Session;
+using System.Windows.Forms;
 
 
 namespace Bloomberglp.Blpapi.Examples
@@ -88,7 +89,7 @@ namespace Bloomberglp.Blpapi.Examples
                 Event eventObj = session.NextEvent();
                 foreach (Message msg in eventObj)
                 {
-                    System.Console.WriteLine(msg.AsElement);
+                    MessageBox.Show(msg.AsElement.ToString());
                 }
                 if (eventObj.Type == Event.EventType.RESPONSE)
                 {
