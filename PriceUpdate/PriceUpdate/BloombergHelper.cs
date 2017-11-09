@@ -58,6 +58,34 @@ namespace PriceUpdateProgram
             return _list;
         }
 
+        public static List<ArrivalPrice> RequestArrivalPriceList()
+        {
+            List<ArrivalPrice> _list = new List<ArrivalPrice>();
+            createConnection();
+            string _storedProcedure = "sp_PMInstrument_MissingArrivalPrice";
+            SqlDataAdapter _sda = new SqlDataAdapter(_storedProcedure, connection);
+            DataTable _dt = new DataTable();
+            try
+            {
+                connection.Open();
+                _sda.Fill(_dt);
+            }
+            catch (SqlException se)
+            {
+                System.Windows.Forms.MessageBox.Show(se.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            foreach (DataRow row in _dt.Rows)
+            {
+                _list.Add(new ArrivalPrice(row));
+            }
+            return _list;
+        }
+
 
         public void RunFullPriceUpdate()
         {
@@ -100,25 +128,36 @@ namespace PriceUpdateProgram
 
         public void RunIntradayPriceUpdate()
         {
-            DateTime _rangeFrom = new DateTime(2017, 11, 9, 09, 30, 0, 0);
-            DateTime _rangeTo = new DateTime(2017, 11, 9, 09, 35, 0, 0);
-
-            createConnection();
-            IntradayPriceBloombergRequest _bbData = new IntradayPriceBloombergRequest("clin ln equity", _rangeFrom, _rangeTo);
-            _bbData.RunIntradayPriceUpdate();
-            connection.Close();
-
-            while(Data.Price == 0)
+            List<ArrivalPrice> items = RequestArrivalPriceList();
+            foreach (ArrivalPrice ap in items)
             {
                 createConnection();
-                _rangeTo.AddMinutes(20);
-                IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest("clin ln equity", _rangeFrom, _rangeTo);
-                _retrieve.RunIntradayPriceUpdate();
-                connection.Close();
-            }
-            else
-            {
+                DateTime _rangeFrom = ap.PriceDateTime;
+                bool _hasPrice = false;
+                double _price = 0;
+                if(ap.PriceDateTime.ToLongTimeString() != "00:00:00")
+                {
+                    ap.PriceFlag = IntradayPrice.Intraday;
+                    while (_hasPrice != true)
+                    {
+                        
+                        IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest(ap.ID_DataFeed, _rangeFrom, _rangeFrom.AddHours(1));
+                        _retrieve.RunIntradayPriceUpdate();
+                        _price = _retrieve.Price;
+                        if (_retrieve.Price != 0)
+                            _hasPrice = true;
+                    }
+                }
+                else
+                {
+                    ap.PriceFlag = IntradayPrice.Opening;
+                    IntradayBarExample openingPriceRequest = new IntradayBarExample(ap.ID_DataFeed, ap.PriceDateTime, ap.PriceDateTime.AddMinutes(15));
+                    _price = openingPriceRequest.GetOpeningPrice();
+                }
 
+                connection.Close();
+                ap.Price = _price;
+                //ap.Update(connection);
             }
         }
 

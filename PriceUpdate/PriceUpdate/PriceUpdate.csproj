@@ -54,6 +54,7 @@
     <Compile Include="ArrivalPrice.cs" />
     <Compile Include="BBInstrument.cs" />
     <Compile Include="BloombergHelper.cs" />
+    <Compile Include="IntradayBarExample.cs" />
     <Compile Include="PriceUpdateBloombergRequest.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

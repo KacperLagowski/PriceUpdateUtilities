@@ -15,29 +15,21 @@ namespace PriceUpdate
     }
     public class ArrivalPrice
     {
-        public int ID { get; set; }
         public int DealID { get; set; }
         public int InstrumentID { get; set; }
         public string ID_DataFeed { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public DateTime PriceDateTime { get; set; }
         public IntradayPrice PriceFlag { get; set; }
 
 
         public ArrivalPrice(DataRow dr)
         {
-            this.ID = Convert.ToInt32(dr["ID"]);
             this.DealID = Convert.ToInt32(dr["DealID"]);
             this.ID_DataFeed = dr["ID_DataFeed"].ToString();
             this.PriceDateTime = Convert.ToDateTime(dr["PriceDateTime"]);
-            this.Price = createPrice();
         }
 
-        private decimal createPrice()
-        {
-            this.PriceFlag = IntradayPrice.Opening;
-            throw new NotImplementedException();
-        }
         public void Update(SqlConnection conn)
         {
             conn.Open();

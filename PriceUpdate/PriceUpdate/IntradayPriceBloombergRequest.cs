@@ -216,50 +216,6 @@ namespace Bloomberglp.Blpapi.Examples
             session.SendRequest(request, null);
         }
 
-        private bool processArgs(string[] args)
-        {
-            for (int i = 0; i < args.Length; ++i)
-            {
-                if (string.Compare(args[i], "-s", true) == 0)
-                {
-                    d_security = args[i + 1];
-                }
-                else if (string.Compare(args[i], "-e", true) == 0)
-                {
-                    d_events.Add(args[i + 1]);
-                }
-                else if (string.Compare(args[i], "-cc", true) == 0)
-                {
-                    d_conditionCodes = true;
-                }
-                else if (string.Compare(args[i], "-sd", true) == 0)
-                {
-                    d_startDateTime = args[i + 1];
-                }
-                else if (string.Compare(args[i], "-ed", true) == 0)
-                {
-                    d_endDateTime = args[i + 1];
-                }
-                else if (string.Compare(args[i], "-ip", true) == 0)
-                {
-                    d_host = args[i + 1];
-                }
-                else if (string.Compare(args[i], "-p", true) == 0)
-                {
-                    d_port = int.Parse(args[i + 1]);
-                }
-                else if (string.Compare(args[i], "-h", true) == 0)
-                {
-                    return false;
-                }
-            }
-
-            if (d_events.Count == 0)
-            {
-                d_events.Add("TRADE");
-            }
-
-            return true;
-        }
+        
     }
 }
