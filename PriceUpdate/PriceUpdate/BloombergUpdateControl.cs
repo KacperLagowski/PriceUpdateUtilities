@@ -41,6 +41,7 @@ namespace PriceUpdate
             BloombergHelper bh = new BloombergHelper();
             bh.ProgressUpdated += Bh_ProgressUpdated;
             bh.RunMiniPriceUpdate();
+            bh.StartCounting();
             this.updateButton.Enabled = true;
         }
 

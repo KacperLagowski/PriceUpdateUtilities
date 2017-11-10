@@ -57,7 +57,7 @@ namespace Bloomberglp.Blpapi.Examples
         public double Price { get; set; }
         public DateTime Time { get; set; }
 
-        private DateTime getPreviousTradingDate()
+        private Datetime getPreviousTradingDate()
 		{
             DateTime tradedOn = Time;
 			tradedOn = tradedOn.AddDays(-1);
@@ -69,7 +69,7 @@ namespace Bloomberglp.Blpapi.Examples
 			{
 				tradedOn = tradedOn.AddDays(-1);
 			}
-			return tradedOn;
+            return new Datetime(tradedOn);
 		}
 
 		public IntradayBarExample(string instrument, DateTime from, DateTime to)
@@ -81,13 +81,17 @@ namespace Bloomberglp.Blpapi.Examples
             Time = from;
 			d_eventType = "TRADE";
 			d_gapFillInitialBar = false;
-			DateTime prevTradedDate = getPreviousTradingDate();
-            d_startDateTime = prevTradedDate + "T" + Time.ToLongTimeString();
-			prevTradedDate = prevTradedDate.AddDays(1); // next day for end date
-            d_endDateTime = prevTradedDate + "T" + to.ToLongTimeString();
-		}
+			Datetime prevTradedDate = getPreviousTradingDate();
+            d_startDateTime = prevTradedDate.ToString();
+            prevTradedDate.SetTime(prevTradedDate.Hour, prevTradedDate.Minute + 25, prevTradedDate.Second, prevTradedDate.MilliSecond);
+            d_endDateTime = prevTradedDate.ToString();
+            //d_startDateTime = prevTradedDate.Day + "/" + prevTradedDate.Month + "/" + prevTradedDate.Year + "T" + Time.ToLongTimeString();
+			 // next day for end date
 
-		public double GetOpeningPrice()
+            //d_endDateTime = prevTradedDate.Day + "/" + prevTradedDate.Month + "/" + prevTradedDate.Year + "T" + Time.AddMinutes(25).ToLongTimeString();
+        }
+
+		public void GetOpeningPrice()
 		{
 			SessionOptions sessionOptions = new SessionOptions();
 			sessionOptions.ServerHost = d_host;
@@ -102,7 +106,6 @@ namespace Bloomberglp.Blpapi.Examples
 			eventLoop(session);
 
 			session.Stop();
-            return Price;
 		}
 
 		private void eventLoop(Session session)

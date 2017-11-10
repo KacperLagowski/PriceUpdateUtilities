@@ -117,7 +117,7 @@ namespace PriceUpdateProgram
                 _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), _fullFields);
 
 
-                updateDFDetails(DFDetailsType.Full);
+                //updateDFDetails(DFDetailsType.Full);
             }
             finally
             {
@@ -135,7 +135,7 @@ namespace PriceUpdateProgram
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunMiniPriceUpdate(RequestOutdatedInstrumentList(), _miniFields);
 
-                updateDFDetails(DFDetailsType.Lite);
+               // updateDFDetails(DFDetailsType.Lite);
             }
             finally
             {
@@ -143,69 +143,80 @@ namespace PriceUpdateProgram
             }
         }
 
-        private bool requestIntradayData(ArrivalPrice priceDetails)
+        //Helps the method below to get the data fdor intraday price
+        private double requestIntradayData(ArrivalPrice priceDetails)
         {
             DateTime _rangeFrom = priceDetails.PriceDateTime;
-            Stopwatch sw = new Stopwatch();
+            ArrivalPrice ap = priceDetails;
             bool _hasPrice = false;
+            int counter = 0;
             double _price = 0;
             if (priceDetails.PriceDateTime.ToLongTimeString() != "00:00:00")
             {
                 priceDetails.PriceFlag = IntradayPrice.Intraday;
                 while (_hasPrice != true)
                 {
-
+                    counter++;
                     IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest(priceDetails.ID_DataFeed, _rangeFrom, _rangeFrom.AddHours(1));
-                    sw.Start();
-                    try
                     _retrieve.RunIntradayPriceUpdate();
                     _price = _retrieve.Price;
                     if (_retrieve.Price != 0)
                         _hasPrice = true;
+                    if (counter == 3)
+                        break;
                 }
             }
             else
             {
                 priceDetails.PriceFlag = IntradayPrice.Opening;
                 IntradayBarExample openingPriceRequest = new IntradayBarExample(priceDetails.ID_DataFeed, priceDetails.PriceDateTime, priceDetails.PriceDateTime.AddMinutes(15));
-                _price = openingPriceRequest.GetOpeningPrice();
+                openingPriceRequest.GetOpeningPrice();
+                _price = openingPriceRequest.Price;
             }
-            priceDetails.Price = _price;
-            return _hasPrice;
+            return _price;
         }
     
 
+        //Runs an intraday price update
         public void RunIntradayPriceUpdate()
         {
-            createConnection();
             List<ArrivalPrice> items = RequestArrivalPriceList();
-            
             List<ArrivalPrice> _test = new List<ArrivalPrice>();
-            foreach (ArrivalPrice ap in items)
+            _test.AddRange(items.Where(p => p.PriceDateTime.ToLongTimeString() == "00:00:00"));
+            List<ArrivalPrice> _test2 = new List<ArrivalPrice>();
+            Stopwatch sw = new Stopwatch();
+            List<double> dups = new List<double>();
+            foreach (ArrivalPrice ap in items.ToList())
             {
                 try
                 {
-                    
-                    while (!requestIntradayData(ap))
-                    {
-                        if (sw.ElapsedMilliseconds > 2000) throw new TimeoutException();
-                    }
-                    
+                    createConnection();
+                    //sw.Start();
+                    //if (sw.ElapsedMilliseconds > 3000) throw new TimeoutException();
+                    //_test2.Add(requestIntradayData(ap));
+                    dups.Add(requestIntradayData(ap));
+                    //sw.Stop();
+                    //sw.Reset();
                 }
-                catch(TimeoutException te)
+                catch(Exception e)
                 {
                     continue;
                 }
-                _test.Add(ap);
+                finally
+                {
+                    connection.Close();
+                    _test.Add(ap);
+                }
             }
-            connection.Close();
         }
 
+        //Event to update the process label
         private void _bloombergData_InstrumentUpdated(object sender, EventArgs e)
         {
             ProgressUpdated(sender, e);
         }
 
+        //Method to trigger the timer
         public void StartCounting()
         {
             timer.Tick += new System.EventHandler(TimerEventProcessor);
@@ -213,6 +224,7 @@ namespace PriceUpdateProgram
             timer.Start();
         }
 
+        //Event that fires when the timer hits 1 minute, runs a price update if the last is < requested
         private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
             timer.Stop();
@@ -240,7 +252,7 @@ namespace PriceUpdateProgram
             {
                 DFDetails dFDetails = new DFDetails();
                 dFDetails.ItemName = row["ItemName"].ToString();
-                dFDetails.Value = Convert.ToDateTime(row["TimeUpdated"]);
+                dFDetails.Value = Convert.ToDateTime(row["UpdatedTime"]);
                 details.Add(dFDetails);
             }
 
@@ -251,16 +263,17 @@ namespace PriceUpdateProgram
 
             if (_fullCompleted.Value < _fullRequested.Value)
             {
-                RunFullPriceUpdate();
+                //RunFullPriceUpdate();
             }
 
             if(_liteCompleted.Value < _liteRequested.Value)
             {
-                RunMiniPriceUpdate();
+                //RunMiniPriceUpdate();
             }
             
         }
 
+        //Method to update the DF table and completed update time
         public void updateDFDetails(DFDetailsType type)
         {
             string _storedProcedure = "sp_PMDFUpdate";
