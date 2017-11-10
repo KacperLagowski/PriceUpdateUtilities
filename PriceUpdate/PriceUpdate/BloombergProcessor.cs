@@ -30,12 +30,13 @@ namespace PriceUpdateProgram
         Full = 1, Lite = 2
     }
 
-    public class BloombergHelper
+    public class BloombergProcessor
     {
         public static SqlConnection connection;
         public event System.EventHandler ProgressUpdated;
+        public event System.EventHandler IntradayCompleted;
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-        public BloombergHelper()
+        public BloombergProcessor()
         {
 
         }
@@ -46,6 +47,7 @@ namespace PriceUpdateProgram
             connection = new SqlConnection(_connectionString);
         }
 
+        //Self explanatory
         public static List<BBInstrument> RequestOutdatedInstrumentList()
         {
             List<BBInstrument> _list = new List<BBInstrument>();
@@ -74,6 +76,7 @@ namespace PriceUpdateProgram
             return _list;
         }
 
+        //Self explanatory
         public static List<ArrivalPrice> RequestArrivalPriceList()
         {
             List<ArrivalPrice> _list = new List<ArrivalPrice>();
@@ -103,8 +106,10 @@ namespace PriceUpdateProgram
         }
 
 
+        //Self explanatory
         public void RunFullPriceUpdate()
         {
+            timer.Stop();
             List<string> _fullFields = new List<string> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
                 "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
                 "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
@@ -115,9 +120,13 @@ namespace PriceUpdateProgram
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), _fullFields);
+                updateDFDetails(DFDetailsType.Full);
+                connection.Open();
 
-
-                //updateDFDetails(DFDetailsType.Full);
+                foreach (BBInstrument i in _bloombergData.BloombergInstruments)
+                {
+                    i.Update(connection);
+                }
             }
             finally
             {
@@ -125,8 +134,10 @@ namespace PriceUpdateProgram
             }
         }
 
+        //Self explanatory
         public void RunMiniPriceUpdate()
         {
+            timer.Stop();
             List<string> _miniFields = new List<string> { "ID_BB_Unique", "ID_ISIN", "TICKER", "PX_MID", "PX_BID", "PX_ASK", "PX_Last" };
             try
             {
@@ -134,8 +145,13 @@ namespace PriceUpdateProgram
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunMiniPriceUpdate(RequestOutdatedInstrumentList(), _miniFields);
+                updateDFDetails(DFDetailsType.Lite);
+                connection.Open();
 
-               // updateDFDetails(DFDetailsType.Lite);
+                foreach (BBInstrument i in _bloombergData.BloombergInstruments)
+                {
+                    i.Update(connection);
+                }
             }
             finally
             {
@@ -149,21 +165,17 @@ namespace PriceUpdateProgram
             DateTime _rangeFrom = priceDetails.PriceDateTime;
             ArrivalPrice ap = priceDetails;
             bool _hasPrice = false;
-            int counter = 0;
             double _price = 0;
             if (priceDetails.PriceDateTime.ToLongTimeString() != "00:00:00")
             {
                 priceDetails.PriceFlag = IntradayPrice.Intraday;
                 while (_hasPrice != true)
                 {
-                    counter++;
                     IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest(priceDetails.ID_DataFeed, _rangeFrom, _rangeFrom.AddHours(1));
                     _retrieve.RunIntradayPriceUpdate();
                     _price = _retrieve.Price;
-                    if (_retrieve.Price != 0)
+                    if (_price != 0)
                         _hasPrice = true;
-                    if (counter == 3)
-                        break;
                 }
             }
             else
@@ -177,7 +189,7 @@ namespace PriceUpdateProgram
         }
     
 
-        //Runs an intraday price update
+        //Self explanatory
         public void RunIntradayPriceUpdate()
         {
             List<ArrivalPrice> items = RequestArrivalPriceList();
@@ -208,6 +220,7 @@ namespace PriceUpdateProgram
                     _test.Add(ap);
                 }
             }
+            IntradayCompleted("Request completed - Intraday prices updated", new EventArgs());
         }
 
         //Event to update the process label

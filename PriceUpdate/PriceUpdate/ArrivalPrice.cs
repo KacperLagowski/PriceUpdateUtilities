@@ -26,7 +26,7 @@ namespace PriceUpdate
         public ArrivalPrice(DataRow dr)
         {
             this.DealID = Convert.ToInt32(dr["DealID"]);
-            this.ID_DataFeed = dr["ID_DataFeed"].ToString();
+            this.ID_DataFeed = dr["Data_Ticker"].ToString();
             this.PriceDateTime = Convert.ToDateTime(dr["PriceDateTime"]);
         }
 
@@ -41,7 +41,7 @@ namespace PriceUpdate
                 _cmd.Parameters.Add("@ID_MPM", SqlDbType.Int).Value = InstrumentID;
                 _cmd.Parameters.Add("@ID_Date", SqlDbType.DateTime).Value = PriceDateTime;
                 _cmd.Parameters.Add("@Data_Price", SqlDbType.Decimal).Value = Price;
-                _cmd.Parameters.Add("@Data_Price", SqlDbType.Int).Value = PriceFlag;
+                _cmd.Parameters.Add("@Data_PriceFlag", SqlDbType.Int).Value = PriceFlag;
                 #endregion
                 _cmd.ExecuteNonQuery();
             }

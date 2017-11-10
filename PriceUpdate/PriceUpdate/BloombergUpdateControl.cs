@@ -23,7 +23,7 @@ namespace PriceUpdate
         private void button1_Click(object sender, EventArgs e)
         {
             this.updateButton.Enabled = false;
-            BloombergHelper bh = new BloombergHelper();
+            BloombergProcessor bh = new BloombergProcessor();
             bh.ProgressUpdated += Bh_ProgressUpdated;
             bh.RunFullPriceUpdate();
             this.updateButton.Enabled = true;
@@ -38,7 +38,7 @@ namespace PriceUpdate
         private void miniButton_Click(object sender, EventArgs e)
         {
             this.updateButton.Enabled = false;
-            BloombergHelper bh = new BloombergHelper();
+            BloombergProcessor bh = new BloombergProcessor();
             bh.ProgressUpdated += Bh_ProgressUpdated;
             bh.RunMiniPriceUpdate();
             bh.StartCounting();
@@ -48,8 +48,8 @@ namespace PriceUpdate
         private void intradayButton_Click(object sender, EventArgs e)
         {
             this.updateButton.Enabled = false;
-            BloombergHelper bh = new BloombergHelper();
-            bh.ProgressUpdated += Bh_ProgressUpdated;
+            BloombergProcessor bh = new BloombergProcessor();
+            bh.IntradayCompleted += Bh_ProgressUpdated;
             bh.RunIntradayPriceUpdate();
             this.updateButton.Enabled = true;
         }
