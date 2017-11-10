@@ -166,7 +166,7 @@ namespace PriceUpdateProgram
             ArrivalPrice ap = priceDetails;
             bool _hasPrice = false;
             double _price = 0;
-            if (priceDetails.PriceDateTime.ToLongTimeString() != "00:00:00")
+            if (priceDetails.PriceDateTime.TimeOfDay.Ticks != 0)
             {
                 priceDetails.PriceFlag = IntradayPrice.Intraday;
                 while (_hasPrice != true)
@@ -194,7 +194,7 @@ namespace PriceUpdateProgram
         {
             List<ArrivalPrice> items = RequestArrivalPriceList();
             List<ArrivalPrice> _test = new List<ArrivalPrice>();
-            _test.AddRange(items.Where(p => p.PriceDateTime.ToLongTimeString() == "00:00:00"));
+            _test.AddRange(items.Where(p => p.PriceDateTime.TimeOfDay.Ticks == 0));
             List<ArrivalPrice> _test2 = new List<ArrivalPrice>();
             Stopwatch sw = new Stopwatch();
             List<double> dups = new List<double>();
