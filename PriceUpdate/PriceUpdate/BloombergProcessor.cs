@@ -11,14 +11,30 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bloomberglp.Blpapi;
+using System.Windows.Forms;
 using System.IO;
+using System.Timers;
+using System.Diagnostics;
 
 namespace PriceUpdateProgram
 {
+    struct DFDetails
+    {
+        public string ItemName;
+        public DateTime Value;
+    }
+
+    [Flags]
+    public enum DFDetailsType
+    {
+        Full = 1, Lite = 2
+    }
+
     public class BloombergHelper
     {
         public static SqlConnection connection;
         public event System.EventHandler ProgressUpdated;
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         public BloombergHelper()
         {
 
@@ -100,7 +116,8 @@ namespace PriceUpdateProgram
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), _fullFields);
 
-                //List<BBInstrument> _notDone = _bloombergData.BloombergInstruments.Where(p => p.BloombergUpdate == false).ToList();
+
+                updateDFDetails(DFDetailsType.Full);
             }
             finally
             {
@@ -118,7 +135,7 @@ namespace PriceUpdateProgram
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunMiniPriceUpdate(RequestOutdatedInstrumentList(), _miniFields);
 
-                List<BBInstrument> _test = _bloombergData.BloombergInstruments;
+                updateDFDetails(DFDetailsType.Lite);
             }
             finally
             {
@@ -126,44 +143,138 @@ namespace PriceUpdateProgram
             }
         }
 
+        private bool requestIntradayData(ArrivalPrice priceDetails)
+        {
+            DateTime _rangeFrom = priceDetails.PriceDateTime;
+            Stopwatch sw = new Stopwatch();
+            bool _hasPrice = false;
+            double _price = 0;
+            if (priceDetails.PriceDateTime.ToLongTimeString() != "00:00:00")
+            {
+                priceDetails.PriceFlag = IntradayPrice.Intraday;
+                while (_hasPrice != true)
+                {
+
+                    IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest(priceDetails.ID_DataFeed, _rangeFrom, _rangeFrom.AddHours(1));
+                    sw.Start();
+                    try
+                    _retrieve.RunIntradayPriceUpdate();
+                    _price = _retrieve.Price;
+                    if (_retrieve.Price != 0)
+                        _hasPrice = true;
+                }
+            }
+            else
+            {
+                priceDetails.PriceFlag = IntradayPrice.Opening;
+                IntradayBarExample openingPriceRequest = new IntradayBarExample(priceDetails.ID_DataFeed, priceDetails.PriceDateTime, priceDetails.PriceDateTime.AddMinutes(15));
+                _price = openingPriceRequest.GetOpeningPrice();
+            }
+            priceDetails.Price = _price;
+            return _hasPrice;
+        }
+    
+
         public void RunIntradayPriceUpdate()
         {
+            createConnection();
             List<ArrivalPrice> items = RequestArrivalPriceList();
+            
+            List<ArrivalPrice> _test = new List<ArrivalPrice>();
             foreach (ArrivalPrice ap in items)
             {
-                createConnection();
-                DateTime _rangeFrom = ap.PriceDateTime;
-                bool _hasPrice = false;
-                double _price = 0;
-                if(ap.PriceDateTime.ToLongTimeString() != "00:00:00")
+                try
                 {
-                    ap.PriceFlag = IntradayPrice.Intraday;
-                    while (_hasPrice != true)
+                    
+                    while (!requestIntradayData(ap))
                     {
-                        
-                        IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest(ap.ID_DataFeed, _rangeFrom, _rangeFrom.AddHours(1));
-                        _retrieve.RunIntradayPriceUpdate();
-                        _price = _retrieve.Price;
-                        if (_retrieve.Price != 0)
-                            _hasPrice = true;
+                        if (sw.ElapsedMilliseconds > 2000) throw new TimeoutException();
                     }
+                    
                 }
-                else
+                catch(TimeoutException te)
                 {
-                    ap.PriceFlag = IntradayPrice.Opening;
-                    IntradayBarExample openingPriceRequest = new IntradayBarExample(ap.ID_DataFeed, ap.PriceDateTime, ap.PriceDateTime.AddMinutes(15));
-                    _price = openingPriceRequest.GetOpeningPrice();
+                    continue;
                 }
-
-                connection.Close();
-                ap.Price = _price;
-                //ap.Update(connection);
+                _test.Add(ap);
             }
+            connection.Close();
         }
 
         private void _bloombergData_InstrumentUpdated(object sender, EventArgs e)
         {
             ProgressUpdated(sender, e);
+        }
+
+        public void StartCounting()
+        {
+            timer.Tick += new System.EventHandler(TimerEventProcessor);
+            timer.Interval = 1000 * 60;
+            timer.Start();
+        }
+
+        private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        {
+            timer.Stop();
+
+            createConnection();
+            string _storedProcedure = "sp_PMDFDetails";
+            SqlDataAdapter _sda = new SqlDataAdapter(_storedProcedure, connection);
+            DataTable _dt = new DataTable();
+            List<DFDetails> details = new List<DFDetails>();
+            try
+            {
+                connection.Open();
+                _sda.Fill(_dt);
+            }
+            catch (SqlException se)
+            {
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            foreach (DataRow row in _dt.Rows)
+            {
+                DFDetails dFDetails = new DFDetails();
+                dFDetails.ItemName = row["ItemName"].ToString();
+                dFDetails.Value = Convert.ToDateTime(row["TimeUpdated"]);
+                details.Add(dFDetails);
+            }
+
+            DFDetails _fullCompleted = details.Single(p => p.ItemName == "DFCompletedFull");
+            DFDetails _fullRequested = details.Single(p => p.ItemName == "DFRequestedFull");
+            DFDetails _liteCompleted = details.Single(p => p.ItemName == "DFCompletedLite");
+            DFDetails _liteRequested = details.Single(p => p.ItemName == "DFRequestedLite");
+
+            if (_fullCompleted.Value < _fullRequested.Value)
+            {
+                RunFullPriceUpdate();
+            }
+
+            if(_liteCompleted.Value < _liteRequested.Value)
+            {
+                RunMiniPriceUpdate();
+            }
+            
+        }
+
+        public void updateDFDetails(DFDetailsType type)
+        {
+            string _storedProcedure = "sp_PMDFUpdate";
+            string _itemDFUpdateName = String.Empty;
+            if (type == DFDetailsType.Full)
+                _itemDFUpdateName = "DFCompletedFull";
+            else if (type == DFDetailsType.Lite)
+                _itemDFUpdateName = "DFCompletedLite";
+
+            connection.Open();
+            SqlCommand _cmd = new SqlCommand(_storedProcedure, connection);
+            _cmd.Parameters.Add("@ItemName", SqlDbType.Text).Value = _itemDFUpdateName;
+            _cmd.Parameters.Add("@TimeUpdated", SqlDbType.DateTime).Value = DateTime.Now;
+            _cmd.ExecuteNonQuery();
         }
     }
 }
