@@ -164,19 +164,14 @@ namespace PriceUpdateProgram
         {
             DateTime _rangeFrom = priceDetails.PriceDateTime;
             ArrivalPrice ap = priceDetails;
-            bool _hasPrice = false;
             double _price = 0;
+
             if (priceDetails.PriceDateTime.TimeOfDay.Ticks != 0)
             {
                 priceDetails.PriceFlag = IntradayPrice.Intraday;
-                while (_hasPrice != true)
-                {
-                    IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest(priceDetails.ID_DataFeed, _rangeFrom, _rangeFrom.AddHours(1));
-                    _retrieve.RunIntradayPriceUpdate();
-                    _price = _retrieve.Price;
-                    if (_price != 0)
-                        _hasPrice = true;
-                }
+                IntradayPriceBloombergRequest _retrieve = new IntradayPriceBloombergRequest();
+                _retrieve.RunIntradayPriceUpdate(priceDetails.ID_DataFeed, _rangeFrom, _rangeFrom.AddHours(1));
+                _price = _retrieve.Price;
             }
             else
             {
@@ -193,22 +188,12 @@ namespace PriceUpdateProgram
         public void RunIntradayPriceUpdate()
         {
             List<ArrivalPrice> items = RequestArrivalPriceList();
-            List<ArrivalPrice> _test = new List<ArrivalPrice>();
-            _test.AddRange(items.Where(p => p.PriceDateTime.TimeOfDay.Ticks == 0));
-            List<ArrivalPrice> _test2 = new List<ArrivalPrice>();
-            Stopwatch sw = new Stopwatch();
-            List<double> dups = new List<double>();
             foreach (ArrivalPrice ap in items.ToList())
             {
                 try
                 {
                     createConnection();
-                    //sw.Start();
-                    //if (sw.ElapsedMilliseconds > 3000) throw new TimeoutException();
-                    //_test2.Add(requestIntradayData(ap));
-                    dups.Add(requestIntradayData(ap));
-                    //sw.Stop();
-                    //sw.Reset();
+                    ap.Price = requestIntradayData(ap);
                 }
                 catch(Exception e)
                 {
@@ -217,7 +202,6 @@ namespace PriceUpdateProgram
                 finally
                 {
                     connection.Close();
-                    _test.Add(ap);
                 }
             }
             IntradayCompleted("Request completed - Intraday prices updated", new EventArgs());

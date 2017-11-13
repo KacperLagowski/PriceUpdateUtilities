@@ -57,12 +57,11 @@ namespace Bloomberglp.Blpapi.Examples
         private string d_endDateTime;
         #endregion
 
-        public DateTime Time { get; set; }
         public double Price { get; set; }
 
-        private string getPreviousTradingDate()
+        private string getPreviousTradingDate(DateTime time)
         {
-            DateTime tradedOn = Time;
+            DateTime tradedOn = time;
             tradedOn = tradedOn.AddDays(-1);
             if (tradedOn.DayOfWeek == DayOfWeek.Sunday)
             {
@@ -78,21 +77,21 @@ namespace Bloomberglp.Blpapi.Examples
             return prevDate;
         }
 
-        public IntradayPriceBloombergRequest(string instrument, DateTime from, DateTime to)
+        public IntradayPriceBloombergRequest()
+        {
+            
+        }
+
+        public void RunIntradayPriceUpdate(string instrument, DateTime from, DateTime to)
         {
             d_host = "localhost";
             d_port = 8194;
             d_events = new ArrayList();
             d_conditionCodes = false;
             d_security = instrument;
-            Time = from;
-            string prevTradingDate = getPreviousTradingDate();
+            string prevTradingDate = getPreviousTradingDate(from);
             d_startDateTime = prevTradingDate + "T" + from.ToLongTimeString();
             d_endDateTime = prevTradingDate + "T" + to.ToLongTimeString();
-        }
-
-        public void RunIntradayPriceUpdate()
-        {
             d_events.Add("TRADE");
             
             SessionOptions sessionOptions = new SessionOptions();
@@ -103,10 +102,12 @@ namespace Bloomberglp.Blpapi.Examples
             bool sessionStarted = session.Start();
             if (!sessionStarted)
             {
+                MessageBox.Show("Failed to start session");
                 return;
             }
             if (!session.OpenService("//blp/refdata"))
             {
+                MessageBox.Show("Failed to open refdata");
                 return;
             }
 
@@ -170,7 +171,7 @@ namespace Bloomberglp.Blpapi.Examples
             }
             try
             {
-                Price = _prices.First();
+                Price = _prices.Single();
             }
             catch
             {
