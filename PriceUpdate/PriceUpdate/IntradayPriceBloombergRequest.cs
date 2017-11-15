@@ -152,16 +152,17 @@ namespace Bloomberglp.Blpapi.Examples
 
         private void processMessage(Message msg)
         {
-            List<double> _prices = new List<double>();
             Element data = msg.GetElement(TICK_DATA).GetElement(TICK_DATA); ;
             int numItems = data.NumValues;
+            List<double> _values = new List<double>();
+
             for (int i = 0; i < numItems; ++i)
             {
                 Element item = data.GetValueAsElement(i);
                 Datetime time = item.GetElementAsDate(TIME);
                 string type = item.GetElementAsString(TYPE);
                 double value = item.GetElementAsFloat64(VALUE);
-                _prices.Add(value);
+                _values.Add(value);
                 int size = item.GetElementAsInt32(SIZE);
                 string cc = "";
                 if (item.HasElement(COND_CODE))
@@ -169,23 +170,17 @@ namespace Bloomberglp.Blpapi.Examples
                     cc = item.GetElementAsString(COND_CODE);
                 }
             }
-            try
-            {
-                Price = _prices.Single();
-            }
-            catch
-            {
-
-            }
+            this.Price = _values[0];
         }
 
 
-        private void processResponseEvent(Event eventObj)
+            private void processResponseEvent(Event eventObj)
         {
             foreach (Message msg in eventObj)
             {
                 if (msg.HasElement(RESPONSE_ERROR))
                 {
+                    MessageBox.Show(msg.GetElement(RESPONSE_ERROR).GetElementAsString(MESSAGE));
                     continue;
                 }
                 processMessage(msg);
