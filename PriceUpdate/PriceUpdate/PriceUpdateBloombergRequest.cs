@@ -34,6 +34,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using PriceUpdateProgram;
 using System;
+using System.Windows.Forms;
 
 namespace Bloomberglp.Blpapi.Examples
 {
@@ -157,6 +158,7 @@ namespace Bloomberglp.Blpapi.Examples
             {
                 if (msg.HasElement(RESPONSE_ERROR))
                 {
+                    MessageBox.Show(msg.GetElement(RESPONSE_ERROR).GetElementAsString(MESSAGE));
                     continue;
                 }
 
@@ -227,10 +229,17 @@ namespace Bloomberglp.Blpapi.Examples
                         }
                         catch
                         {
-                            Element _newID = _res.Single(p => p.Name.ToString() == "TICKER");
-                            BBInstrument _i = BloombergInstruments.Single(p => p.Ticker == _newID.GetValueAsString());
-                            _i.OverrideValues(_res);
-                            _matched = true;
+                            try
+                            {
+                                Element _newID = _res.Single(p => p.Name.ToString() == "TICKER");
+                                BBInstrument _i = BloombergInstruments.Single(p => p.Ticker == _newID.GetValueAsString());
+                                _i.OverrideValues(_res);
+                                _matched = true;
+                            }
+                            catch
+                            {
+                                continue;
+                            }
                         }
                     }
                 }

@@ -110,7 +110,7 @@ namespace PriceUpdateProgram
         public void RunFullPriceUpdate()
         {
             timer.Stop();
-            List<string> _fullFields = new List<string> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "MARKET_SECTOR_DES", "EXCH_CODE",
+            List<string> _fullFields = new List<string> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "LEGAL_ENTITY_IDENTIFIER", "MARKET_SECTOR_DES", "EXCH_CODE", "ID_MIC_PRIM_EXCH",
                 "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
                 "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
                 "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT"};
@@ -120,7 +120,7 @@ namespace PriceUpdateProgram
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), _fullFields);
-                updateDFDetails(DFDetailsType.Full);
+                //updateDFDetails(DFDetailsType.Full);
                 connection.Open();
 
                 foreach (BBInstrument i in _bloombergData.BloombergInstruments)
@@ -282,7 +282,7 @@ namespace PriceUpdateProgram
 
             connection.Open();
             SqlCommand _cmd = new SqlCommand(_storedProcedure, connection);
-            _cmd.Parameters.Add("@ItemName", SqlDbType.Text).Value = _itemDFUpdateName;
+            _cmd.Parameters.Add("@DFItemName", SqlDbType.Text).Value = _itemDFUpdateName;
             _cmd.Parameters.Add("@TimeUpdated", SqlDbType.DateTime).Value = DateTime.Now;
             _cmd.ExecuteNonQuery();
         }

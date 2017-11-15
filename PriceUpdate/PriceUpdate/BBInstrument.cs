@@ -106,6 +106,7 @@ namespace RefDataExample
         public RestrictionFlagEnum Data_Restriction_Flag { get; set; }
         public decimal Data_Equity_Share_out { get; set; }
         public bool BloombergUpdate { get; private set; }
+        public string LEI { get; set; }
         #endregion
 
         public void OverrideValues(List<Element> BloombergInstruments)
@@ -131,13 +132,17 @@ namespace RefDataExample
                         break;
                     case "ID_COMMON":
                         Common = e.GetValueAsString();
-                        
+
+                        break;
+                    case "LEI":
+                        LEI = e.GetValueAsString();
+
                         break;
                     case "EXCH_CODE":
                         Exchange = e.GetValueAsString();
                         
                         break;
-                    case "MIC":
+                    case "ID_MIC_PRIM_EXCH":
                         MIC = e.GetValueAsString();
                         
                         break;
@@ -243,103 +248,6 @@ namespace RefDataExample
             BloombergUpdate = true;
         }
 
-        public DataTable ToDataRow(List<BBInstrument> list)
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID_MPM", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID_DataFeed", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID_Date", typeof(int)));
-            dt.Columns.Add(new DataColumn("Sys_DataFeed_Type", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("ID", typeof(int)));
-
-
-            foreach (BBInstrument _i in list)
-            {
-                DataRow _dr = dt.NewRow();
-                _dr["ID"] = this.ID;
-                _dr["ID_MPM"] = this.ID_MPM;
-                _dr["ID_DataFeed"] = this.ID_DataFeed;
-                _dr["ID_Date"] = this.ID_Date;
-                _dr["Sys_DataFeed_Type"] = this.Sys_DataFeed_Type;
-                _dr["Sys_Note_User"] = this.Sys_Note_User;
-                _dr["Sys_Note_System"] = this.Sys_Note_System;
-                _dr["Sys_End"] = this.Sys_End;
-                _dr["Data_BloombergID"] = this.BloombergID;
-                _dr["Data_ISIN"] = this.ISIN;
-                _dr["Data_Ticker"] = this.Ticker;
-                _dr["Data_Sedol1"] = this.Sedol1;
-                _dr["Data_Common"] = this.Common;
-                _dr["Data_Other"] = this.Other;
-                _dr["Data_Type"] = this.Type;
-                _dr["Data_AssetType"] = this.AssetType;
-                _dr["Data_Exchange"] = this.Exchange;
-                _dr["Data_MIC"] = this.MIC;
-                _dr["Data_Name"] = this.Name;
-                _dr["Data_Name_Midas_Short"] = this.Name_Midas_Short;
-                _dr["Data_Name_Midas_Long"] = this.Name_Midas_Long;
-                _dr["Data_Price"] = this.Price;
-                _dr["Data_Price_Mid"] = this.Price_Mid;
-                _dr["Data_Price_Bid"] = this.Price_Bid;
-                _dr["Data_Price_Ask"] = this.Price_Ask;
-                _dr["Data_Price_Last"] = this.Price_Last;
-                _dr["Data_Price_Net_Asset_Value"] = this.Price_Net_Asset_Value;
-                _dr["Data_Price_Default"] = this.Price_Default;
-                _dr["Data_Price_Currency_ID"] = this.Price_Currency_ID;
-                _dr["Data_Price_Factor"] = this.Price_Factor;
-                _dr["Data_Div_Gross"] = this.Div_Gross;
-                _dr["Data_Div_Currency_ID"] = this.Div_Currency_ID;
-                _dr["Data_Div_Factor"] = this.Div_Factor;
-                _dr["Data_Div_Ex_Date"] = this.Div_Ex_Date;
-                _dr["Data_Rel_Perf_1M"] = this.Rel_Perf_1M;
-                _dr["Data_Rel_Perf_3M"] = this.Rel_Perf_3M;
-                _dr["Data_Rel_Perf_6M"] = this.Rel_Perf_6M;
-                _dr["Data_Rel_Perf_12M"] = this.Rel_Perf_12M;
-                _dr["Data_Rel_Perf_MTD"] = this.Rel_Perf_MTD;
-                _dr["Data_Rel_Perf_QTD"] = this.Rel_Perf_QTD;
-                _dr["Data_Rel_Perf_YTD"] = this.Rel_Perf_YTD;
-                _dr["Data_Earnings_Per_Share"] = this.Earnings_Per_Share;
-                _dr["Data_Price_To_Book"] = this.Price_To_Book;
-                _dr["Data_Tier_1_Ratio"] = this.Tier_1_Ratio;
-                _dr["Data_Free_Cash_Flow"] = this.Free_Cash_Flow;
-                _dr["Data_EBITDA"] = this.EBITDA;
-                _dr["Data_EBIT"] = this.EBIT;
-                _dr["Data_Enterprise_Value"] = this.Enterprise_Value;
-                _dr["Data_Par_Amount"] = this.Par_Amount;
-                _dr["Data_Par_Value"] = this.Par_Value;
-                _dr["Data_Coupon"] = this.Coupon;
-                _dr["Data_Redemption_Date"] = this.Redemption_Date;
-                _dr["Data_Accrued_Interest"] = this.Accrued_Interest;
-                //_dr["Data_Restriction_Flag"] = this.Data_Restriction_Flag;
-                //_dr["Data_Equity_Share_Out"] = this.Data_Equity_Share_out;
-                dt.Rows.Add(_dr);
-            }
-            return dt;
-        }
-
         public BBInstrument(DataRow row)
         {
             this.BloombergUpdate = false;
@@ -357,6 +265,7 @@ namespace RefDataExample
             this.Ticker = row["Data_Ticker"].ToString();
             this.Sedol1 = row["Data_Sedol1"].ToString();
             this.Common = row["Data_Common"].ToString();
+            this.LEI = row["Data_LEI"].ToString();
             this.Other = row["Data_Other"].ToString();
             this.Type = row["Data_Type"].ToString();
             this.AssetType = Convert.ToInt32(row["Data_AssetType"]);
@@ -398,79 +307,75 @@ namespace RefDataExample
             this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
             this.Accrued_Interest = Convert.ToDecimal(row["Data_Accrued_Interest"]);
             //this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
-            //this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Share_Out"]);
+            this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
         }
 
         public void Update(SqlConnection conn)
         {
-            conn.Open();
+            //conn.Open();
             string _storedProcedure = "sp_PMInstrumentUpdate";
-                try
-                {
-                    SqlCommand _cmd = new SqlCommand(_storedProcedure, conn);
-                    #region DB Parameters
-                    _cmd.Parameters.Add("@ID_MPM", SqlDbType.Int).Value = ID_MPM;
-                    _cmd.Parameters.Add("@ID_DataFeed", SqlDbType.NVarChar, 50).Value = ID_DataFeed;
-                    _cmd.Parameters.Add("@Sys_Note_System", SqlDbType.NVarChar, 255).Value = Sys_Note_System;
-                    _cmd.Parameters.Add("@Sys_Note_User", SqlDbType.NVarChar, 255).Value = Sys_Note_User;
-                    _cmd.Parameters.Add("@User_ID", SqlDbType.NVarChar, 50).Value = UserID;
-                    _cmd.Parameters.Add("@Sys_DataFeed_Type", SqlDbType.Int).Value = Sys_DataFeed_Type;
-                    _cmd.Parameters.Add("@Sys_End", SqlDbType.Bit).Value = Sys_End;
-                    _cmd.Parameters.Add("@Data_BloombergID", SqlDbType.NVarChar, 50).Value = BloombergID;
-                    _cmd.Parameters.Add("@Data_ISIN", SqlDbType.NVarChar, 50).Value = ISIN;
-                    _cmd.Parameters.Add("@Data_Ticker", SqlDbType.NVarChar, 50).Value = Ticker;
-                    _cmd.Parameters.Add("@Data_Sedol1", SqlDbType.NVarChar, 50).Value = Sedol1;
-                    _cmd.Parameters.Add("@Data_Common", SqlDbType.NVarChar, 50).Value = Common;
-                    _cmd.Parameters.Add("@Data_Other", SqlDbType.NVarChar, 50).Value = Other;
-                    _cmd.Parameters.Add("@Data_Type", SqlDbType.NVarChar, 50).Value = Type;
-                    _cmd.Parameters.Add("@Data_Exchange", SqlDbType.NVarChar, 50).Value = Exchange;
-                    _cmd.Parameters.Add("@Data_Name", SqlDbType.NVarChar, 255).Value = Name;
-                    _cmd.Parameters.Add("@Data_Name_Midas_Short", SqlDbType.NVarChar, 40).Value = Name_Midas_Short;
-                    _cmd.Parameters.Add("@Data_Name_Midas_Long", SqlDbType.NVarChar, 80).Value = Name_Midas_Long;
-                    _cmd.Parameters.Add("@Data_Price", SqlDbType.Decimal).Value = Price;
-                    _cmd.Parameters.Add("@Data_Price_Mid", SqlDbType.Decimal).Value = Price_Mid;
-                    _cmd.Parameters.Add("@Data_Price_Bid", SqlDbType.Decimal).Value = Price_Bid;
-                    _cmd.Parameters.Add("@Data_Price_Ask", SqlDbType.Decimal).Value = Price_Ask;
-                    _cmd.Parameters.Add("@Data_Price_Last", SqlDbType.Decimal).Value = Price_Last;
-                    _cmd.Parameters.Add("@Data_Price_Net_Asset_Value", SqlDbType.Decimal).Value = Price_Net_Asset_Value;
-                    _cmd.Parameters.Add("@Data_Price_Default", SqlDbType.Decimal).Value = Price_Default;
-                    _cmd.Parameters.Add("@Data_Price_Currency_ID", SqlDbType.NVarChar, 50).Value = Price_Currency_ID;
-                    _cmd.Parameters.Add("@Data_Price_Factor", SqlDbType.Decimal).Value = Price_Factor;
-                    _cmd.Parameters.Add("@Data_Div_Gross", SqlDbType.Decimal).Value = Div_Gross;
-                    _cmd.Parameters.Add("@Data_Div_Factor", SqlDbType.Decimal).Value = Div_Factor;
-                    _cmd.Parameters.Add("@Data_Price_Ex_Date", SqlDbType.DateTime).Value = Div_Ex_Date;
-                    _cmd.Parameters.Add("@Data_Rel_Perf_1M", SqlDbType.Decimal).Value = Rel_Perf_1M;
-                    _cmd.Parameters.Add("@Data_Rel_Perf_3M", SqlDbType.Decimal).Value = Rel_Perf_3M;
-                    _cmd.Parameters.Add("@Data_Rel_Perf_6M", SqlDbType.Decimal).Value = Rel_Perf_6M;
-                    _cmd.Parameters.Add("@Data_Rel_Perf_12M", SqlDbType.Decimal).Value = Rel_Perf_12M;
-                    _cmd.Parameters.Add("@Data_Rel_Perf_MTD", SqlDbType.Decimal).Value = Rel_Perf_MTD;
-                    _cmd.Parameters.Add("@Data_Rel_Perf_QTD", SqlDbType.Decimal).Value = Rel_Perf_QTD;
-                    _cmd.Parameters.Add("@Data_Rel_Perf_YTD", SqlDbType.Decimal).Value = Rel_Perf_QTD;
-                    _cmd.Parameters.Add("@Data_Earnings_Per_Share", SqlDbType.Decimal).Value = Earnings_Per_Share;
-                    _cmd.Parameters.Add("@Data_Price_To_Book", SqlDbType.Decimal).Value = Price_To_Book;
-                    _cmd.Parameters.Add("@Data_Tier_1_Ratio", SqlDbType.Decimal).Value = Tier_1_Ratio;
-                    _cmd.Parameters.Add("@Data_Free_Cash_Flow", SqlDbType.Decimal).Value = Free_Cash_Flow;
-                    _cmd.Parameters.Add("@Data_EBITDA", SqlDbType.Decimal).Value = EBITDA;
-                    _cmd.Parameters.Add("@Data_EBIT", SqlDbType.Decimal).Value = EBIT;
-                    _cmd.Parameters.Add("@Data_Enterprise_Value", SqlDbType.Decimal).Value = Enterprise_Value;
-                    _cmd.Parameters.Add("@Data_Par_Amount", SqlDbType.Decimal).Value = Par_Amount;
-                    _cmd.Parameters.Add("@Data_Par_Value", SqlDbType.Decimal).Value = Par_Value;
-                    _cmd.Parameters.Add("@Data_Coupon", SqlDbType.Decimal).Value = Coupon;
-                    _cmd.Parameters.Add("@Data_Redemption_Date", SqlDbType.DateTime).Value = Redemption_Date;
-                    _cmd.Parameters.Add("@Data_Accrued_Interest", SqlDbType.Decimal).Value = Accrued_Interest;
-                    _cmd.Parameters.Add("@Data_Restriction_Flag", SqlDbType.Int).Value = Data_Restriction_Flag;
-                    _cmd.Parameters.Add("@Data_Equity_Share_Out", SqlDbType.Decimal).Value = Data_Equity_Share_out;
-                #endregion
-                _cmd.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    System.Windows.Forms.MessageBox.Show(e.Message);
-                }
-                finally
-                {
-                    conn.Close();
-                }       
+            SqlCommand _cmd = new SqlCommand(_storedProcedure, conn);
+            #region DB Parameters
+
+            _cmd.CommandType = CommandType.StoredProcedure;
+            _cmd.Parameters.Add("@ID", SqlDbType.BigInt).Value = ID;
+            _cmd.Parameters.Add("@ID_MPM", SqlDbType.Int).Value = ID_MPM;
+            _cmd.Parameters.Add("@ID_Date", SqlDbType.DateTime).Value = ID_Date;
+            _cmd.Parameters.Add("@ID_DataFeed", SqlDbType.NVarChar, 50).Value = ID_DataFeed;
+            _cmd.Parameters.Add("@Sys_Note_System", SqlDbType.NVarChar, 255).Value = Sys_Note_System;
+            _cmd.Parameters.Add("@Sys_Note_User", SqlDbType.NVarChar, 255).Value = Sys_Note_User;
+            _cmd.Parameters.Add("@Sys_UserID", SqlDbType.NVarChar, 50).Value = UserID;
+            _cmd.Parameters.Add("@Sys_DataFeed_Type", SqlDbType.Int).Value = Sys_DataFeed_Type;
+            _cmd.Parameters.Add("@Sys_End", SqlDbType.Bit).Value = Sys_End;
+            _cmd.Parameters.Add("@Data_BloombergID", SqlDbType.NVarChar, 50).Value = BloombergID;
+            _cmd.Parameters.Add("@Data_ISIN", SqlDbType.NVarChar, 50).Value = ISIN;
+            _cmd.Parameters.Add("@Data_Ticker", SqlDbType.NVarChar, 50).Value = Ticker;
+            _cmd.Parameters.Add("@Data_Sedol1", SqlDbType.NVarChar, 50).Value = Sedol1;
+            _cmd.Parameters.Add("@Data_Common", SqlDbType.NVarChar, 50).Value = Common;
+            _cmd.Parameters.Add("@Data_LEI", SqlDbType.NVarChar, 20).Value = LEI;
+            _cmd.Parameters.Add("@Data_Other", SqlDbType.NVarChar, 50).Value = Other;
+            _cmd.Parameters.Add("@Data_Type", SqlDbType.NVarChar, 50).Value = Type;
+            _cmd.Parameters.Add("@Data_Exchange", SqlDbType.NVarChar, 50).Value = Exchange;
+            _cmd.Parameters.Add("@Data_MIC", SqlDbType.NVarChar, 10).Value = MIC;
+            _cmd.Parameters.Add("@Data_Name", SqlDbType.NVarChar, 255).Value = Name;
+            _cmd.Parameters.Add("@Data_Name_Midas_Short", SqlDbType.NVarChar, 40).Value = Name_Midas_Short;
+            _cmd.Parameters.Add("@Data_Name_Midas_Long", SqlDbType.NVarChar, 80).Value = Name_Midas_Long;
+            _cmd.Parameters.Add("@Data_Price", SqlDbType.Decimal).Value = Price;
+            _cmd.Parameters.Add("@Data_Price_Mid", SqlDbType.Decimal).Value = Price_Mid;
+            _cmd.Parameters.Add("@Data_Price_Bid", SqlDbType.Decimal).Value = Price_Bid;
+            _cmd.Parameters.Add("@Data_Price_Ask", SqlDbType.Decimal).Value = Price_Ask;
+            _cmd.Parameters.Add("@Data_Price_Last", SqlDbType.Decimal).Value = Price_Last;
+            _cmd.Parameters.Add("@Data_Price_Net_Asset_Value", SqlDbType.Decimal).Value = Price_Net_Asset_Value;
+            _cmd.Parameters.Add("@Data_Price_Default", SqlDbType.NVarChar, 50).Value = Price_Default;
+            _cmd.Parameters.Add("@Data_Price_Currency_ID", SqlDbType.NVarChar, 50).Value = Price_Currency_ID;
+            _cmd.Parameters.Add("@Data_Price_Factor", SqlDbType.Decimal).Value = Price_Factor;
+            _cmd.Parameters.Add("@Data_Div_Gross", SqlDbType.Decimal).Value = Div_Gross;
+            _cmd.Parameters.Add("@Data_Div_Factor", SqlDbType.Decimal).Value = Div_Factor;
+            _cmd.Parameters.Add("@Data_Div_Currency_ID", SqlDbType.NVarChar, 50).Value = Div_Currency_ID;
+            _cmd.Parameters.Add("@Data_Price_Ex_Date", SqlDbType.DateTime).Value = Div_Ex_Date;
+            _cmd.Parameters.Add("@Data_Rel_Perf_1M", SqlDbType.Decimal).Value = Rel_Perf_1M;
+            _cmd.Parameters.Add("@Data_Rel_Perf_3M", SqlDbType.Decimal).Value = Rel_Perf_3M;
+            _cmd.Parameters.Add("@Data_Rel_Perf_6M", SqlDbType.Decimal).Value = Rel_Perf_6M;
+            _cmd.Parameters.Add("@Data_Rel_Perf_12M", SqlDbType.Decimal).Value = Rel_Perf_12M;
+            _cmd.Parameters.Add("@Data_Rel_Perf_MTD", SqlDbType.Decimal).Value = Rel_Perf_MTD;
+            _cmd.Parameters.Add("@Data_Rel_Perf_QTD", SqlDbType.Decimal).Value = Rel_Perf_QTD;
+            _cmd.Parameters.Add("@Data_Rel_Perf_YTD", SqlDbType.Decimal).Value = Rel_Perf_QTD;
+            _cmd.Parameters.Add("@Data_Earnings_Per_Share", SqlDbType.Decimal).Value = Earnings_Per_Share;
+            _cmd.Parameters.Add("@Data_Price_To_Book", SqlDbType.Decimal).Value = Price_To_Book;
+            _cmd.Parameters.Add("@Data_Tier_1_Ratio", SqlDbType.Decimal).Value = Tier_1_Ratio;
+            _cmd.Parameters.Add("@Data_Free_Cash_Flow", SqlDbType.Decimal).Value = Free_Cash_Flow;
+            _cmd.Parameters.Add("@Data_EBITDA", SqlDbType.Decimal).Value = EBITDA;
+            _cmd.Parameters.Add("@Data_EBIT", SqlDbType.Decimal).Value = EBIT;
+            _cmd.Parameters.Add("@Data_Enterprise_Value", SqlDbType.Decimal).Value = Enterprise_Value;
+            _cmd.Parameters.Add("@Data_Par_Amount", SqlDbType.Decimal).Value = Par_Amount;
+            _cmd.Parameters.Add("@Data_Par_Value", SqlDbType.Decimal).Value = Par_Value;
+            _cmd.Parameters.Add("@Data_Coupon", SqlDbType.Decimal).Value = Coupon;
+            _cmd.Parameters.Add("@Data_Redemption_Date", SqlDbType.DateTime).Value = Redemption_Date;
+            _cmd.Parameters.Add("@Data_Accrued_Interest", SqlDbType.Decimal).Value = Accrued_Interest;
+            _cmd.Parameters.Add("@Data_Restriction_Flag", SqlDbType.Int).Value = Data_Restriction_Flag;
+            _cmd.Parameters.Add("@Data_Equity_Share_Out", SqlDbType.Decimal).Value = Data_Equity_Share_out;
+            #endregion
+            _cmd.ExecuteNonQuery();
         }
     }
 }
