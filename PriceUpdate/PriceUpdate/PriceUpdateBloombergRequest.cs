@@ -206,44 +206,23 @@ namespace Bloomberglp.Blpapi.Examples
 
         private void MatchOnElements(List<Element> _res)
         {
-            foreach (Element _e in _res)
+
+            List<BBInstrument> _i = new List<BBInstrument>();
+            Element _id;
+
+            List<string> lookupids = new List<String> { "ID_BB_Unique", "ID_ISIN", "TICKER" };
+
+            foreach(string lid in lookupids)
             {
-                bool _matched = false;
-                while (_matched != true)
+                _id = _res.Single(p => p.Name.ToString() == lid);
+                _i = BloombergInstruments.Where(p => p.BloombergID == _id.GetValueAsString()).ToList();
+                _i.ForEach(i => i.OverrideValues(_res));
+                if (_i.Any())
                 {
-                    try
-                    {
-                        Element _id = _res.Single(p => p.Name.ToString() == "ID_BB_Unique");
-                        BBInstrument _i = BloombergInstruments.Single(p => p.BloombergID == _id.GetValueAsString());
-                        _i.OverrideValues(_res);
-                        _matched = true;
-                    }
-                    catch (InvalidOperationException ioe)
-                    {
-                        try
-                        {
-                            Element _id = _res.Single(p => p.Name.ToString() == "ID_ISIN");
-                            BBInstrument _i = BloombergInstruments.Single(p => p.ISIN == _id.GetValueAsString());
-                            _i.OverrideValues(_res);
-                            _matched = true;
-                        }
-                        catch
-                        {
-                            try
-                            {
-                                Element _newID = _res.Single(p => p.Name.ToString() == "TICKER");
-                                BBInstrument _i = BloombergInstruments.Single(p => p.Ticker == _newID.GetValueAsString());
-                                _i.OverrideValues(_res);
-                                _matched = true;
-                            }
-                            catch
-                            {
-                                continue;
-                            }
-                        }
-                    }
+                    break;
                 }
-            }
+            };
+
         }
 
         private List<Element> requestFieldElements(Element security)

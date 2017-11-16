@@ -353,7 +353,7 @@ namespace RefDataExample
             _cmd.Parameters.Add("@Data_Div_Factor", SqlDbType.Decimal).Value = Div_Factor;
             _cmd.Parameters.Add("@Data_Div_Currency_ID", SqlDbType.NVarChar, 50).Value = Div_Currency_ID;
             _cmd.Parameters.Add("@Data_Div_Ex_Date", SqlDbType.DateTime).Value = Div_Ex_Date;
-            _cmd.Parameters.Add("@Data_Price_To_Book", SqlDbType.Decimal).Value = Price_To_Book;
+            
             _cmd.Parameters.Add("@Data_Rel_Perf_1M", SqlDbType.Decimal).Value = Rel_Perf_1M;
             _cmd.Parameters.Add("@Data_Rel_Perf_3M", SqlDbType.Decimal).Value = Rel_Perf_3M;
             _cmd.Parameters.Add("@Data_Rel_Perf_6M", SqlDbType.Decimal).Value = Rel_Perf_6M;
@@ -361,19 +361,21 @@ namespace RefDataExample
             _cmd.Parameters.Add("@Data_Rel_Perf_MTD", SqlDbType.Decimal).Value = Rel_Perf_MTD;
             _cmd.Parameters.Add("@Data_Rel_Perf_QTD", SqlDbType.Decimal).Value = Rel_Perf_QTD;
             _cmd.Parameters.Add("@Data_Rel_Perf_YTD", SqlDbType.Decimal).Value = Rel_Perf_YTD;
+            
             _cmd.Parameters.Add("@Data_Earnings_Per_Share", SqlDbType.Decimal).Value = Earnings_Per_Share;
             _cmd.Parameters.Add("@Data_Price_To_Book", SqlDbType.Decimal).Value = Price_To_Book;
             _cmd.Parameters.Add("@Data_Tier_1_Ratio", SqlDbType.Decimal).Value = Tier_1_Ratio;
             _cmd.Parameters.Add("@Data_Free_Cash_Flow", SqlDbType.Decimal).Value = Free_Cash_Flow;
             _cmd.Parameters.Add("@Data_EBITDA", SqlDbType.Decimal).Value = EBITDA;
             _cmd.Parameters.Add("@Data_EBIT", SqlDbType.Decimal).Value = EBIT;
+            
             _cmd.Parameters.Add("@Data_Enterprise_Value", SqlDbType.Decimal).Value = Enterprise_Value;
             _cmd.Parameters.Add("@Data_Par_Amount", SqlDbType.Decimal).Value = Par_Amount;
             _cmd.Parameters.Add("@Data_Par_Value", SqlDbType.Decimal).Value = Par_Value;
             _cmd.Parameters.Add("@Data_Coupon", SqlDbType.Decimal).Value = Coupon;
             _cmd.Parameters.Add("@Data_Redemption_Date", SqlDbType.DateTime).Value = Redemption_Date;
             _cmd.Parameters.Add("@Data_Accrued_Interest", SqlDbType.Decimal).Value = Accrued_Interest;
-            _cmd.Parameters.Add("@Data_Equity_Share_Out", SqlDbType.Decimal).Value = Data_Equity_Share_out;
+            _cmd.Parameters.Add("@Data_Equity_Sh_Out", SqlDbType.Decimal).Value = Data_Equity_Share_out;
             #endregion
             _cmd.ExecuteNonQuery();
         }
