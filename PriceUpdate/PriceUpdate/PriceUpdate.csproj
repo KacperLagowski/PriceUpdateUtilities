@@ -38,6 +38,9 @@
     <Reference Include="CircleProgressBarCs">
       <HintPath>\\nero.systems\nero\users\kacper.lagowski\Downloads\CircleProgressBarDemo\CircleProgressBarCs\obj\Debug\CircleProgressBarCs.exe</HintPath>
     </Reference>
+    <Reference Include="ObjectListView">
+      <HintPath>\\nero.systems\nero\users\kacper.lagowski\Downloads\ObjectListView-2.9.1\ObjectListView\ObjectListView\bin\Debug\ObjectListView.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
