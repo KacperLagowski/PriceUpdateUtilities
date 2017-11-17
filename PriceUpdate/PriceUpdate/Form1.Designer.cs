@@ -28,13 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.bloombergUpdateControl1 = new PriceUpdate.BloombergUpdateControl();
             this.SuspendLayout();
+            // 
+            // bloombergUpdateControl1
+            // 
+            this.bloombergUpdateControl1.Location = new System.Drawing.Point(12, 12);
+            this.bloombergUpdateControl1.Name = "bloombergUpdateControl1";
+            this.bloombergUpdateControl1.Size = new System.Drawing.Size(652, 323);
+            this.bloombergUpdateControl1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 729);
+            this.Controls.Add(this.bloombergUpdateControl1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -43,6 +52,8 @@
         }
 
         #endregion
+
+        private BloombergUpdateControl bloombergUpdateControl1;
     }
 }
 
