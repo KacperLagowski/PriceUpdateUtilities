@@ -14,12 +14,18 @@ namespace PriceUpdate
 {
     public partial class InstrumentSettingsControl : UserControl
     {
+        List<BBInstrument> testList = new List<BBInstrument>();
+        
         public InstrumentSettingsControl()
         {
             InitializeComponent();
-            List<BBInstrument> testList = new List<BBInstrument>();
+            
+        }
+
+        private void instrumentDetailsControl1_Load(object sender, EventArgs e)
+        {
             testList = BloombergProcessor.RequestOutdatedInstrumentList();
-            instrumentDetailsControl1.DataSource = testList[1];
+            instrumentDetailsControl1.InjectData((BBInstrument)testList[1]);
         }
     }
 }

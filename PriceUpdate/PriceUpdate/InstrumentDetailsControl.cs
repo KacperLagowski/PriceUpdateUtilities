@@ -13,11 +13,19 @@ namespace PriceUpdate
 {
     public partial class InstrumentDetailsControl : UserControl
     {
-        public BBInstrument DataSource { get; set; }
         public InstrumentDetailsControl()
         {
             InitializeComponent();
-            instrumentDetailsPropertyGrid.SelectedObject = DataSource;
+        }
+
+        public void InjectData(BBInstrument i)
+        {
+            instrumentDetailsPropertyGrid.SelectedObject = i;
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

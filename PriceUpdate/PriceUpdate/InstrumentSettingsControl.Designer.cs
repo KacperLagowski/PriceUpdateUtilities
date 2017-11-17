@@ -31,16 +31,16 @@
             this.instrumentTabControl = new System.Windows.Forms.TabControl();
             this.errorViewTabPage = new System.Windows.Forms.TabPage();
             this.errorViewOLV = new BrightIdeasSoftware.ObjectListView();
-            this.priceUpdateTabPage = new System.Windows.Forms.TabPage();
-            this.bloombergUpdateControl1 = new PriceUpdate.BloombergUpdateControl();
-            this.instrumentViewTabPage = new System.Windows.Forms.TabPage();
-            this.instrumentDetailsControl1 = new PriceUpdate.InstrumentDetailsControl();
             this.IDColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.InstrumentNameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.BloombergIDColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.IsinColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.PriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ErrorMessageColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.priceUpdateTabPage = new System.Windows.Forms.TabPage();
+            this.bloombergUpdateControl1 = new PriceUpdate.BloombergUpdateControl();
+            this.instrumentViewTabPage = new System.Windows.Forms.TabPage();
+            this.instrumentDetailsControl1 = new PriceUpdate.InstrumentDetailsControl();
             this.instrumentTabControl.SuspendLayout();
             this.errorViewTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorViewOLV)).BeginInit();
@@ -94,6 +94,36 @@
             this.errorViewOLV.UseCompatibleStateImageBehavior = false;
             this.errorViewOLV.View = System.Windows.Forms.View.Details;
             // 
+            // IDColumn
+            // 
+            this.IDColumn.Text = "ID";
+            this.IDColumn.Width = 62;
+            // 
+            // InstrumentNameColumn
+            // 
+            this.InstrumentNameColumn.Text = "Instrument Name";
+            this.InstrumentNameColumn.Width = 139;
+            // 
+            // BloombergIDColumn
+            // 
+            this.BloombergIDColumn.Text = "BloombergID";
+            this.BloombergIDColumn.Width = 125;
+            // 
+            // IsinColumn
+            // 
+            this.IsinColumn.Text = "ISIN";
+            this.IsinColumn.Width = 130;
+            // 
+            // PriceColumn
+            // 
+            this.PriceColumn.Text = "Price";
+            this.PriceColumn.Width = 74;
+            // 
+            // ErrorMessageColumn
+            // 
+            this.ErrorMessageColumn.Text = "Error Message";
+            this.ErrorMessageColumn.Width = 478;
+            // 
             // priceUpdateTabPage
             // 
             this.priceUpdateTabPage.Controls.Add(this.bloombergUpdateControl1);
@@ -129,36 +159,7 @@
             this.instrumentDetailsControl1.Name = "instrumentDetailsControl1";
             this.instrumentDetailsControl1.Size = new System.Drawing.Size(1000, 815);
             this.instrumentDetailsControl1.TabIndex = 0;
-            // 
-            // IDColumn
-            // 
-            this.IDColumn.Text = "ID";
-            this.IDColumn.Width = 62;
-            // 
-            // InstrumentNameColumn
-            // 
-            this.InstrumentNameColumn.Text = "Instrument Name";
-            this.InstrumentNameColumn.Width = 139;
-            // 
-            // BloombergIDColumn
-            // 
-            this.BloombergIDColumn.Text = "BloombergID";
-            this.BloombergIDColumn.Width = 125;
-            // 
-            // IsinColumn
-            // 
-            this.IsinColumn.Text = "ISIN";
-            this.IsinColumn.Width = 130;
-            // 
-            // PriceColumn
-            // 
-            this.PriceColumn.Text = "Price";
-            this.PriceColumn.Width = 74;
-            // 
-            // ErrorMessageColumn
-            // 
-            this.ErrorMessageColumn.Text = "Error Message";
-            this.ErrorMessageColumn.Width = 478;
+            this.instrumentDetailsControl1.Load += new System.EventHandler(this.instrumentDetailsControl1_Load);
             // 
             // InstrumentSettingsControl
             // 
