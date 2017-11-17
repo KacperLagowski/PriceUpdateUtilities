@@ -28,13 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.instrumentSettingsControl1 = new PriceUpdate.InstrumentSettingsControl();
             this.SuspendLayout();
+            // 
+            // instrumentSettingsControl1
+            // 
+            this.instrumentSettingsControl1.Location = new System.Drawing.Point(12, 12);
+            this.instrumentSettingsControl1.Name = "instrumentSettingsControl1";
+            this.instrumentSettingsControl1.Size = new System.Drawing.Size(1019, 852);
+            this.instrumentSettingsControl1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(971, 729);
+            this.ClientSize = new System.Drawing.Size(1043, 877);
+            this.Controls.Add(this.instrumentSettingsControl1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -43,6 +52,8 @@
         }
 
         #endregion
+
+        private InstrumentSettingsControl instrumentSettingsControl1;
     }
 }
 

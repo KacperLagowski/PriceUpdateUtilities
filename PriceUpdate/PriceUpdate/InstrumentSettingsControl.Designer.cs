@@ -32,7 +32,12 @@
             this.errorViewTabPage = new System.Windows.Forms.TabPage();
             this.priceUpdateTabPage = new System.Windows.Forms.TabPage();
             this.instrumentViewTabPage = new System.Windows.Forms.TabPage();
+            this.errorViewOLV = new BrightIdeasSoftware.ObjectListView();
+            this.bloombergUpdateControl1 = new PriceUpdate.BloombergUpdateControl();
             this.instrumentTabControl.SuspendLayout();
+            this.errorViewTabPage.SuspendLayout();
+            this.priceUpdateTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorViewOLV)).BeginInit();
             this.SuspendLayout();
             // 
             // instrumentTabControl
@@ -48,6 +53,7 @@
             // 
             // errorViewTabPage
             // 
+            this.errorViewTabPage.Controls.Add(this.errorViewOLV);
             this.errorViewTabPage.Location = new System.Drawing.Point(4, 22);
             this.errorViewTabPage.Name = "errorViewTabPage";
             this.errorViewTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -58,6 +64,7 @@
             // 
             // priceUpdateTabPage
             // 
+            this.priceUpdateTabPage.Controls.Add(this.bloombergUpdateControl1);
             this.priceUpdateTabPage.Location = new System.Drawing.Point(4, 22);
             this.priceUpdateTabPage.Name = "priceUpdateTabPage";
             this.priceUpdateTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -76,6 +83,23 @@
             this.instrumentViewTabPage.Text = "InstrumentView";
             this.instrumentViewTabPage.UseVisualStyleBackColor = true;
             // 
+            // errorViewOLV
+            // 
+            this.errorViewOLV.CellEditUseWholeCell = false;
+            this.errorViewOLV.Location = new System.Drawing.Point(6, 38);
+            this.errorViewOLV.Name = "errorViewOLV";
+            this.errorViewOLV.Size = new System.Drawing.Size(992, 775);
+            this.errorViewOLV.TabIndex = 0;
+            this.errorViewOLV.UseCompatibleStateImageBehavior = false;
+            this.errorViewOLV.View = System.Windows.Forms.View.Details;
+            // 
+            // bloombergUpdateControl1
+            // 
+            this.bloombergUpdateControl1.Location = new System.Drawing.Point(6, 6);
+            this.bloombergUpdateControl1.Name = "bloombergUpdateControl1";
+            this.bloombergUpdateControl1.Size = new System.Drawing.Size(652, 323);
+            this.bloombergUpdateControl1.TabIndex = 0;
+            // 
             // InstrumentSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -84,6 +108,9 @@
             this.Name = "InstrumentSettingsControl";
             this.Size = new System.Drawing.Size(1019, 852);
             this.instrumentTabControl.ResumeLayout(false);
+            this.errorViewTabPage.ResumeLayout(false);
+            this.priceUpdateTabPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.errorViewOLV)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -94,5 +121,7 @@
         private System.Windows.Forms.TabPage errorViewTabPage;
         private System.Windows.Forms.TabPage priceUpdateTabPage;
         private System.Windows.Forms.TabPage instrumentViewTabPage;
+        private BrightIdeasSoftware.ObjectListView errorViewOLV;
+        private BloombergUpdateControl bloombergUpdateControl1;
     }
 }

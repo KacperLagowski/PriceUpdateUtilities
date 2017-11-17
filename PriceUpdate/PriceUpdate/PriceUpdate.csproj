@@ -57,6 +57,12 @@
     <Compile Include="ArrivalPrice.cs" />
     <Compile Include="BBInstrument.cs" />
     <Compile Include="BloombergProcessor.cs" />
+    <Compile Include="InstrumentDetailsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="InstrumentDetailsControl.Designer.cs">
+      <DependentUpon>InstrumentDetailsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="InstrumentSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -82,6 +88,9 @@
     <Compile Include="IntradayPriceBloombergRequest.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstrumentDetailsControl.resx">
+      <DependentUpon>InstrumentDetailsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InstrumentSettingsControl.resx">
       <DependentUpon>InstrumentSettingsControl.cs</DependentUpon>
