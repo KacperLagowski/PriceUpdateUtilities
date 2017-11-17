@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RefDataExample;
+using PriceUpdateProgram;
 
 namespace PriceUpdate
 {
@@ -15,6 +17,9 @@ namespace PriceUpdate
         public InstrumentSettingsControl()
         {
             InitializeComponent();
+            List<BBInstrument> testList = new List<BBInstrument>();
+            testList = BloombergProcessor.RequestOutdatedInstrumentList();
+            instrumentDetailsControl1.DataSource = testList[1];
         }
     }
 }

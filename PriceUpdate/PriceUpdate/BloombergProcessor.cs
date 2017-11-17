@@ -42,9 +42,19 @@ namespace PriceUpdateProgram
         }
         public static void createConnection()
         {
-            string _filepath = Path.Combine(PriceUpdate.Properties.Settings.Default.ConnectionStringPath, ("df_" + Environment.MachineName + ".txt"));
-            string _connectionString = File.ReadAllText(_filepath);
-            connection = new SqlConnection(_connectionString);
+            try
+            {
+                string _filepathDF = Path.Combine(PriceUpdate.Properties.Settings.Default.ConnectionStringPath, ("df_" + Environment.MachineName + ".txt"));
+                string _connectionString = File.ReadAllText(_filepathDF);
+                connection = new SqlConnection(_connectionString);
+            }
+            catch(FileNotFoundException e)
+            {
+                string _filepath = Path.Combine(PriceUpdate.Properties.Settings.Default.ConnectionStringPath, (Environment.MachineName + ".txt"));
+                string _connectionString = File.ReadAllText(_filepath);
+                connection = new SqlConnection(_connectionString);
+            }
+            
         }
 
         //Self explanatory

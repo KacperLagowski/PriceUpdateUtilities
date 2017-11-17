@@ -30,14 +30,22 @@
         {
             this.instrumentTabControl = new System.Windows.Forms.TabControl();
             this.errorViewTabPage = new System.Windows.Forms.TabPage();
-            this.priceUpdateTabPage = new System.Windows.Forms.TabPage();
-            this.instrumentViewTabPage = new System.Windows.Forms.TabPage();
             this.errorViewOLV = new BrightIdeasSoftware.ObjectListView();
+            this.priceUpdateTabPage = new System.Windows.Forms.TabPage();
             this.bloombergUpdateControl1 = new PriceUpdate.BloombergUpdateControl();
+            this.instrumentViewTabPage = new System.Windows.Forms.TabPage();
+            this.instrumentDetailsControl1 = new PriceUpdate.InstrumentDetailsControl();
+            this.IDColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.InstrumentNameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.BloombergIDColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.IsinColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.PriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.ErrorMessageColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.instrumentTabControl.SuspendLayout();
             this.errorViewTabPage.SuspendLayout();
-            this.priceUpdateTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorViewOLV)).BeginInit();
+            this.priceUpdateTabPage.SuspendLayout();
+            this.instrumentViewTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // instrumentTabControl
@@ -48,7 +56,7 @@
             this.instrumentTabControl.Location = new System.Drawing.Point(4, 4);
             this.instrumentTabControl.Name = "instrumentTabControl";
             this.instrumentTabControl.SelectedIndex = 0;
-            this.instrumentTabControl.Size = new System.Drawing.Size(1012, 845);
+            this.instrumentTabControl.Size = new System.Drawing.Size(1031, 857);
             this.instrumentTabControl.TabIndex = 0;
             // 
             // errorViewTabPage
@@ -57,10 +65,34 @@
             this.errorViewTabPage.Location = new System.Drawing.Point(4, 22);
             this.errorViewTabPage.Name = "errorViewTabPage";
             this.errorViewTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.errorViewTabPage.Size = new System.Drawing.Size(1004, 819);
+            this.errorViewTabPage.Size = new System.Drawing.Size(1023, 831);
             this.errorViewTabPage.TabIndex = 0;
             this.errorViewTabPage.Text = "Error View";
             this.errorViewTabPage.UseVisualStyleBackColor = true;
+            // 
+            // errorViewOLV
+            // 
+            this.errorViewOLV.AllColumns.Add(this.IDColumn);
+            this.errorViewOLV.AllColumns.Add(this.InstrumentNameColumn);
+            this.errorViewOLV.AllColumns.Add(this.BloombergIDColumn);
+            this.errorViewOLV.AllColumns.Add(this.IsinColumn);
+            this.errorViewOLV.AllColumns.Add(this.PriceColumn);
+            this.errorViewOLV.AllColumns.Add(this.ErrorMessageColumn);
+            this.errorViewOLV.CellEditUseWholeCell = false;
+            this.errorViewOLV.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.IDColumn,
+            this.InstrumentNameColumn,
+            this.BloombergIDColumn,
+            this.IsinColumn,
+            this.PriceColumn,
+            this.ErrorMessageColumn});
+            this.errorViewOLV.Cursor = System.Windows.Forms.Cursors.Default;
+            this.errorViewOLV.Location = new System.Drawing.Point(6, 50);
+            this.errorViewOLV.Name = "errorViewOLV";
+            this.errorViewOLV.Size = new System.Drawing.Size(1014, 775);
+            this.errorViewOLV.TabIndex = 0;
+            this.errorViewOLV.UseCompatibleStateImageBehavior = false;
+            this.errorViewOLV.View = System.Windows.Forms.View.Details;
             // 
             // priceUpdateTabPage
             // 
@@ -68,30 +100,10 @@
             this.priceUpdateTabPage.Location = new System.Drawing.Point(4, 22);
             this.priceUpdateTabPage.Name = "priceUpdateTabPage";
             this.priceUpdateTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.priceUpdateTabPage.Size = new System.Drawing.Size(1004, 819);
+            this.priceUpdateTabPage.Size = new System.Drawing.Size(1023, 831);
             this.priceUpdateTabPage.TabIndex = 1;
             this.priceUpdateTabPage.Text = "Price Update Tools";
             this.priceUpdateTabPage.UseVisualStyleBackColor = true;
-            // 
-            // instrumentViewTabPage
-            // 
-            this.instrumentViewTabPage.Location = new System.Drawing.Point(4, 22);
-            this.instrumentViewTabPage.Name = "instrumentViewTabPage";
-            this.instrumentViewTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.instrumentViewTabPage.Size = new System.Drawing.Size(1004, 819);
-            this.instrumentViewTabPage.TabIndex = 2;
-            this.instrumentViewTabPage.Text = "InstrumentView";
-            this.instrumentViewTabPage.UseVisualStyleBackColor = true;
-            // 
-            // errorViewOLV
-            // 
-            this.errorViewOLV.CellEditUseWholeCell = false;
-            this.errorViewOLV.Location = new System.Drawing.Point(6, 38);
-            this.errorViewOLV.Name = "errorViewOLV";
-            this.errorViewOLV.Size = new System.Drawing.Size(992, 775);
-            this.errorViewOLV.TabIndex = 0;
-            this.errorViewOLV.UseCompatibleStateImageBehavior = false;
-            this.errorViewOLV.View = System.Windows.Forms.View.Details;
             // 
             // bloombergUpdateControl1
             // 
@@ -100,17 +112,66 @@
             this.bloombergUpdateControl1.Size = new System.Drawing.Size(652, 323);
             this.bloombergUpdateControl1.TabIndex = 0;
             // 
+            // instrumentViewTabPage
+            // 
+            this.instrumentViewTabPage.Controls.Add(this.instrumentDetailsControl1);
+            this.instrumentViewTabPage.Location = new System.Drawing.Point(4, 22);
+            this.instrumentViewTabPage.Name = "instrumentViewTabPage";
+            this.instrumentViewTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.instrumentViewTabPage.Size = new System.Drawing.Size(1023, 831);
+            this.instrumentViewTabPage.TabIndex = 2;
+            this.instrumentViewTabPage.Text = "InstrumentView";
+            this.instrumentViewTabPage.UseVisualStyleBackColor = true;
+            // 
+            // instrumentDetailsControl1
+            // 
+            this.instrumentDetailsControl1.Location = new System.Drawing.Point(6, 6);
+            this.instrumentDetailsControl1.Name = "instrumentDetailsControl1";
+            this.instrumentDetailsControl1.Size = new System.Drawing.Size(1000, 815);
+            this.instrumentDetailsControl1.TabIndex = 0;
+            // 
+            // IDColumn
+            // 
+            this.IDColumn.Text = "ID";
+            this.IDColumn.Width = 62;
+            // 
+            // InstrumentNameColumn
+            // 
+            this.InstrumentNameColumn.Text = "Instrument Name";
+            this.InstrumentNameColumn.Width = 139;
+            // 
+            // BloombergIDColumn
+            // 
+            this.BloombergIDColumn.Text = "BloombergID";
+            this.BloombergIDColumn.Width = 125;
+            // 
+            // IsinColumn
+            // 
+            this.IsinColumn.Text = "ISIN";
+            this.IsinColumn.Width = 130;
+            // 
+            // PriceColumn
+            // 
+            this.PriceColumn.Text = "Price";
+            this.PriceColumn.Width = 74;
+            // 
+            // ErrorMessageColumn
+            // 
+            this.ErrorMessageColumn.Text = "Error Message";
+            this.ErrorMessageColumn.Width = 478;
+            // 
             // InstrumentSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.instrumentTabControl);
             this.Name = "InstrumentSettingsControl";
-            this.Size = new System.Drawing.Size(1019, 852);
+            this.Size = new System.Drawing.Size(1038, 864);
             this.instrumentTabControl.ResumeLayout(false);
             this.errorViewTabPage.ResumeLayout(false);
-            this.priceUpdateTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorViewOLV)).EndInit();
+            this.priceUpdateTabPage.ResumeLayout(false);
+            this.instrumentViewTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -123,5 +184,12 @@
         private System.Windows.Forms.TabPage instrumentViewTabPage;
         private BrightIdeasSoftware.ObjectListView errorViewOLV;
         private BloombergUpdateControl bloombergUpdateControl1;
+        private InstrumentDetailsControl instrumentDetailsControl1;
+        private BrightIdeasSoftware.OLVColumn IDColumn;
+        private BrightIdeasSoftware.OLVColumn InstrumentNameColumn;
+        private BrightIdeasSoftware.OLVColumn BloombergIDColumn;
+        private BrightIdeasSoftware.OLVColumn IsinColumn;
+        private BrightIdeasSoftware.OLVColumn PriceColumn;
+        private BrightIdeasSoftware.OLVColumn ErrorMessageColumn;
     }
 }
