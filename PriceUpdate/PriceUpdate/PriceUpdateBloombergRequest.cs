@@ -214,9 +214,12 @@ namespace Bloomberglp.Blpapi.Examples
 
             foreach(string lid in lookupids)
             {
-                _id = _res.Single(p => p.Name.ToString() == lid);
-                _i = BloombergInstruments.Where(p => p.BloombergID == _id.GetValueAsString()).ToList();
-                _i.ForEach(i => i.OverrideValues(_res));
+                if(_res.Any(p => p.Name.ToString() == lid))
+                {
+                    _id = _res.Single(p => p.Name.ToString() == lid);
+                    _i = BloombergInstruments.Where(p => p.BloombergID == _id.GetValueAsString()).ToList();
+                    _i.ForEach(i => i.OverrideValues(_res));
+                }
                 if (_i.Any())
                 {
                     break;

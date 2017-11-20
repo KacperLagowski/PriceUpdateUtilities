@@ -265,7 +265,7 @@ namespace RefDataExample
             this.Ticker = row["Data_Ticker"].ToString();
             this.Sedol1 = row["Data_Sedol1"].ToString();
             this.Common = row["Data_Common"].ToString();
-            //this.LEI = row["Data_LEI"].ToString();
+            this.LEI = row["Data_LEI"].ToString();
             this.Other = row["Data_Other"].ToString();
             this.Type = row["Data_Type"].ToString();
             this.AssetType = Convert.ToInt32(row["Data_AssetType"]);
@@ -307,7 +307,7 @@ namespace RefDataExample
             this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
             this.Accrued_Interest = Convert.ToDecimal(row["Data_Accrued_Interest"]);
             //this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
-            //this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
+            this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
         }
 
         public void Update(SqlConnection conn)
