@@ -2,6 +2,7 @@
 using PriceUpdateProgram;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
@@ -15,97 +16,130 @@ namespace RefDataExample
     public class BBInstrument
     {
         #region props
+        [Description("Unique database ID"), ReadOnly(true)]
         public int ID { get; set; }
-        public int ID_MPM { get; set; }
-        public string ID_DataFeed { get; set; }
-        public DateTime ID_Date { get; set; }
-        public string UserID { get { return System.Security.Principal.WindowsIdentity.GetCurrent().Name; } }
-        public string Sys_Note_System { get; set; }
-        public string Sys_Note_User { get; set; }
-        public int Sys_DataFeed_Type { get; set; }
-        //
-        public int Sys_End { get; set; }
-        //ID_BB_UNIQUE
-        public string BloombergID { get; set; }
-        //ISIN
-        public string ISIN { get; set; }
 
-        //TICKER
+        [Description("ID of this instrument in PM"), ReadOnly(true)]
+        public int ID_MPM { get; set; }
+
+        [Description("A "), ReadOnly(false)]
+        public string ID_DataFeed { get; set; }
+
+        [Description("Represents the date when the stock was last manipulated"), ReadOnly(true)]
+        public DateTime ID_Date { get; set; }
+
+        [Description("ID Value"), ReadOnly(true)]
+        public string UserID { get { return System.Security.Principal.WindowsIdentity.GetCurrent().Name; } }
+
+        [Description("ID Value"), ReadOnly(true)]
+        public string Sys_Note_System { get; set; }
+
+        [Description("ID Value"), ReadOnly(true)]
+        public string Sys_Note_User { get; set; }
+
+        [Description("ID Value"), ReadOnly(true)]
+        public int Sys_DataFeed_Type { get; set; }
+
+        [Description("ID Value"), ReadOnly(true)]
+        public int Sys_End { get; set; }
+
+        [Description("ID Value"), ReadOnly(true)]
+        public string BloombergID { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
+        public string ISIN { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public string Ticker { get; set; }
-        //SEDOL
+        [Description("ID Value"), ReadOnly(true)]
         public string Sedol1 { get; set; }
-        //ID_COMMON
+        [Description("ID Value"), ReadOnly(true)]
         public string Common { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public string Other { get; set; }
-        //
+        [Description("ID Value"), ReadOnly(true)]
         public string Type { get; set; }
-        //To check
+        [Description("ID Value"), ReadOnly(true)]
         public int AssetType { get; set; }
-        //EXCH_CODE
+        [Description("ID Value"), ReadOnly(true)]
         public string Exchange { get; set; }
-        //To check
+        [Description("ID Value"), ReadOnly(true)]
         public string MIC { get; set; }
-        //NAME
+        [Description("ID Value"), ReadOnly(true)]
         public string Name { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public string Name_Midas_Short { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public string Name_Midas_Long { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Price { get; set; }
-        //PX_MID
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Price_Mid { get; set; }
-        //PX_BID
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Price_Bid { get; set; }
-        //PX_ASK
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Price_Ask { get; set; }
-        //PX_LAST
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Price_Last { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Price_Net_Asset_Value { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public string Price_Default { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public string Price_Currency_ID { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Price_Factor { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Div_Gross { get; set; }
-        //DVD_CRNCY
+        [Description("ID Value"), ReadOnly(true)]
         public string Div_Currency_ID { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Div_Factor { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public DateTime Div_Ex_Date { get; set; }
-        //REL_1M
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Rel_Perf_1M { get; set; }
-        //REL_3M
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Rel_Perf_3M { get; set; }
-        //REL_6M
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Rel_Perf_6M { get; set; }
-        //REL_1YR
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Rel_Perf_12M { get; set; }
-        //REL_MTD
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Rel_Perf_MTD { get; set; }
-        //REL_QTD
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Rel_Perf_QTD { get; set; }
-        //REL_YTD
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Rel_Perf_YTD { get; set; }
-        //IS_EPS
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Earnings_Per_Share { get; set; }
-        //PX_TO_BOOK_RATIO
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Price_To_Book { get; set; }
-        //BS_CORE_CAP_RATIO
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Tier_1_Ratio { get; set; }
-        //CF_FREE_CASH_FLOW
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Free_Cash_Flow { get; set; }
-        //EBITDA
+        [Description("ID Value"), ReadOnly(true)]
         public decimal EBITDA { get; set; }
-        //EBIT
+        [Description("ID Value"), ReadOnly(true)]
         public decimal EBIT { get; set; }
-        //ENTERPRISE_VALUE
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Enterprise_Value { get; set; }
-        //PAR_AMT
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Par_Amount { get; set; }
-        //BS_PAR_VAL
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Par_Value { get; set; }
-        //CPN
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Coupon { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public DateTime Redemption_Date { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Accrued_Interest { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public RestrictionFlagEnum Data_Restriction_Flag { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public decimal Data_Equity_Share_out { get; set; }
+        [Description("ID Value"), ReadOnly(true)]
         public bool BloombergUpdate { get; private set; }
+        [Description("ID Value"), ReadOnly(true)]
         public string LEI { get; set; }
         #endregion
 
@@ -265,7 +299,7 @@ namespace RefDataExample
             this.Ticker = row["Data_Ticker"].ToString();
             this.Sedol1 = row["Data_Sedol1"].ToString();
             this.Common = row["Data_Common"].ToString();
-            this.LEI = row["Data_LEI"].ToString();
+            //this.LEI = row["Data_LEI"].ToString();
             this.Other = row["Data_Other"].ToString();
             this.Type = row["Data_Type"].ToString();
             this.AssetType = Convert.ToInt32(row["Data_AssetType"]);
@@ -307,7 +341,7 @@ namespace RefDataExample
             this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
             this.Accrued_Interest = Convert.ToDecimal(row["Data_Accrued_Interest"]);
             //this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
-            this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
+            //this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
         }
 
         public void Update(SqlConnection conn)
