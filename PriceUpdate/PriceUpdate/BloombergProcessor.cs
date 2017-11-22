@@ -270,15 +270,21 @@ namespace PriceUpdateProgram
             DFDetails _liteCompleted = details.Single(p => p.ItemName == "DFCompletedLite");
             DFDetails _liteRequested = details.Single(p => p.ItemName == "DFRequestedLite");
 
-            if (_fullCompleted.Value < _fullRequested.Value)
+            if(_fullCompleted.Value.Day < DateTime.Now.Day)
             {
-               //RunFullPriceUpdate();
+                RunFullPriceUpdate();
+            }
+            else if (_liteCompleted.Value < _liteRequested.Value)
+            {
+                RunMiniPriceUpdate();
             }
 
-            if(_liteCompleted.Value < _liteRequested.Value)
+            if (_fullCompleted.Value < _fullRequested.Value)
             {
-                //RunMiniPriceUpdate();
+               RunFullPriceUpdate();
             }
+
+            
             
         }
 
