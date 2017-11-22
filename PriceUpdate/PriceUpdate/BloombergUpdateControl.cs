@@ -53,5 +53,11 @@ namespace PriceUpdate
             bh.RunIntradayPriceUpdate();
             this.updateButton.Enabled = true;
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            BloombergProcessor bbbb = new BloombergProcessor();
+            bbbb.StartCounting();
+        }
     }
 }

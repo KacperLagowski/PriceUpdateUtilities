@@ -39,6 +39,7 @@
             this.informLabel2 = new System.Windows.Forms.Label();
             this.informLabel3 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -147,10 +148,21 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(185, 283);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(206, 35);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(30, 23);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "T";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // BloombergUpdateControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.progressLabel);
             this.Controls.Add(this.randomLabel);
@@ -175,5 +187,6 @@
         private System.Windows.Forms.Label informLabel2;
         private System.Windows.Forms.Label informLabel3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button button1;
     }
 }

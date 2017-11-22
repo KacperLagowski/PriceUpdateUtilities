@@ -91,9 +91,11 @@ namespace Bloomberglp.Blpapi.Examples
             d_eventType = "TRADE";
             d_gapFillInitialBar = false;
             Datetime prevTradedDate = getPreviousTradingDate();
+            Datetime nextClosingDate = new Datetime(Time);
             d_startDateTime = prevTradedDate.ToString();
             prevTradedDate.SetTime(prevTradedDate.Hour, prevTradedDate.Minute + 25, prevTradedDate.Second, prevTradedDate.MilliSecond);
-            d_endDateTime = prevTradedDate.ToString();
+            d_endDateTime = nextClosingDate.ToString();
+            //d_endDateTime = $"{Time.Year}-{Time.Month}-{Time.Day}T{Time.ToLongTimeString()}";
 
             SessionOptions sessionOptions = new SessionOptions();
 			sessionOptions.ServerHost = d_host;

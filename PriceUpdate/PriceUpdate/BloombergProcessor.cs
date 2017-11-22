@@ -272,7 +272,7 @@ namespace PriceUpdateProgram
 
             if (_fullCompleted.Value < _fullRequested.Value)
             {
-                //RunFullPriceUpdate();
+               //RunFullPriceUpdate();
             }
 
             if(_liteCompleted.Value < _liteRequested.Value)
