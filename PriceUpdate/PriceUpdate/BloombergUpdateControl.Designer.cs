@@ -39,7 +39,6 @@
             this.informLabel2 = new System.Windows.Forms.Label();
             this.informLabel3 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,7 +46,7 @@
             // 
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.titleLabel.Location = new System.Drawing.Point(3, 4);
+            this.titleLabel.Location = new System.Drawing.Point(177, 4);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(271, 25);
             this.titleLabel.TabIndex = 4;
@@ -77,7 +76,7 @@
             // 
             this.progressLabel.AutoSize = true;
             this.progressLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.progressLabel.Location = new System.Drawing.Point(39, 91);
+            this.progressLabel.Location = new System.Drawing.Point(3, 91);
             this.progressLabel.Name = "progressLabel";
             this.progressLabel.Size = new System.Drawing.Size(52, 15);
             this.progressLabel.TabIndex = 8;
@@ -146,22 +145,11 @@
             this.flowLayoutPanel1.Controls.Add(this.informLabel2);
             this.flowLayoutPanel1.Controls.Add(this.miniButton);
             this.flowLayoutPanel1.Controls.Add(this.informLabel3);
-            this.flowLayoutPanel1.Controls.Add(this.button1);
             this.flowLayoutPanel1.Controls.Add(this.progressLabel);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 32);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(685, 121);
             this.flowLayoutPanel1.TabIndex = 14;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(3, 94);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(30, 23);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "T";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // BloombergUpdateControl
             // 
@@ -190,6 +178,5 @@
         private System.Windows.Forms.Label informLabel2;
         private System.Windows.Forms.Label informLabel3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button button1;
     }
 }

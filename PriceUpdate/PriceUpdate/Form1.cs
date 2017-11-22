@@ -22,6 +22,7 @@ namespace PriceUpdate
         private void Form1_Load(object sender, EventArgs e)
         {
             bloombergUpdateControl.ProgressLabelText = String.Empty;
+            WindowState = FormWindowState.Minimized;
         }
 
         private void Form1_Resize_1(object sender, EventArgs e)
@@ -31,7 +32,8 @@ namespace PriceUpdate
                 notifyIcon.Visible = true;
                 notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
                 notifyIcon.ShowBalloonTip(4000);
-                this.Hide();
+                notifyIcon.ContextMenuStrip = contextMenuStrip1;
+                HideForm();
             }
 
             else if (FormWindowState.Normal == this.WindowState)
@@ -43,8 +45,32 @@ namespace PriceUpdate
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ShowInTaskbar = true;
-            notifyIcon.Visible = false;
             WindowState = FormWindowState.Normal;
+            ShowForm();
+            notifyIcon.Visible = false;
+        }
+
+        protected void ShowForm()
+        {
+            Form1 x = default(Form1);
+            x = new Form1();
+            x.Show();
+            x = null;
+        }
+
+        protected void HideForm()
+        {
+            this.Hide();
+        }
+
+        private void closeApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
