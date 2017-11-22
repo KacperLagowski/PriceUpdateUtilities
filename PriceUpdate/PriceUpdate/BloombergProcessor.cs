@@ -135,6 +135,7 @@ namespace PriceUpdateProgram
 
                 foreach (BBInstrument i in _bloombergData.BloombergInstruments)
                 {
+                    i.GetData_Price();
                     i.Update(connection);
                 }
             }
@@ -160,6 +161,7 @@ namespace PriceUpdateProgram
 
                 foreach (BBInstrument i in _bloombergData.BloombergInstruments)
                 {
+                    i.GetData_Price();
                     i.Update(connection);
                 }
             }
@@ -186,8 +188,8 @@ namespace PriceUpdateProgram
             else
             {
                 priceDetails.PriceFlag = IntradayPrice.Opening;
-                IntradayBarExample openingPriceRequest = new IntradayBarExample(priceDetails.ID_DataFeed, priceDetails.PriceDateTime, priceDetails.PriceDateTime.AddMinutes(15));
-                openingPriceRequest.GetOpeningPrice();
+                OpeningPriceBloombergRequest openingPriceRequest = new OpeningPriceBloombergRequest();
+                openingPriceRequest.GetOpeningPrice(priceDetails.ID_DataFeed, priceDetails.PriceDateTime.AddDays(-1), priceDetails.PriceDateTime);
                 _price = openingPriceRequest.Price;
             }
             return _price;

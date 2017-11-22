@@ -299,7 +299,7 @@ namespace RefDataExample
             this.Ticker = row["Data_Ticker"].ToString();
             this.Sedol1 = row["Data_Sedol1"].ToString();
             this.Common = row["Data_Common"].ToString();
-            //this.LEI = row["Data_LEI"].ToString();
+            this.LEI = row["Data_LEI"].ToString();
             this.Other = row["Data_Other"].ToString();
             this.Type = row["Data_Type"].ToString();
             this.AssetType = Convert.ToInt32(row["Data_AssetType"]);
@@ -341,7 +341,7 @@ namespace RefDataExample
             this.Redemption_Date = Convert.ToDateTime(row["Data_Redemption_Date"]);
             this.Accrued_Interest = Convert.ToDecimal(row["Data_Accrued_Interest"]);
             //this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
-            //this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
+            this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
         }
 
         public void Update(SqlConnection conn)
@@ -412,6 +412,42 @@ namespace RefDataExample
             _cmd.Parameters.Add("@Data_Equity_Sh_Out", SqlDbType.Decimal).Value = Data_Equity_Share_out;
             #endregion
             _cmd.ExecuteNonQuery();
+        }
+
+        public void GetData_Price()
+        {
+            switch(this.Price_Default)
+            {
+                case "Data_Price_Mid":
+                    this.Price = Price_Mid;
+                    break;
+                case "Data_Price_Bid":
+                    this.Price = Price_Bid;
+                    break;
+                case "Data_Price_Ask":
+                    this.Price = Price_Ask;
+                    break;
+                case "Data_Price_Last":
+                    this.Price = Price_Last;
+                    break;
+                case "Data_Price_Net_Asset_Value":
+                    this.Price = Price_Net_Asset_Value;
+                    break;
+                default:
+                    if (this.Price_Mid != 0)
+                        Price = Price_Mid;
+                    else if (this.Price_Bid != 0 && Price_Ask != 0)
+                        Price = (Price_Bid + Price_Ask) / 2;
+                    else if (this.Price_Bid != 0)
+                        Price = Price_Bid;
+                    else if (this.Price_Ask != 0)
+                        Price = Price_Ask;
+                    else if (this.Price_Net_Asset_Value != 0)
+                        Price = Price_Net_Asset_Value;
+                    else
+                        Price = Price_Last;
+                    break;
+            }
         }
     }
 }

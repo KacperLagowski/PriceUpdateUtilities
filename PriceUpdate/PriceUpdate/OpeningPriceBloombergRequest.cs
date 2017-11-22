@@ -31,7 +31,7 @@ using Session = Bloomberglp.Blpapi.Session;
 namespace Bloomberglp.Blpapi.Examples
 {
 
-	public class IntradayBarExample
+	public class OpeningPriceBloombergRequest
 	{
 		private static readonly Name BAR_DATA       = new Name("barData");
 		private static readonly Name BAR_TICK_DATA  = new Name("barTickData");
@@ -72,28 +72,30 @@ namespace Bloomberglp.Blpapi.Examples
             return new Datetime(tradedOn);
 		}
 
-		public IntradayBarExample(string instrument, DateTime from, DateTime to)
+		public OpeningPriceBloombergRequest()
 		{
-			d_host = "localhost";
-			d_port = 8194;
-			d_barInterval = 60;
-            d_security = instrument;
-            Time = from;
-			d_eventType = "TRADE";
-			d_gapFillInitialBar = false;
-			Datetime prevTradedDate = getPreviousTradingDate();
-            d_startDateTime = prevTradedDate.ToString();
-            prevTradedDate.SetTime(prevTradedDate.Hour, prevTradedDate.Minute + 25, prevTradedDate.Second, prevTradedDate.MilliSecond);
-            d_endDateTime = prevTradedDate.ToString();
+			
             //d_startDateTime = prevTradedDate.Day + "/" + prevTradedDate.Month + "/" + prevTradedDate.Year + "T" + Time.ToLongTimeString();
 			 // next day for end date
 
             //d_endDateTime = prevTradedDate.Day + "/" + prevTradedDate.Month + "/" + prevTradedDate.Year + "T" + Time.AddMinutes(25).ToLongTimeString();
         }
 
-		public void GetOpeningPrice()
+		public void GetOpeningPrice(string instrument, DateTime from, DateTime to)
 		{
-			SessionOptions sessionOptions = new SessionOptions();
+            d_host = "localhost";
+            d_port = 8194;
+            d_barInterval = 60;
+            d_security = instrument;
+            Time = from;
+            d_eventType = "TRADE";
+            d_gapFillInitialBar = false;
+            Datetime prevTradedDate = getPreviousTradingDate();
+            d_startDateTime = prevTradedDate.ToString();
+            prevTradedDate.SetTime(prevTradedDate.Hour, prevTradedDate.Minute + 25, prevTradedDate.Second, prevTradedDate.MilliSecond);
+            d_endDateTime = prevTradedDate.ToString();
+
+            SessionOptions sessionOptions = new SessionOptions();
 			sessionOptions.ServerHost = d_host;
 			sessionOptions.ServerPort = d_port;
 
@@ -154,7 +156,7 @@ namespace Bloomberglp.Blpapi.Examples
 				int numEvents = bar.GetElementAsInt32(NUM_EVENTS);
 				long volume = bar.GetElementAsInt64(VOLUME);
 				System.DateTime sysDatetime = time.ToSystemDateTime();
-                this.Price = open;
+                Price = open;
 			}
 		}
 
