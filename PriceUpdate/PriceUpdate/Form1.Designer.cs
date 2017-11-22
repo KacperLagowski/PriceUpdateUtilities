@@ -28,32 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.instrumentSettingsControl1 = new PriceUpdate.InstrumentSettingsControl();
+            this.components = new System.ComponentModel.Container();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.bloombergUpdateControl = new PriceUpdate.BloombergUpdateControl();
             this.SuspendLayout();
             // 
-            // instrumentSettingsControl1
+            // notifyIcon
             // 
-            this.instrumentSettingsControl1.Location = new System.Drawing.Point(12, 12);
-            this.instrumentSettingsControl1.Name = "instrumentSettingsControl1";
-            this.instrumentSettingsControl1.Size = new System.Drawing.Size(1019, 852);
-            this.instrumentSettingsControl1.TabIndex = 0;
+            this.notifyIcon.BalloonTipText = "Price Update Utility still working...";
+            this.notifyIcon.BalloonTipTitle = "Price Update Application";
+            this.notifyIcon.Text = "notifyIcon1";
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            // 
+            // bloombergUpdateControl
+            // 
+            this.bloombergUpdateControl.Location = new System.Drawing.Point(12, 12);
+            this.bloombergUpdateControl.Name = "bloombergUpdateControl";
+            this.bloombergUpdateControl.ProgressLabelText = null;
+            this.bloombergUpdateControl.Size = new System.Drawing.Size(693, 156);
+            this.bloombergUpdateControl.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1043, 877);
-            this.Controls.Add(this.instrumentSettingsControl1);
+            this.ClientSize = new System.Drawing.Size(709, 171);
+            this.Controls.Add(this.bloombergUpdateControl);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Price Update Utility";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize_1);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private InstrumentSettingsControl instrumentSettingsControl1;
+        private BloombergUpdateControl bloombergUpdateControl;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
 

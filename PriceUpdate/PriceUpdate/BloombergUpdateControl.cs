@@ -15,9 +15,11 @@ namespace PriceUpdate
 {
     public partial class BloombergUpdateControl : UserControl
     {
+        public string ProgressLabelText { get; set; }
         public BloombergUpdateControl()
         {
             InitializeComponent();
+            progressLabel.Text = ProgressLabelText;
         }
 
         private void button1_Click(object sender, EventArgs e)
