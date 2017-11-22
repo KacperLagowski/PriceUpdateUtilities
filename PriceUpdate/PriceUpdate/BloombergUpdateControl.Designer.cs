@@ -38,17 +38,17 @@
             this.informLabel1 = new System.Windows.Forms.Label();
             this.informLabel2 = new System.Windows.Forms.Label();
             this.informLabel3 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleLabel
             // 
             this.titleLabel.AutoSize = true;
-            this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.titleLabel.Location = new System.Drawing.Point(177, 4);
+            this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.titleLabel.Location = new System.Drawing.Point(3, 0);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(271, 25);
+            this.titleLabel.Size = new System.Drawing.Size(170, 15);
             this.titleLabel.TabIndex = 4;
             this.titleLabel.Text = "Update Prices from Bloomberg";
             // 
@@ -56,7 +56,7 @@
             // 
             this.updateButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("updateButton.BackgroundImage")));
             this.updateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.updateButton.Location = new System.Drawing.Point(3, 3);
+            this.updateButton.Location = new System.Drawing.Point(6, 19);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(93, 85);
             this.updateButton.TabIndex = 6;
@@ -76,7 +76,7 @@
             // 
             this.progressLabel.AutoSize = true;
             this.progressLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.progressLabel.Location = new System.Drawing.Point(3, 91);
+            this.progressLabel.Location = new System.Drawing.Point(6, 249);
             this.progressLabel.Name = "progressLabel";
             this.progressLabel.Size = new System.Drawing.Size(52, 15);
             this.progressLabel.TabIndex = 8;
@@ -86,7 +86,7 @@
             // 
             this.intradayButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("intradayButton.BackgroundImage")));
             this.intradayButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.intradayButton.Location = new System.Drawing.Point(228, 3);
+            this.intradayButton.Location = new System.Drawing.Point(6, 110);
             this.intradayButton.Name = "intradayButton";
             this.intradayButton.Size = new System.Drawing.Size(67, 65);
             this.intradayButton.TabIndex = 9;
@@ -97,7 +97,7 @@
             // 
             this.miniButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("miniButton.BackgroundImage")));
             this.miniButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.miniButton.Location = new System.Drawing.Point(451, 3);
+            this.miniButton.Location = new System.Drawing.Point(6, 181);
             this.miniButton.Name = "miniButton";
             this.miniButton.Size = new System.Drawing.Size(67, 65);
             this.miniButton.TabIndex = 10;
@@ -108,7 +108,7 @@
             // 
             this.informLabel1.AutoSize = true;
             this.informLabel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.informLabel1.Location = new System.Drawing.Point(102, 0);
+            this.informLabel1.Location = new System.Drawing.Point(105, 54);
             this.informLabel1.Name = "informLabel1";
             this.informLabel1.Size = new System.Drawing.Size(120, 15);
             this.informLabel1.TabIndex = 11;
@@ -118,7 +118,7 @@
             // 
             this.informLabel2.AutoSize = true;
             this.informLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.informLabel2.Location = new System.Drawing.Point(301, 0);
+            this.informLabel2.Location = new System.Drawing.Point(79, 135);
             this.informLabel2.Name = "informLabel2";
             this.informLabel2.Size = new System.Drawing.Size(144, 15);
             this.informLabel2.TabIndex = 12;
@@ -128,40 +128,39 @@
             // 
             this.informLabel3.AutoSize = true;
             this.informLabel3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.informLabel3.Location = new System.Drawing.Point(524, 0);
+            this.informLabel3.Location = new System.Drawing.Point(78, 206);
             this.informLabel3.Name = "informLabel3";
             this.informLabel3.Size = new System.Drawing.Size(145, 15);
             this.informLabel3.TabIndex = 13;
             this.informLabel3.Text = "Run Minimal Price Update";
             // 
-            // flowLayoutPanel1
+            // groupBox1
             // 
-            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel1.Controls.Add(this.updateButton);
-            this.flowLayoutPanel1.Controls.Add(this.informLabel1);
-            this.flowLayoutPanel1.Controls.Add(this.intradayButton);
-            this.flowLayoutPanel1.Controls.Add(this.informLabel2);
-            this.flowLayoutPanel1.Controls.Add(this.miniButton);
-            this.flowLayoutPanel1.Controls.Add(this.informLabel3);
-            this.flowLayoutPanel1.Controls.Add(this.progressLabel);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 32);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(685, 121);
-            this.flowLayoutPanel1.TabIndex = 14;
+            this.groupBox1.Controls.Add(this.progressLabel);
+            this.groupBox1.Controls.Add(this.updateButton);
+            this.groupBox1.Controls.Add(this.informLabel3);
+            this.groupBox1.Controls.Add(this.intradayButton);
+            this.groupBox1.Controls.Add(this.informLabel2);
+            this.groupBox1.Controls.Add(this.miniButton);
+            this.groupBox1.Controls.Add(this.informLabel1);
+            this.groupBox1.Location = new System.Drawing.Point(6, 18);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(263, 271);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Update Options";
             // 
             // BloombergUpdateControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.randomLabel);
             this.Controls.Add(this.titleLabel);
             this.Name = "BloombergUpdateControl";
-            this.Size = new System.Drawing.Size(693, 156);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
+            this.Size = new System.Drawing.Size(273, 293);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,6 +176,6 @@
         private System.Windows.Forms.Label informLabel1;
         private System.Windows.Forms.Label informLabel2;
         private System.Windows.Forms.Label informLabel3;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

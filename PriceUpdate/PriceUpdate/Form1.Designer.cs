@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.bloombergUpdateControl = new PriceUpdate.BloombergUpdateControl();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.closeApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bloombergUpdateControl1 = new PriceUpdate.BloombergUpdateControl();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,14 +45,6 @@
             this.notifyIcon.Text = "Price Update Utility";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
-            // 
-            // bloombergUpdateControl
-            // 
-            this.bloombergUpdateControl.Location = new System.Drawing.Point(12, 12);
-            this.bloombergUpdateControl.Name = "bloombergUpdateControl";
-            this.bloombergUpdateControl.ProgressLabelText = null;
-            this.bloombergUpdateControl.Size = new System.Drawing.Size(693, 156);
-            this.bloombergUpdateControl.TabIndex = 0;
             // 
             // contextMenuStrip1
             // 
@@ -68,12 +60,20 @@
             this.closeApplicationToolStripMenuItem.Text = "Close Application";
             this.closeApplicationToolStripMenuItem.Click += new System.EventHandler(this.closeApplicationToolStripMenuItem_Click);
             // 
+            // bloombergUpdateControl1
+            // 
+            this.bloombergUpdateControl1.Location = new System.Drawing.Point(12, 12);
+            this.bloombergUpdateControl1.Name = "bloombergUpdateControl1";
+            this.bloombergUpdateControl1.ProgressLabelText = null;
+            this.bloombergUpdateControl1.Size = new System.Drawing.Size(273, 293);
+            this.bloombergUpdateControl1.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(709, 171);
-            this.Controls.Add(this.bloombergUpdateControl);
+            this.ClientSize = new System.Drawing.Size(286, 305);
+            this.Controls.Add(this.bloombergUpdateControl1);
             this.Name = "Form1";
             this.Text = "Price Update Utility";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
@@ -85,11 +85,10 @@
         }
 
         #endregion
-
-        private BloombergUpdateControl bloombergUpdateControl;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem closeApplicationToolStripMenuItem;
+        private BloombergUpdateControl bloombergUpdateControl1;
     }
 }
 

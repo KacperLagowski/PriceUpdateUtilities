@@ -21,8 +21,7 @@ namespace PriceUpdate
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            bloombergUpdateControl.ProgressLabelText = String.Empty;
-            WindowState = FormWindowState.Minimized;
+            bloombergUpdateControl1.ProgressLabelText = String.Empty;
         }
 
         private void Form1_Resize_1(object sender, EventArgs e)
