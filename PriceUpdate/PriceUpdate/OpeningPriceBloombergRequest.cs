@@ -75,10 +75,6 @@ namespace Bloomberglp.Blpapi.Examples
 		public OpeningPriceBloombergRequest()
 		{
 			
-            //d_startDateTime = prevTradedDate.Day + "/" + prevTradedDate.Month + "/" + prevTradedDate.Year + "T" + Time.ToLongTimeString();
-			 // next day for end date
-
-            //d_endDateTime = prevTradedDate.Day + "/" + prevTradedDate.Month + "/" + prevTradedDate.Year + "T" + Time.AddMinutes(25).ToLongTimeString();
         }
 
 		public void GetOpeningPrice(string instrument, DateTime from, DateTime to)

@@ -102,12 +102,10 @@ namespace Bloomberglp.Blpapi.Examples
             bool sessionStarted = session.Start();
             if (!sessionStarted)
             {
-                MessageBox.Show("Failed to start session");
                 return;
             }
             if (!session.OpenService("//blp/refdata"))
             {
-                MessageBox.Show("Failed to open refdata");
                 return;
             }
 
@@ -180,7 +178,7 @@ namespace Bloomberglp.Blpapi.Examples
             {
                 if (msg.HasElement(RESPONSE_ERROR))
                 {
-                    MessageBox.Show(msg.GetElement(RESPONSE_ERROR).GetElementAsString(MESSAGE));
+                    //MessageBox.Show(msg.GetElement(RESPONSE_ERROR).GetElementAsString(MESSAGE));
                     continue;
                 }
                 processMessage(msg);

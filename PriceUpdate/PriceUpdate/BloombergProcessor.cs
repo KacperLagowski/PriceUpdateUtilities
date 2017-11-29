@@ -44,7 +44,7 @@ namespace PriceUpdateProgram
         {
             try
             {
-                string _filepathDF = Path.Combine(PriceUpdate.Properties.Settings.Default.ConnectionStringPath, ("df_" + Environment.MachineName + ".txt"));
+                string _filepathDF = Path.Combine(PriceUpdate.Properties.Settings.Default.ConnectionStringPath, ("df_" + Environment.MachineName.ToLower() + ".txt"));
                 string _connectionString = File.ReadAllText(_filepathDF);
                 connection = new SqlConnection(_connectionString);
             }
@@ -72,7 +72,7 @@ namespace PriceUpdateProgram
             }
             catch (SqlException se)
             {
-                System.Windows.Forms.MessageBox.Show(se.Message);
+
             }
             finally
             {
@@ -129,8 +129,8 @@ namespace PriceUpdateProgram
                 createConnection();
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
+                List<BBInstrument> test = RequestOutdatedInstrumentList();
                 _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), _fullFields);
-                updateDFDetails(DFDetailsType.Full);
                 connection.Open();
 
                 foreach (BBInstrument i in _bloombergData.BloombergInstruments)
@@ -141,6 +141,7 @@ namespace PriceUpdateProgram
             }
             finally
             {
+                updateDFDetails(DFDetailsType.Full);
                 connection.Close();
             }
         }
@@ -157,7 +158,6 @@ namespace PriceUpdateProgram
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunMiniPriceUpdate(RequestOutdatedInstrumentList(), _miniFields);
-                updateDFDetails(DFDetailsType.Lite);
                 connection.Open();
 
                 foreach (BBInstrument i in _bloombergData.BloombergInstruments)
@@ -168,6 +168,7 @@ namespace PriceUpdateProgram
             }
             finally
             {
+                updateDFDetails(DFDetailsType.Lite);
                 connection.Close();
             }
         }
@@ -230,7 +231,7 @@ namespace PriceUpdateProgram
         public void StartCounting()
         {
             timer.Tick += new System.EventHandler(TimerEventProcessor);
-            timer.Interval = 1000 * 60;
+            timer.Interval = 3000 * 60;
             timer.Start();
         }
 
@@ -293,16 +294,18 @@ namespace PriceUpdateProgram
         public void updateDFDetails(DFDetailsType type)
         {
             string _storedProcedure = "sp_PMDFUpdate";
-            string _itemDFUpdateName = String.Empty;
-            if (type == DFDetailsType.Full)
-                _itemDFUpdateName = "DFCompletedFull";
-            else if (type == DFDetailsType.Lite)
-                _itemDFUpdateName = "DFCompletedLite";
 
-            connection.Open();
             SqlCommand _cmd = new SqlCommand(_storedProcedure, connection);
-            _cmd.Parameters.Add("@DFItemName", SqlDbType.Text).Value = _itemDFUpdateName;
-            _cmd.Parameters.Add("@TimeUpdated", SqlDbType.DateTime).Value = DateTime.Now;
+            _cmd.CommandType = CommandType.StoredProcedure;
+            if (type == DFDetailsType.Full)
+            {
+                _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedFull";
+            }
+            else if (type == DFDetailsType.Lite)
+            {
+                _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedLite";
+            }
+            _cmd.Parameters.Add("@DFItemValue", SqlDbType.DateTime).Value = DateTime.Now;
             _cmd.ExecuteNonQuery();
         }
     }
