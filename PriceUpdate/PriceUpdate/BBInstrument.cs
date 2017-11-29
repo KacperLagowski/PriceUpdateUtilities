@@ -205,6 +205,10 @@ namespace RefDataExample
                         Div_Currency_ID = e.GetValueAsString();
                         
                         break;
+                    case "CRNCY":
+                        Price_Currency_ID = e.GetValueAsString();
+
+                        break;
                     case "REL_1M":
                         Rel_Perf_1M = Convert.ToDecimal(e.GetValue());
                         

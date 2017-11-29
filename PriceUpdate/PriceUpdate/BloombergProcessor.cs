@@ -130,7 +130,7 @@ namespace PriceUpdateProgram
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
                 _bloombergData.InstrumentUpdated += _bloombergData_InstrumentUpdated;
                 _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), _fullFields);
-                //updateDFDetails(DFDetailsType.Full);
+                updateDFDetails(DFDetailsType.Full);
                 connection.Open();
 
                 foreach (BBInstrument i in _bloombergData.BloombergInstruments)
@@ -149,7 +149,8 @@ namespace PriceUpdateProgram
         public void RunMiniPriceUpdate()
         {
             timer.Stop();
-            List<string> _miniFields = new List<string> { "ID_BB_Unique", "ID_ISIN", "TICKER", "PX_MID", "PX_BID", "PX_ASK", "PX_Last" };
+            List<string> _miniFields = new List<string> { "ID_BB_Unique", "ID_ISIN", "TICKER", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "REL_1M",
+                "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "CRNCY", "DVD_CRNCY"};
             try
             {
                 createConnection();
