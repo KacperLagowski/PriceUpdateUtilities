@@ -27,7 +27,7 @@ namespace PriceUpdateProgram
     [Flags]
     public enum DFDetailsType
     {
-        Full = 1, Lite = 2
+        Full = 1, Lite = 2, Intraday = 4, ProgramRunning = 8
     }
 
     public class BloombergProcessor
@@ -136,6 +136,8 @@ namespace PriceUpdateProgram
                 foreach (BBInstrument i in _bloombergData.BloombergInstruments)
                 {
                     i.GetData_Price();
+                    i.Div_Currency_ID = i.Div_Currency_ID.ToUpper();
+                    i.Price_Currency_ID = i.Price_Currency_ID.ToUpper();
                     i.Update(connection);
                 }
             }
@@ -163,6 +165,8 @@ namespace PriceUpdateProgram
                 foreach (BBInstrument i in _bloombergData.BloombergInstruments)
                 {
                     i.GetData_Price();
+                    i.Div_Currency_ID = i.Div_Currency_ID.ToUpper();
+                    i.Price_Currency_ID = i.Price_Currency_ID.ToUpper();
                     i.Update(connection);
                 }
             }
@@ -286,8 +290,7 @@ namespace PriceUpdateProgram
                RunFullPriceUpdate();
             }
 
-            
-            
+            updateDFDetails(DFDetailsType.ProgramRunning);
         }
 
         //Method to update the DF table and completed update time
@@ -305,6 +308,15 @@ namespace PriceUpdateProgram
             {
                 _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedLite";
             }
+            else if (type == DFDetailsType.Intraday)
+            {
+                _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedIntraday";
+            }
+            else if (type == DFDetailsType.ProgramRunning)
+            {
+                _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFProgramRunning";
+            }
+
             _cmd.Parameters.Add("@DFItemValue", SqlDbType.DateTime).Value = DateTime.Now;
             _cmd.ExecuteNonQuery();
         }
