@@ -121,7 +121,7 @@ namespace PriceUpdateProgram
         {
             timer.Stop();
             List<string> _fullFields = new List<string> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "LEGAL_ENTITY_IDENTIFIER", "MARKET_SECTOR_DES", "EXCH_CODE", "ID_MIC_PRIM_EXCH",
-                "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
+                "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "FUND_NET_ASSET_VAL", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
                 "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAP_RATIO",
                 "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "NXT_CPN_DT", "EQY_SH_OUT", "CFI_CODE"};
             try
@@ -152,7 +152,7 @@ namespace PriceUpdateProgram
         public void RunMiniPriceUpdate()
         {
             timer.Stop();
-            List<string> _miniFields = new List<string> { "ID_BB_Unique", "ID_ISIN", "TICKER", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "REL_1M",
+            List<string> _miniFields = new List<string> { "ID_BB_Unique", "ID_ISIN", "TICKER", "PX_MID", "PX_BID", "PX_ASK", "PX_Last", "FUND_NET_ASSET_VAL", "REL_1M",
                 "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "CRNCY", "DVD_CRNCY"};
             try
             {
@@ -302,22 +302,22 @@ namespace PriceUpdateProgram
             _cmd.CommandType = CommandType.StoredProcedure;
             if (type == DFDetailsType.Full)
             {
-                _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedFull";
+                _cmd.Parameters.Add("@ItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedFull";
             }
             else if (type == DFDetailsType.Lite)
             {
-                _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedLite";
+                _cmd.Parameters.Add("@ItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedLite";
             }
             else if (type == DFDetailsType.Intraday)
             {
-                _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedIntraday";
+                _cmd.Parameters.Add("@ItemName", SqlDbType.NVarChar, 50).Value = "DFCompletedIntraday";
             }
             else if (type == DFDetailsType.ProgramRunning)
             {
-                _cmd.Parameters.Add("@DFItemName", SqlDbType.NVarChar, 50).Value = "DFProgramRunning";
+                _cmd.Parameters.Add("@ItemName", SqlDbType.NVarChar, 50).Value = "DFProgramRunning";
             }
 
-            _cmd.Parameters.Add("@DFItemValue", SqlDbType.DateTime).Value = DateTime.Now;
+            _cmd.Parameters.Add("@ItemValue", SqlDbType.DateTime).Value = DateTime.Now;
             _cmd.ExecuteNonQuery();
         }
     }

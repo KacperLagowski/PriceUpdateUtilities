@@ -40,6 +40,9 @@ namespace RefDataExample
         [Description("Data Feed Type"), ReadOnly(true)]
         public int Sys_DataFeed_Type { get; set; }
 
+        [Description("Sys_Status"), ReadOnly(true)]
+        public int Sys_Status { get; set; }
+
         [Description("End"), ReadOnly(true)]
         public int Sys_End { get; set; }
 
@@ -200,6 +203,10 @@ namespace RefDataExample
                     case "PX_LAST":
                         Price_Last = Convert.ToDecimal(e.GetValue());
                         
+                        break;
+                    case "FUND_NET_ASSET_VAL":
+                        Price_Net_Asset_Value = Convert.ToDecimal(e.GetValue());
+
                         break;
                     case "DVD_CRNCY":
                         Div_Currency_ID = e.GetValueAsString();
@@ -368,6 +375,7 @@ namespace RefDataExample
             _cmd.Parameters.Add("@Sys_Note_User", SqlDbType.NVarChar, 255).Value = Sys_Note_User;
             _cmd.Parameters.Add("@Sys_UserID", SqlDbType.NVarChar, 50).Value = UserID;
             _cmd.Parameters.Add("@Sys_DataFeed_Type", SqlDbType.Int).Value = Sys_DataFeed_Type;
+            _cmd.Parameters.Add("@Sys_Status", SqlDbType.Int).Value = Sys_Status;
             _cmd.Parameters.Add("@Sys_End", SqlDbType.Bit).Value = Sys_End;
             _cmd.Parameters.Add("@Data_BloombergID", SqlDbType.NVarChar, 50).Value = BloombergID;
             _cmd.Parameters.Add("@Data_ISIN", SqlDbType.NVarChar, 50).Value = ISIN;
