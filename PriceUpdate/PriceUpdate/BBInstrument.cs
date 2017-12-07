@@ -291,13 +291,13 @@ namespace RefDataExample
                         Data_CFI = e.GetValue().ToString();
                         break;
                     case "MATURITY":
-                        Redemption_Date = Convert.ToDateTime(e.GetValue());
+                        Redemption_Date = DateTime.Parse(e.GetValue().ToString());
                         break;
                     case "INT_ACC_PER_BOND":
                         Accrued_Interest = Convert.ToDecimal(e.GetValue());
                         break;
                     case "NXT_CPN_DT":
-                        Div_Ex_Date = Convert.ToDateTime(e.GetValue());
+                        Div_Ex_Date = DateTime.Parse(e.GetValue().ToString());
                         break;
                     default:
                         break;

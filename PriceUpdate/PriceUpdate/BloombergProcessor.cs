@@ -40,6 +40,7 @@ namespace PriceUpdateProgram
         {
 
         }
+
         public static void createConnection()
         {
             try
@@ -144,8 +145,9 @@ namespace PriceUpdateProgram
             }
             finally
             {
-                //updateDFDetails(DFDetailsType.Full);
                 connection.Close();
+                updateDFDetails(DFDetailsType.Full);
+                RunIntradayPriceUpdate();
             }
         }
 
@@ -211,7 +213,7 @@ namespace PriceUpdateProgram
             {
                 try
                 {
-                    createConnection();
+                    connection.Open();
                     ap.Price = requestIntradayData(ap);
                 }
                 catch(Exception e)
@@ -223,6 +225,7 @@ namespace PriceUpdateProgram
                     connection.Close();
                 }
             }
+            updateDFDetails(DFDetailsType.Intraday);
             IntradayCompleted("Request completed - Intraday prices updated", new EventArgs());
         }
 
@@ -236,7 +239,7 @@ namespace PriceUpdateProgram
         public void StartCounting()
         {
             timer.Tick += new System.EventHandler(TimerEventProcessor);
-            timer.Interval = 3000 * 60;
+            timer.Interval = 500 * 60;
             timer.Start();
         }
 
@@ -246,6 +249,7 @@ namespace PriceUpdateProgram
             timer.Stop();
 
             createConnection();
+            updateDFDetails(DFDetailsType.ProgramRunning);
             string _storedProcedure = "sp_PMDFDetails";
             SqlDataAdapter _sda = new SqlDataAdapter(_storedProcedure, connection);
             DataTable _dt = new DataTable();
@@ -277,7 +281,7 @@ namespace PriceUpdateProgram
             DFDetails _liteCompleted = details.Single(p => p.ItemName == "DFCompletedLite");
             DFDetails _liteRequested = details.Single(p => p.ItemName == "DFRequestedLite");
 
-            if(_fullCompleted.Value.Day < DateTime.Now.Day)
+            if(_fullCompleted.Value.Date < DateTime.Now.Date)
             {
                 RunFullPriceUpdate();
             }
@@ -298,7 +302,7 @@ namespace PriceUpdateProgram
         public void updateDFDetails(DFDetailsType type)
         {
             string _storedProcedure = "sp_PMDFUpdate";
-
+            connection.Open();
             SqlCommand _cmd = new SqlCommand(_storedProcedure, connection);
             _cmd.CommandType = CommandType.StoredProcedure;
             if (type == DFDetailsType.Full)
@@ -320,6 +324,7 @@ namespace PriceUpdateProgram
 
             _cmd.Parameters.Add("@ItemValue", SqlDbType.DateTime).Value = DateTime.Now;
             _cmd.ExecuteNonQuery();
+            connection.Close();
         }
     }
 }

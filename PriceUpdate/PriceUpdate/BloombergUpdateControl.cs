@@ -20,6 +20,8 @@ namespace PriceUpdate
         {
             InitializeComponent();
             progressLabel.Text = ProgressLabelText;
+            BloombergProcessor bp = new BloombergProcessor();
+            bp.StartCounting();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -54,12 +56,6 @@ namespace PriceUpdate
             bh.IntradayCompleted += Bh_ProgressUpdated;
             bh.RunIntradayPriceUpdate();
             this.updateButton.Enabled = true;
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            BloombergProcessor bbbb = new BloombergProcessor();
-            bbbb.StartCounting();
         }
     }
 }
