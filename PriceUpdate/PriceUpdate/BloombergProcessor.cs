@@ -138,12 +138,13 @@ namespace PriceUpdateProgram
                     i.GetData_Price();
                     i.Div_Currency_ID = i.Div_Currency_ID.ToUpper();
                     i.Price_Currency_ID = i.Price_Currency_ID.ToUpper();
+                    i.Sys_Status = 16;
                     i.Update(connection);
                 }
             }
             finally
             {
-                updateDFDetails(DFDetailsType.Full);
+                //updateDFDetails(DFDetailsType.Full);
                 connection.Close();
             }
         }

@@ -252,7 +252,7 @@ namespace RefDataExample
                         Price_To_Book = Convert.ToDecimal(e.GetValue());
                         
                         break;
-                    case "BS_CORE_CAP_RATIO":
+                    case "BS_CORE_TIER1_CAPITAL_RATIO":
                         Tier_1_Ratio = Convert.ToDecimal(e.GetValue());
                         
                         break;
