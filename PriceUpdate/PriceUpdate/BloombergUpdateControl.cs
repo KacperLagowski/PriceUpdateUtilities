@@ -53,7 +53,6 @@ namespace PriceUpdate
         {
             this.updateButton.Enabled = false;
             BloombergProcessor bh = new BloombergProcessor();
-            bh.IntradayCompleted += Bh_ProgressUpdated;
             bh.RunIntradayPriceUpdate();
             this.updateButton.Enabled = true;
         }

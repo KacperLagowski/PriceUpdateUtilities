@@ -34,11 +34,10 @@ namespace PriceUpdateProgram
     {
         public static SqlConnection connection;
         public event System.EventHandler ProgressUpdated;
-        public event System.EventHandler IntradayCompleted;
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         public BloombergProcessor()
         {
-
+            createConnection();
         }
 
         public static void createConnection()
@@ -209,24 +208,21 @@ namespace PriceUpdateProgram
         public void RunIntradayPriceUpdate()
         {
             List<ArrivalPrice> items = RequestArrivalPriceList();
+            
             foreach (ArrivalPrice ap in items.ToList())
             {
                 try
                 {
-                    connection.Open();
+                    
                     ap.Price = requestIntradayData(ap);
+                    ap.Update(connection);
                 }
                 catch(Exception e)
                 {
                     continue;
                 }
-                finally
-                {
-                    connection.Close();
-                }
             }
             updateDFDetails(DFDetailsType.Intraday);
-            IntradayCompleted("Request completed - Intraday prices updated", new EventArgs());
         }
 
         //Event to update the process label
@@ -239,16 +235,13 @@ namespace PriceUpdateProgram
         public void StartCounting()
         {
             timer.Tick += new System.EventHandler(TimerEventProcessor);
-            timer.Interval = 500 * 60;
+            timer.Interval = 5000;
             timer.Start();
         }
 
         //Event that fires when the timer hits 1 minute, runs a price update if the last is < requested
         private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
-            timer.Stop();
-
-            createConnection();
             updateDFDetails(DFDetailsType.ProgramRunning);
             string _storedProcedure = "sp_PMDFDetails";
             SqlDataAdapter _sda = new SqlDataAdapter(_storedProcedure, connection);
@@ -280,12 +273,15 @@ namespace PriceUpdateProgram
             DFDetails _fullRequested = details.Single(p => p.ItemName == "DFRequestedFull");
             DFDetails _liteCompleted = details.Single(p => p.ItemName == "DFCompletedLite");
             DFDetails _liteRequested = details.Single(p => p.ItemName == "DFRequestedLite");
+            DFDetails _intradayCompleted = details.Single(p => p.ItemName == "DFCompletedIntraday");
+            DFDetails _intradayRequested = details.Single(p => p.ItemName == "DFRequestedIntraday");
 
-            if(_fullCompleted.Value.Date < DateTime.Now.Date)
+            if (_fullCompleted.Value.Date < DateTime.Now.Date)
             {
                 RunFullPriceUpdate();
             }
-            else if (_liteCompleted.Value < _liteRequested.Value)
+
+            if (_liteCompleted.Value < _liteRequested.Value)
             {
                 RunMiniPriceUpdate();
             }
@@ -295,7 +291,10 @@ namespace PriceUpdateProgram
                RunFullPriceUpdate();
             }
 
-            updateDFDetails(DFDetailsType.ProgramRunning);
+            if(_intradayCompleted.Value < _intradayRequested.Value)
+            {
+                RunIntradayPriceUpdate();
+            }
         }
 
         //Method to update the DF table and completed update time
@@ -322,7 +321,7 @@ namespace PriceUpdateProgram
                 _cmd.Parameters.Add("@ItemName", SqlDbType.NVarChar, 50).Value = "DFProgramRunning";
             }
 
-            _cmd.Parameters.Add("@ItemValue", SqlDbType.DateTime).Value = DateTime.Now;
+            _cmd.Parameters.Add("@ItemValue", SqlDbType.DateTime).Value = DateTime.Now.ToString();
             _cmd.ExecuteNonQuery();
             connection.Close();
         }
