@@ -30,16 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BloombergUpdateControl));
             this.titleLabel = new System.Windows.Forms.Label();
-            this.updateButton = new System.Windows.Forms.Button();
             this.randomLabel = new System.Windows.Forms.Label();
-            this.progressLabel = new System.Windows.Forms.Label();
-            this.intradayButton = new System.Windows.Forms.Button();
-            this.miniButton = new System.Windows.Forms.Button();
-            this.informLabel1 = new System.Windows.Forms.Label();
-            this.informLabel2 = new System.Windows.Forms.Label();
-            this.informLabel3 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
+            this.utilitiesToolStrip = new System.Windows.Forms.ToolStrip();
+            this.updateButton = new System.Windows.Forms.ToolStripButton();
+            this.intradayButton = new System.Windows.Forms.ToolStripButton();
+            this.miniButton = new System.Windows.Forms.ToolStripButton();
+            this.progressLabel = new System.Windows.Forms.ToolStripLabel();
+            this.infoLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.infoLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.infoLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.utilitiesToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -52,17 +52,6 @@
             this.titleLabel.TabIndex = 4;
             this.titleLabel.Text = "Update Prices from Bloomberg";
             // 
-            // updateButton
-            // 
-            this.updateButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("updateButton.BackgroundImage")));
-            this.updateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.updateButton.Location = new System.Drawing.Point(6, 19);
-            this.updateButton.Name = "updateButton";
-            this.updateButton.Size = new System.Drawing.Size(93, 85);
-            this.updateButton.TabIndex = 6;
-            this.updateButton.UseVisualStyleBackColor = true;
-            this.updateButton.Click += new System.EventHandler(this.button1_Click);
-            // 
             // randomLabel
             // 
             this.randomLabel.AutoSize = true;
@@ -72,95 +61,92 @@
             this.randomLabel.Size = new System.Drawing.Size(0, 21);
             this.randomLabel.TabIndex = 7;
             // 
-            // progressLabel
+            // utilitiesToolStrip
             // 
-            this.progressLabel.AutoSize = true;
-            this.progressLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.progressLabel.Location = new System.Drawing.Point(6, 249);
-            this.progressLabel.Name = "progressLabel";
-            this.progressLabel.Size = new System.Drawing.Size(52, 15);
-            this.progressLabel.TabIndex = 8;
-            this.progressLabel.Text = "Progress";
+            this.utilitiesToolStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.utilitiesToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.updateButton,
+            this.infoLabel1,
+            this.intradayButton,
+            this.infoLabel2,
+            this.miniButton,
+            this.infoLabel3,
+            this.progressLabel});
+            this.utilitiesToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.utilitiesToolStrip.Name = "utilitiesToolStrip";
+            this.utilitiesToolStrip.Size = new System.Drawing.Size(1000, 70);
+            this.utilitiesToolStrip.TabIndex = 16;
+            // 
+            // updateButton
+            // 
+            this.updateButton.AutoSize = false;
+            this.updateButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.updateButton.Image = ((System.Drawing.Image)(resources.GetObject("updateButton.Image")));
+            this.updateButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.updateButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(67, 67);
+            this.updateButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // intradayButton
             // 
-            this.intradayButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("intradayButton.BackgroundImage")));
-            this.intradayButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.intradayButton.Location = new System.Drawing.Point(6, 110);
+            this.intradayButton.AutoSize = false;
+            this.intradayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.intradayButton.Image = ((System.Drawing.Image)(resources.GetObject("intradayButton.Image")));
+            this.intradayButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.intradayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.intradayButton.Name = "intradayButton";
-            this.intradayButton.Size = new System.Drawing.Size(67, 65);
-            this.intradayButton.TabIndex = 9;
-            this.intradayButton.UseVisualStyleBackColor = true;
-            this.intradayButton.Click += new System.EventHandler(this.intradayButton_Click);
+            this.intradayButton.Size = new System.Drawing.Size(67, 67);
+            this.intradayButton.Click += new System.EventHandler(this.intradayButton_Click_1);
             // 
             // miniButton
             // 
-            this.miniButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("miniButton.BackgroundImage")));
-            this.miniButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.miniButton.Location = new System.Drawing.Point(6, 181);
+            this.miniButton.AutoSize = false;
+            this.miniButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.miniButton.Image = ((System.Drawing.Image)(resources.GetObject("miniButton.Image")));
+            this.miniButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.miniButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miniButton.Name = "miniButton";
-            this.miniButton.Size = new System.Drawing.Size(67, 65);
-            this.miniButton.TabIndex = 10;
-            this.miniButton.UseVisualStyleBackColor = true;
+            this.miniButton.Size = new System.Drawing.Size(67, 67);
             this.miniButton.Click += new System.EventHandler(this.miniButton_Click);
             // 
-            // informLabel1
+            // progressLabel
             // 
-            this.informLabel1.AutoSize = true;
-            this.informLabel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.informLabel1.Location = new System.Drawing.Point(105, 54);
-            this.informLabel1.Name = "informLabel1";
-            this.informLabel1.Size = new System.Drawing.Size(120, 15);
-            this.informLabel1.TabIndex = 11;
-            this.informLabel1.Text = "Run Full Price Update";
+            this.progressLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.progressLabel.Name = "progressLabel";
+            this.progressLabel.Size = new System.Drawing.Size(52, 67);
+            this.progressLabel.Text = "Progress";
             // 
-            // informLabel2
+            // infoLabel1
             // 
-            this.informLabel2.AutoSize = true;
-            this.informLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.informLabel2.Location = new System.Drawing.Point(79, 135);
-            this.informLabel2.Name = "informLabel2";
-            this.informLabel2.Size = new System.Drawing.Size(144, 15);
-            this.informLabel2.TabIndex = 12;
-            this.informLabel2.Text = "Run Intraday Price Update";
+            this.infoLabel1.Name = "infoLabel1";
+            this.infoLabel1.Size = new System.Drawing.Size(141, 67);
+            this.infoLabel1.Text = "Request Full Price Update";
             // 
-            // informLabel3
+            // infoLabel2
             // 
-            this.informLabel3.AutoSize = true;
-            this.informLabel3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.informLabel3.Location = new System.Drawing.Point(78, 206);
-            this.informLabel3.Name = "informLabel3";
-            this.informLabel3.Size = new System.Drawing.Size(145, 15);
-            this.informLabel3.TabIndex = 13;
-            this.informLabel3.Text = "Run Minimal Price Update";
+            this.infoLabel2.Name = "infoLabel2";
+            this.infoLabel2.Size = new System.Drawing.Size(165, 67);
+            this.infoLabel2.Text = "Request Intraday Price Update";
             // 
-            // groupBox1
+            // infoLabel3
             // 
-            this.groupBox1.Controls.Add(this.progressLabel);
-            this.groupBox1.Controls.Add(this.updateButton);
-            this.groupBox1.Controls.Add(this.informLabel3);
-            this.groupBox1.Controls.Add(this.intradayButton);
-            this.groupBox1.Controls.Add(this.informLabel2);
-            this.groupBox1.Controls.Add(this.miniButton);
-            this.groupBox1.Controls.Add(this.informLabel1);
-            this.groupBox1.Location = new System.Drawing.Point(6, 18);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(263, 271);
-            this.groupBox1.TabIndex = 15;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Update Options";
+            this.infoLabel3.Name = "infoLabel3";
+            this.infoLabel3.Size = new System.Drawing.Size(146, 67);
+            this.infoLabel3.Text = "Request Mini Price Update";
             // 
             // BloombergUpdateControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.utilitiesToolStrip);
             this.Controls.Add(this.randomLabel);
             this.Controls.Add(this.titleLabel);
             this.Name = "BloombergUpdateControl";
-            this.Size = new System.Drawing.Size(273, 293);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.Size = new System.Drawing.Size(1000, 70);
+            this.utilitiesToolStrip.ResumeLayout(false);
+            this.utilitiesToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -168,14 +154,14 @@
 
         #endregion
         private System.Windows.Forms.Label titleLabel;
-        private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Label randomLabel;
-        private System.Windows.Forms.Label progressLabel;
-        private System.Windows.Forms.Button intradayButton;
-        private System.Windows.Forms.Button miniButton;
-        private System.Windows.Forms.Label informLabel1;
-        private System.Windows.Forms.Label informLabel2;
-        private System.Windows.Forms.Label informLabel3;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ToolStrip utilitiesToolStrip;
+        private System.Windows.Forms.ToolStripButton updateButton;
+        private System.Windows.Forms.ToolStripButton intradayButton;
+        private System.Windows.Forms.ToolStripButton miniButton;
+        private System.Windows.Forms.ToolStripLabel progressLabel;
+        private System.Windows.Forms.ToolStripLabel infoLabel1;
+        private System.Windows.Forms.ToolStripLabel infoLabel2;
+        private System.Windows.Forms.ToolStripLabel infoLabel3;
     }
 }

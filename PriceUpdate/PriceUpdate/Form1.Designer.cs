@@ -65,14 +65,14 @@
             this.bloombergUpdateControl1.Location = new System.Drawing.Point(12, 12);
             this.bloombergUpdateControl1.Name = "bloombergUpdateControl1";
             this.bloombergUpdateControl1.ProgressLabelText = null;
-            this.bloombergUpdateControl1.Size = new System.Drawing.Size(273, 293);
+            this.bloombergUpdateControl1.Size = new System.Drawing.Size(1190, 56);
             this.bloombergUpdateControl1.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(286, 305);
+            this.ClientSize = new System.Drawing.Size(1214, 80);
             this.Controls.Add(this.bloombergUpdateControl1);
             this.Name = "Form1";
             this.Text = "Price Update Utility";
