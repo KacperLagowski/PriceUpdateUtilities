@@ -278,22 +278,22 @@ namespace PriceUpdateProgram
 
             if (_fullCompleted.Value.Date < DateTime.Now.Date)
             {
-                //RunFullPriceUpdate();
+                RunFullPriceUpdate();
             }
 
             if (_liteCompleted.Value < _liteRequested.Value)
             {
-                //RunMiniPriceUpdate();
+                RunMiniPriceUpdate();
             }
 
             if (_fullCompleted.Value < _fullRequested.Value)
             {
-               //RunFullPriceUpdate();
+               RunFullPriceUpdate();
             }
 
             if(_intradayCompleted.Value < _intradayRequested.Value)
             {
-                //RunIntradayPriceUpdate();
+                RunIntradayPriceUpdate();
             }
         }
 
