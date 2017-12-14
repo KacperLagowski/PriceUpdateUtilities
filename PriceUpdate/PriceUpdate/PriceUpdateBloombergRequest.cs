@@ -176,7 +176,7 @@ namespace Bloomberglp.Blpapi.Examples
                     MatchOnElements(_res);
 
                     d_message = $"{BloombergInstruments.Count(p => p.BloombergUpdate == true)} of {BloombergInstruments.Count} complete";
-                    InstrumentUpdated(d_message, new System.EventArgs());
+                    //InstrumentUpdated(d_message, new System.EventArgs());
 
                     //changed here
                     Element fieldExceptions = security.GetElement(FIELD_EXCEPTIONS);
@@ -194,12 +194,12 @@ namespace Bloomberglp.Blpapi.Examples
             if (FullUpdate == true)
             {
                 d_message = $"All {BloombergInstruments.Count} instruments has been updated";
-                InstrumentUpdated(d_message, new System.EventArgs());
+                //InstrumentUpdated(d_message, new System.EventArgs());
             }
             else if (FullUpdate == false)
             {
                 d_message = $"All prices updated";
-                InstrumentUpdated(d_message, new System.EventArgs());
+                //InstrumentUpdated(d_message, new System.EventArgs());
             }
             
         }

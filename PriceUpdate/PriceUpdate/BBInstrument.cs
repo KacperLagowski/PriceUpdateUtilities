@@ -145,6 +145,7 @@ namespace RefDataExample
         public string Data_LEI { get; set; }
         [Description("ISO10962 6 digits code"), ReadOnly(false)]
         public string Data_CFI { get; set; }
+        public int Data_MIFID_Daily_Transactions { get; set; }
         #endregion
 
         public void OverrideValues(List<Element> BloombergInstruments)
@@ -244,7 +245,7 @@ namespace RefDataExample
                         Rel_Perf_YTD = Convert.ToDecimal(e.GetValue());
                         
                         break;
-                    case "IS_IPS":
+                    case "IS_EPS":
                         Earnings_Per_Share = Convert.ToDecimal(e.GetValue());
                         
                         break;
@@ -252,7 +253,7 @@ namespace RefDataExample
                         Price_To_Book = Convert.ToDecimal(e.GetValue());
                         
                         break;
-                    case "BS_CORE_TIER1_CAPITAL_RATIO":
+                    case "BS_CORE_CAPITAL_LOCAL_STANDARD":
                         Tier_1_Ratio = Convert.ToDecimal(e.GetValue());
                         
                         break;
@@ -265,8 +266,8 @@ namespace RefDataExample
                         
                         break;
                     case "EBIT":
-                        EBIT = e.GetValueAsInt32();
-                        
+                        EBIT = Convert.ToDecimal(e.GetValue());
+
                         break;
                     case "ENTERPRISE_VALUE":
                         Enterprise_Value = Convert.ToDecimal(e.GetValue());
@@ -296,8 +297,11 @@ namespace RefDataExample
                     case "INT_ACC_PER_BOND":
                         Accrued_Interest = Convert.ToDecimal(e.GetValue());
                         break;
-                    case "NXT_CPN_DT":
+                    case "DVD_EX_DT":
                         Div_Ex_Date = DateTime.Parse(e.GetValue().ToString());
+                        break;
+                    case "MIFID_DAILY_TRANSACTIONS":
+                        Data_MIFID_Daily_Transactions = Convert.ToInt32(e.GetValue());
                         break;
                     default:
                         break;
@@ -366,6 +370,7 @@ namespace RefDataExample
             this.Accrued_Interest = Convert.ToDecimal(row["Data_Accrued_Interest"]);
             //this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
             this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
+            this.Data_MIFID_Daily_Transactions = Convert.ToInt32(row["Data_MIFID_Daily_Transactions"]);
         }
 
         public void Update(SqlConnection conn)
@@ -436,6 +441,7 @@ namespace RefDataExample
             _cmd.Parameters.Add("@Data_Redemption_Date", SqlDbType.DateTime).Value = Redemption_Date;
             _cmd.Parameters.Add("@Data_Accrued_Interest", SqlDbType.Decimal).Value = Accrued_Interest;
             _cmd.Parameters.Add("@Data_Equity_Sh_Out", SqlDbType.Decimal).Value = Data_Equity_Share_out;
+            _cmd.Parameters.Add("@Data_MIFID_Daily_Transactions", SqlDbType.Int).Value = Data_MIFID_Daily_Transactions;
             #endregion
             _cmd.ExecuteNonQuery();
         }
