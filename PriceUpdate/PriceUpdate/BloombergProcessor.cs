@@ -233,6 +233,7 @@ namespace PriceUpdateProgram
         private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
             updateDFDetails(DFDetailsType.ProgramRunning);
+            addNewInstrumentCheck();
             string _storedProcedure = "sp_PMDFDetails";
             SqlDataAdapter _sda = new SqlDataAdapter(_storedProcedure, connection);
             DataTable _dt = new DataTable();
@@ -345,8 +346,8 @@ namespace PriceUpdateProgram
                         foreach (BBInstrument bb in pubr.BloombergInstruments)
                         {
                             bb.GetData_Price();
-                            bb.Div_Currency_ID = i.Div_Currency_ID.ToUpper();
-                            bb.Price_Currency_ID = i.Price_Currency_ID.ToUpper();
+                            bb.Div_Currency_ID = bb.Div_Currency_ID.ToUpper();
+                            bb.Price_Currency_ID = bb.Price_Currency_ID.ToUpper();
                             bb.Sys_Status = 16;
                             bb.Update(connection);
                         }
@@ -355,8 +356,8 @@ namespace PriceUpdateProgram
                     {
                         BBInstrument bBInstrument = pubr.BloombergInstruments[1];
                         bBInstrument.GetData_Price();
-                        bBInstrument.Div_Currency_ID = i.Div_Currency_ID.ToUpper();
-                        bBInstrument.Price_Currency_ID = i.Price_Currency_ID.ToUpper();
+                        bBInstrument.Div_Currency_ID = bBInstrument.Div_Currency_ID.ToUpper();
+                        bBInstrument.Price_Currency_ID = bBInstrument.Price_Currency_ID.ToUpper();
                         bBInstrument.Sys_Status = 16;
                         bBInstrument.Update(connection);
                     }
