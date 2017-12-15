@@ -128,7 +128,6 @@ namespace PriceUpdateProgram
             {
                 createConnection();
                 PriceUpdateBloombergRequest _bloombergData = new PriceUpdateBloombergRequest();
-                List<BBInstrument> test = RequestOutdatedInstrumentList();
                 _bloombergData.RunFullPriceUpdate(RequestOutdatedInstrumentList(), _fullFields);
                 connection.Open();
 
@@ -317,9 +316,60 @@ namespace PriceUpdateProgram
             connection.Close();
         }
 
-        private void addNewInstrument()
+        private void addNewInstrumentCheck()
         {
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("sp_PMInstrument_GetNew", connection);
+            DataTable dt = new DataTable();
+            
+            try
+            {
+                connection.Open();
+                sqlDataAdapter.Fill(dt);
+                if (dt.Rows.Count > 1)
+                {
+                    List<string> _fields = new List<string> {"ID_BB_Unique", "ID_ISIN", "TICKER", "ID_SEDOL1", "ID_COMMON", "LEGAL_ENTITY_IDENTIFIER", "MARKET_SECTOR_DES", "EXCH_CODE", "ID_MIC_PRIM_EXCH",
+                "NAME", "PX_MID", "PX_BID", "PX_ASK", "PX_LAST", "FUND_NET_ASSET_VAL", "CRNCY", "EQY_DVD_SH_12M", "DVD_CRNCY", "FUND_NET_ASSET_VAL", "REL_1M",
+                "REL_3M", "REL_6M", "REL_1YR", "REL_MTD", "REL_QTD", "REL_YTD", "IS_EPS", "PX_TO_BOOK_RATIO", "BS_CORE_CAPITAL_LOCAL_STANDARD", "MIFID_DAILY_TRANSACTIONS",
+                "CF_FREE_CASH_FLOW", "EBITDA", "EBIT", "ENTERPRISE_VALUE", "PAR_AMT", "BS_PAR_VAL", "CPN", "MATURITY", "INT_ACC_PER_BOND", "DVD_EX_DT", "EQY_SH_OUT", "CFI_CODE"};
+                    List<BBInstrument> _list = new List<BBInstrument>();
 
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        _list.Add(new BBInstrument(dr));
+                    }
+
+                    PriceUpdateBloombergRequest pubr = new PriceUpdateBloombergRequest();
+                    pubr.RunFullPriceUpdate(_list, _fields);
+                    if (pubr.BloombergInstruments.Count > 1)
+                    {
+                        foreach (BBInstrument bb in pubr.BloombergInstruments)
+                        {
+                            bb.GetData_Price();
+                            bb.Div_Currency_ID = i.Div_Currency_ID.ToUpper();
+                            bb.Price_Currency_ID = i.Price_Currency_ID.ToUpper();
+                            bb.Sys_Status = 16;
+                            bb.Update(connection);
+                        }
+                    }
+                    else
+                    {
+                        BBInstrument bBInstrument = pubr.BloombergInstruments[1];
+                        bBInstrument.GetData_Price();
+                        bBInstrument.Div_Currency_ID = i.Div_Currency_ID.ToUpper();
+                        bBInstrument.Price_Currency_ID = i.Price_Currency_ID.ToUpper();
+                        bBInstrument.Sys_Status = 16;
+                        bBInstrument.Update(connection);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
     }
 }
