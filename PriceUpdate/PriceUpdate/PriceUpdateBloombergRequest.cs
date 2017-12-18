@@ -210,7 +210,7 @@ namespace Bloomberglp.Blpapi.Examples
             List<BBInstrument> _i = new List<BBInstrument>();
             Element _id;
 
-            List<string> lookupids = new List<String> { "ID_BB_Unique", "ID_ISIN", "TICKER" };
+            List<string> lookupids = new List<String> { "ID_BB_Unique", "ID_ISIN", "ID_SEDOL1" };
 
             foreach(string lid in lookupids)
             {
