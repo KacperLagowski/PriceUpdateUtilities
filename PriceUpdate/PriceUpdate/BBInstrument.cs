@@ -146,6 +146,7 @@ namespace RefDataExample
         [Description("ISO10962 6 digits code"), ReadOnly(false)]
         public string Data_CFI { get; set; }
         public int Data_MIFID_Daily_Transactions { get; set; }
+        public string Data_Cntry_Of_Incorporation { get; set; }
         #endregion
 
         public void OverrideValues(List<Element> BloombergInstruments)
@@ -303,6 +304,9 @@ namespace RefDataExample
                     case "MIFID_DAILY_TRANSACTIONS":
                         Data_MIFID_Daily_Transactions = Convert.ToInt32(e.GetValue());
                         break;
+                    case "CNTRY_OF_INCORPORATION":
+                        Data_Cntry_Of_Incorporation = e.GetValue().ToString();
+                        break;
                     default:
                         break;
                 }
@@ -371,6 +375,7 @@ namespace RefDataExample
             //this.Data_Restriction_Flag = (RestrictionFlagEnum)(Convert.ToInt32(row["Data_Restriction_Flag"]));
             this.Data_Equity_Share_out = Convert.ToDecimal(row["Data_Equity_Sh_Out"]);
             this.Data_MIFID_Daily_Transactions = Convert.ToInt32(row["Data_MIFID_Daily_Transactions"]);
+            this.Data_Cntry_Of_Incorporation = row["Data_Cntry_Of_Incorporation"].ToString();
         }
 
         public void Update(SqlConnection conn)
@@ -442,6 +447,7 @@ namespace RefDataExample
             _cmd.Parameters.Add("@Data_Accrued_Interest", SqlDbType.Decimal).Value = Accrued_Interest;
             _cmd.Parameters.Add("@Data_Equity_Sh_Out", SqlDbType.Decimal).Value = Data_Equity_Share_out;
             _cmd.Parameters.Add("@Data_MIFID_Daily_Transactions", SqlDbType.Int).Value = Data_MIFID_Daily_Transactions;
+            _cmd.Parameters.Add("@Data_Cntry_Of_Incorporation", SqlDbType.NVarChar, 2).Value = Data_Cntry_Of_Incorporation;
             #endregion
             _cmd.ExecuteNonQuery();
         }
